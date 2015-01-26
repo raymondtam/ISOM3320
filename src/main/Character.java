@@ -2,7 +2,7 @@ package main;
 
 public abstract class Character extends GameObject{
 	//variable
-	int health;
+	private int health;
 	
 	//Constructor
 	Character() {
