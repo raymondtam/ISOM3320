@@ -74,7 +74,7 @@ abstract class GameObject {
 	@Override
 	public String toString(){
 		return "The Gameobject is at x: " + xcoord + "y: " + ycoord + "with radius: " + radius 
-				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + movingSpeed ;
+				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + movingSpeed+"\n" ;
 	}
 		
 	//to-do
