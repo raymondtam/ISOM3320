@@ -40,6 +40,7 @@ public class Player extends Character{
 			bullet.setVisible(true);
 			// bullet.setPosition(x, y);
 			// bullet.move(x, y);
+			// TODO
 		}
 		else
 			reload();
