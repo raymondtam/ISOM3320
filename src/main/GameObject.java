@@ -38,12 +38,21 @@ abstract class GameObject {
 		this.ycoord = ycoord;
 	}
 	
+	public double getRadius(){
+		return radius;
+	}
+	
+	public void setRadius(int radius){
+		this.radius = radius;
+	}
+	
 	public boolean isVisible(){
 		return visible;
 	}
 	
 	public void setVisible(boolean visible){
 		this.visible = visible;
+		//TO-DO: set graph property
 	}
 	
 	public int getMovingSpeed(){
@@ -59,6 +68,7 @@ abstract class GameObject {
 	public void setPostion(int x, int y){
 		setXcoord(x);
 		setYcoord(y);
+		//TO-DO: set graph property
 	}
 	
 	@Override
@@ -72,5 +82,5 @@ abstract class GameObject {
 	abstract public boolean isHit();
 	
 	abstract public boolean move(int x, int y);
-
+	
 }

@@ -4,6 +4,14 @@ public class Player extends Character{
 	int numberOfUnusedBullet;
 	Bullet bullet= new Bullet();
 	
+	public int getNumberOfUnusedBullet() {
+		return numberOfUnusedBullet;
+	}
+	
+	private void setNumberOfUnusedBullet(int numberOfUnusedBullet) {
+		this.numberOfUnusedBullet = numberOfUnusedBullet;
+	}
+	
 	@Override
 	public boolean isHit() {
 		// TODO
@@ -23,18 +31,22 @@ public class Player extends Character{
 	
 	public void reload() {
 		if (numberOfUnusedBullet < bullet.getMagazineSize()) {
-			numberOfUnusedBullet = bullet.getMagazineSize();
+			setNumberOfUnusedBullet (bullet.getMagazineSize());
 		}
 	}
 	
 	public void fire() {
 		if (numberOfUnusedBullet > 0) {
-			
+			bullet.setVisible(true);
+			// bullet.setPosition(x, y);
+			// bullet.move(x, y);
 		}
-		//TODO
+		else
+			reload();
 	}
 	
-	public static void main(String[] args){
+	@Override
+	public String toString(){
+		return super.toString() + "numberOfUnusedBullet: " + numberOfUnusedBullet + "\n";
 	}
-	
 }

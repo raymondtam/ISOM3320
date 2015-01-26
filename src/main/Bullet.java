@@ -1,37 +1,50 @@
 package main;
 
-public class Bullet extends GameObject { 
-    private final int bulletDamage;
-    private final int magazineSize;
+public class Bullet extends GameObject {
+  private final int bulletDamage;
+  private final int magazineSize;
+  
+  Bullet () {
+    this.bulletDamage = 0;
+    this.magazineSize = 0;
+  }
+  
+  Bullet (int bulletDamage, int magazineSize) {
+    this.bulletDamage = bulletDamage;
+    this.magazineSize = magazineSize;
+  }
+  
+  public int getBulletDamage () {
+    return bulletDamage;
+  }
+  public int getMagazineSize () {
+    return magazineSize;
+  }
+  
+   public static void main (String[] args){
+    Bullet b1 = new Bullet();
+    System.out.println("Bullet Damage is " + b1.getBulletDamage() + 
+                       " and magazine size is " + b1.getMagazineSize());
+    Bullet b2 = new Bullet (5, 100);
+     System.out.println("Bullet Damage is " + b2.getBulletDamage() + 
+                       " and magazine size is " + b2.getMagazineSize());
     
-    Bullet () {
-        this.bulletDamage = 0;
-        this.magazineSize = 0;
-    }
-    
-    Bullet (int bulletDamage, int magazineSize) {
-        this.bulletDamage = bulletDamage;
-        this.magazineSize = magazineSize;
-    }
-    
-    public int getBulletDamage () {
-        return bulletDamage;
-    }
-    public int getMagazineSize () {
-        return magazineSize;
-    }
-    
-    @Override
-    public boolean isHit() {
-        // TODO
-        return false;
-    }
-    
-    @Override
-    public boolean move(int x, int y) {
-        // TODO
-        return false;
-    }
+   }
+
+@Override
+public boolean isHit() {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+@Override
+public boolean move(int x, int y) {
+	// TODO Auto-generated method stub
+	return false;
+}
+}
+    //Bullet b2 = new Bullet;
+>>>>>>> origin/master
     
     @Override
     public String toString(){
