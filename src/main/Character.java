@@ -1,20 +1,18 @@
 package main;
 
-public class Character extends GameObject{
+public abstract class Character extends GameObject{
+	//variable
 	int health;
 	
-	@Override
-	public boolean isHit() {
-		// TODO
-		return false;
-	}
-
-	@Override
-	public boolean move(int x, int y) {
-		// TODO
-		return false;
+	//Constructor
+	Character() {
 	}
 	
+	Character(int health){
+		super();
+		this.health = health;
+	}
+		
 	public int getHealth() {
 		return health;
 	}
@@ -35,4 +33,8 @@ public class Character extends GameObject{
 	public String toString(){
 		return super.toString() + "health: " + health + "\n";
 	}
+	
+	abstract public boolean isHit();
+
+	abstract public boolean move(int x, int y);
 }

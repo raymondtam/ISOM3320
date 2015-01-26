@@ -1,4 +1,6 @@
 .classpath
 .project
 *.class
-*.xml
+*.metadata
+*.class
+*.class
