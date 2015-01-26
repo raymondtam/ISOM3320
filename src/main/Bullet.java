@@ -1,6 +1,6 @@
 package main;
 
-public class Bullet { //extends GameObject 
+public class Bullet extends GameObject {
   private final int bulletDamage;
   private final int magazineSize;
   
@@ -30,6 +30,18 @@ public class Bullet { //extends GameObject
                        " and magazine size is " + b2.getMagazineSize());
     
    }
+
+@Override
+public boolean isHit() {
+	// TODO Auto-generated method stub
+	return false;
+}
+
+@Override
+public boolean move(int x, int y) {
+	// TODO Auto-generated method stub
+	return false;
+}
 }
     //Bullet b2 = new Bullet;
     
