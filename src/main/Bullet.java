@@ -36,16 +36,16 @@ public class Bullet extends GameObject {
     @Override
     public String toString(){
         return super.toString() + "bullet damage: " + bulletDamage + 
-            "magazine size: " + magazineSize +\n";
+            "magazine size: " + magazineSize + "\n";
     }
     
     
     public static void main (String[] args){
         Bullet b1 = new Bullet(10, 20);
-        b1.set
+        
             System.out.println("Bullet Damage is " + b1.getBulletDamage() + 
                                " and magazine size is " + b1.getMagazineSize());
-        Bullet b2 = new Bullet (5, 100);
+        Bullet b2 = new Bullet (15, 15);
         System.out.println("Bullet Damage is " + b2.getBulletDamage() + 
                            " and magazine size is " + b2.getMagazineSize());
         
