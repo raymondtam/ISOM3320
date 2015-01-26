@@ -4,6 +4,14 @@ public class Player extends Character{
 	int numberOfUnusedBullet;
 	Bullet bullet= new Bullet();
 	
+	Player() {
+	}
+	
+	Player (int numberOfUnusedBullet) {
+		super();
+		this.numberOfUnusedBullet = numberOfUnusedBullet;
+	}
+	
 	public int getNumberOfUnusedBullet() {
 		return numberOfUnusedBullet;
 	}
