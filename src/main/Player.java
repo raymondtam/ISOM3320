@@ -38,8 +38,8 @@ public class Player extends Character{
 	public void fire() {
 		if (numberOfUnusedBullet > 0) {
 			bullet.setVisible(true);
-			bullet.setPosition();
-			bullet.move();
+			// bullet.setPosition(x, y);
+			// bullet.move(x, y);
 		}
 		else
 			reload();
