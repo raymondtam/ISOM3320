@@ -48,6 +48,11 @@ abstract class GameObject {
 		//TO-DO: set graph property
 	}
 	
+	public void changePostion(int xIncrement, int yIncrement){
+		Point2D vector = new Point2D(xIncrement, yIncrement);
+		position = position.add(vector);
+	}
+	
 	
 	public double getRadius(){
 		return radius;
@@ -89,6 +94,6 @@ abstract class GameObject {
 	
 	abstract public boolean isHit();
 	
-	abstract public boolean move(int x, int y);
+	abstract public void move(int xIncrement, int yIncrement);
 	
 }
