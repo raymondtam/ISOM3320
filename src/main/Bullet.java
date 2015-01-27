@@ -15,6 +15,11 @@ public class Bullet extends GameObject {
     	this.bulletDamage = bulletDamage;
     	this.magazineSize = magazineSize;
     }
+    Bullet (int bulletDamage, int magazineSize, int radius) {
+    	this.bulletDamage = bulletDamage;
+    	this.magazineSize = magazineSize;
+    	this.setRadius(radius);
+    }
   
     public int getBulletDamage () {
     	return bulletDamage;
@@ -38,14 +43,14 @@ public class Bullet extends GameObject {
 		return false;
 	}
 	
-	public Bullet[] getBulletArray(int damage, int size) {
+	public static Bullet[] getBulletArray(int damage, int size) {
 		
 		Bullet[] bulletArray = new Bullet [size];
 		for (int i = 0; i < bulletArray.length; i++){
 			bulletArray[i] = new Bullet (damage, size);
 		}
 		return bulletArray;
-		}
+	}
 	
 	@Override
 	public String toString(){
@@ -71,5 +76,4 @@ public class Bullet extends GameObject {
 	}
 }
 
-//Bullet[][] bulletArray  = new Bullet[][]
 
