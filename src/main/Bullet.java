@@ -2,25 +2,25 @@ package main;
 
 public class Bullet extends GameObject {
     //Attribute
-	private final int bulletDamage;
-    private final int magazineSize;
+	private static int bulletDamage;
+    private static int magazineSize;
   
     //Constructors
     Bullet () {
-    	this.bulletDamage = 0;
-    	this.magazineSize = 0;
+    	Bullet.bulletDamage = 0;
+    	Bullet.magazineSize = 0;
     }
   
     Bullet (int bulletDamage, int magazineSize, double radius) {
-    	this.bulletDamage = bulletDamage;
-    	this.magazineSize = magazineSize;
+    	Bullet.bulletDamage = bulletDamage;
+    	Bullet.magazineSize = magazineSize;
     	this.setRadius(radius);
     }
   
-    public int getBulletDamage () {
+    public static int getBulletDamage () {
     	return bulletDamage;
     }
-    public int getMagazineSize () {
+    public static int getMagazineSize () {
     	return magazineSize;
     }
   
@@ -32,11 +32,10 @@ public class Bullet extends GameObject {
 	}
 	
 	@Override
-	public boolean move(int x, int y) {
+	public void move(int x, int y) {
 		this.setVisible(true);
 		
 		// TODO Auto-generated method stub
-		return false;
 	}
 	
 	public static Bullet[] getBulletArray(int size, int damage, int magazineSize, double radius) {
