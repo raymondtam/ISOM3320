@@ -4,7 +4,6 @@ import javafx.geometry.Point2D;
 
 abstract class GameObject {
 	//variable
-	private int xcoord, ycoord;
 	private Point2D position;
 	private double radius;
 	private boolean	visible;
@@ -16,8 +15,6 @@ abstract class GameObject {
 	}
 	
 	GameObject(int xcoord, int ycoord, double radius, boolean visible, int movingSpeed){
-		this.xcoord = xcoord;
-		this.ycoord = ycoord;
 		position = new Point2D(xcoord, ycoord);
 		this.radius = radius;
 		this.visible = false;
@@ -27,21 +24,19 @@ abstract class GameObject {
 	//mutator and accessor
 	
 	public int getXcoord(){
-		return xcoord;
+		return (int)position.getX();
 	}
 	
 	private void setXcoord(int xcoord){
-		this.xcoord = xcoord;
-		position = new Point2D(xcoord, ycoord);
+		position = new Point2D(xcoord, position.getY());
 	}
 	
 	public int getYcoord(){
-		return ycoord;
+		return (int)position.getY();
 	}
 	
 	private void setYcoord(int ycoord){
-		this.ycoord = ycoord;
-		position = new Point2D(xcoord, ycoord);
+		position = new Point2D(position.getX(), ycoord);
 	}
 	
 	public Point2D getPosition(){
@@ -49,8 +44,6 @@ abstract class GameObject {
 	}
 	
 	public void setPostion(int xcoord, int ycoord){
-		setXcoord(xcoord);
-		setYcoord(ycoord);
 		position = new Point2D(xcoord, ycoord);
 		//TO-DO: set graph property
 	}
@@ -60,7 +53,7 @@ abstract class GameObject {
 		return radius;
 	}
 	
-	public void setRadius(int radius){
+	public void setRadius(double radius){
 		this.radius = radius;
 	}
 	
@@ -88,7 +81,7 @@ abstract class GameObject {
 	
 	@Override
 	public String toString(){
-		return "The Gameobject is at x: " + xcoord + "y: " + ycoord + "with radius: " + radius 
+		return "The Gameobject is at" + position.toString() + "with radius: " + radius 
 				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + movingSpeed+"\n" ;
 	}
 		
