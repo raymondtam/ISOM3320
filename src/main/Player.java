@@ -4,15 +4,16 @@ import javafx.geometry.Point2D;
 
 public class Player extends Character{
 	int numberOfUnusedBullet;
-	Bullet bullet= new Bullet();
+	Bullet[] bullet = null;
 	
 	//Constructor
 	Player() {
 	}
 	
-	Player (int numberOfUnusedBullet) {
+	Player (Bullet[] bullet) {
 		super();
-		this.numberOfUnusedBullet = numberOfUnusedBullet;
+		this.bullet = bullet;
+		this.numberOfUnusedBullet = Bullet.getMagazineSize();
 	}
 	
 	public int getNumberOfUnusedBullet() {
@@ -37,16 +38,19 @@ public class Player extends Character{
 	}
 		
 	public void reload() {
-		if (numberOfUnusedBullet < bullet.getMagazineSize()) {
-			setNumberOfUnusedBullet (bullet.getMagazineSize());
+		if (numberOfUnusedBullet < Bullet.getMagazineSize()) {
+			setNumberOfUnusedBullet (Bullet.getMagazineSize());
 		}
 	}
 	
 	public void fire() {
 		if (numberOfUnusedBullet > 0) {
-			bullet.setVisible(true);
-			bullet.setPosition(getXcoord(), getYcoord());
-			bullet.move(x, y);
+			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
+			bullet[index].setVisible(true);
+			numberOfUnusedBullet--;
+			// TODO
+			bullet[index].setPosition(getXcoord(), getYcoord());
+			bullet[index].move(1,0); // TODO
 			// TODO
 		}
 		else

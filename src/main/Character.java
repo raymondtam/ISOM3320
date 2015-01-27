@@ -36,5 +36,5 @@ public abstract class Character extends GameObject{
 	
 	abstract public boolean isHit();
 
-	abstract public boolean move(int x, int y);
+	abstract public void move(int x, int y);
 }
