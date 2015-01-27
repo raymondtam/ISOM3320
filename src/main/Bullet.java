@@ -38,7 +38,7 @@ public class Bullet extends GameObject {
 		return false;
 	}
 	
-	public Bullet[] getBulletArray(int damage, int size) {
+	public static Bullet[] getBulletArray(int damage, int size) {
 		
 		Bullet[] bulletArray = new Bullet [size];
 		for (int i = 0; i < bulletArray.length; i++){
