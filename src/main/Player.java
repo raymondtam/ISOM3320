@@ -1,9 +1,12 @@
 package main;
 
+import javafx.geometry.Point2D;
+
 public class Player extends Character{
 	int numberOfUnusedBullet;
 	Bullet bullet= new Bullet();
 	
+	//Constructor
 	Player() {
 	}
 	
@@ -28,7 +31,8 @@ public class Player extends Character{
 
 	@Override
 	public boolean move(int x, int y) {
-		// TODO
+		Point2D position = getPosition();
+		position = position.add(x,y);
 		return false;
 	}
 	
