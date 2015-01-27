@@ -1,8 +1,11 @@
 package main;
 
+import javafx.geometry.Point2D;
+
 abstract class GameObject {
 	//variable
 	private int xcoord, ycoord;
+	private Point2D position;
 	private double radius;
 	private boolean	visible;
 	private int movingSpeed;
@@ -15,12 +18,13 @@ abstract class GameObject {
 	GameObject(int xcoord, int ycoord, double radius, boolean visible, int movingSpeed){
 		this.xcoord = xcoord;
 		this.ycoord = ycoord;
+		position = new Point2D(xcoord, ycoord);
 		this.radius = radius;
 		this.visible = false;
 		this.movingSpeed = movingSpeed;
 	}
 	
-	//Method
+	//mutator and accessor
 	
 	public int getXcoord(){
 		return xcoord;
@@ -28,6 +32,7 @@ abstract class GameObject {
 	
 	private void setXcoord(int xcoord){
 		this.xcoord = xcoord;
+		position = new Point2D(xcoord, ycoord);
 	}
 	
 	public int getYcoord(){
@@ -36,7 +41,20 @@ abstract class GameObject {
 	
 	private void setYcoord(int ycoord){
 		this.ycoord = ycoord;
+		position = new Point2D(xcoord, ycoord);
 	}
+	
+	public Point2D getPosition(){
+		return position;
+	}
+	
+	public void setPostion(int xcoord, int ycoord){
+		setXcoord(xcoord);
+		setYcoord(ycoord);
+		position = new Point2D(xcoord, ycoord);
+		//TO-DO: set graph property
+	}
+	
 	
 	public double getRadius(){
 		return radius;
@@ -63,13 +81,10 @@ abstract class GameObject {
 		this.movingSpeed = movingSpeed;
 	} 
 	
-	//self-defined method
+	//Custom method
 	
-	public void setPostion(int x, int y){
-		setXcoord(x);
-		setYcoord(y);
-		//TO-DO: set graph property
-	}
+
+	
 	
 	@Override
 	public String toString(){
