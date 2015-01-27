@@ -43,7 +43,7 @@ abstract class GameObject {
 		return position;
 	}
 	
-	public void setPostion(int xcoord, int ycoord){
+	public void setPosition(int xcoord, int ycoord){
 		position = new Point2D(xcoord, ycoord);
 		//TO-DO: set graph property
 	}
