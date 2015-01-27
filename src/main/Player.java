@@ -25,22 +25,17 @@ public class Player extends Character{
 	
 	@Override
 	public boolean isHit() {
+		
 		// TODO
 		return false;
 	}
 
 	@Override
-	public boolean move(int x, int y) {
+	public void move(int x, int y) {
 		Point2D position = getPosition();
 		position = position.add(x,y);
-		return false;
 	}
-	
-	@Override
-	public boolean isDead() {
-		return false;
-	}
-	
+		
 	public void reload() {
 		if (numberOfUnusedBullet < bullet.getMagazineSize()) {
 			setNumberOfUnusedBullet (bullet.getMagazineSize());
@@ -50,8 +45,8 @@ public class Player extends Character{
 	public void fire() {
 		if (numberOfUnusedBullet > 0) {
 			bullet.setVisible(true);
-			// bullet.setPosition(x, y);
-			// bullet.move(x, y);
+			bullet.setPosition(getXcoord(), getYcoord());
+			bullet.move(x, y);
 			// TODO
 		}
 		else
