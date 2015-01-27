@@ -43,9 +43,14 @@ abstract class GameObject {
 		return position;
 	}
 	
-	public void setPostion(int xcoord, int ycoord){
+	public void setPosition(int xcoord, int ycoord){
 		position = new Point2D(xcoord, ycoord);
 		//TO-DO: set graph property
+	}
+	
+	public void changePostion(int xIncrement, int yIncrement){
+		Point2D vector = new Point2D(xIncrement, yIncrement);
+		position = position.add(vector);
 	}
 	
 	
@@ -89,6 +94,6 @@ abstract class GameObject {
 	
 	abstract public boolean isHit();
 	
-	abstract public boolean move(int x, int y);
+	abstract public void move(int xIncrement, int yIncrement);
 	
 }
