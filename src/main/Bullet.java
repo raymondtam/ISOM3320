@@ -1,9 +1,11 @@
 package main;
 
 public class Bullet extends GameObject {
-    private final int bulletDamage;
+    //Attribute
+	private final int bulletDamage;
     private final int magazineSize;
   
+    //Constructors
     Bullet () {
     	this.bulletDamage = 0;
     	this.magazineSize = 0;
@@ -21,6 +23,7 @@ public class Bullet extends GameObject {
     	return magazineSize;
     }
   
+    //Method
 	@Override
 	public boolean isHit() {
 		// TODO Auto-generated method stub
@@ -29,9 +32,20 @@ public class Bullet extends GameObject {
 	
 	@Override
 	public boolean move(int x, int y) {
+		this.setVisible(true);
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	public Bullet[] getBulletArray(int damage, int size) {
+		
+		Bullet[] bulletArray = new Bullet [size];
+		for (int i = 0; i < bulletArray.length; i++){
+			bulletArray[i] = new Bullet (damage, size);
+		}
+		return bulletArray;
+		}
 	
 	@Override
 	public String toString(){
@@ -49,6 +63,11 @@ public class Bullet extends GameObject {
 		Bullet b3 = new Bullet (20, 10);
 		System.out.println("Bullet Damage is " + b3.getBulletDamage() + 
                    " and magazine size is " + b3.getMagazineSize());
+		
+		//Bullet [][] bulletArray = new Bullet[3][];
+		//bulletArray[0].length = b1.getMagazineSize();
+		//bulletArray[1].length = b2.getMagazineSize();
+		//bulletArray[2].length = b3.getMagazineSize();
 	}
 }
 
