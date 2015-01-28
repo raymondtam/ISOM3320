@@ -8,6 +8,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -24,12 +25,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	//constant
 	final int NO_OF_BULLET_TYPE = 3; 
-	final int[] BULLET_DAMAGE = {1, 3, 10};
-	final int[] MAGAZINE_SIZE = {10, 40, 30};
+	final int[] BULLET_DAMAGE = {2, 3, 5};
+	final int[] MAGAZINE_SIZE = {15, 40, 100};
 	final int MAX_MAGAZINE_SIZE = 40;
 	final int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[1];
 	final double DEFAULT_RADIUS = 0;
+	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
 	//game variable and objects
 	String name = "Player1";
@@ -44,8 +46,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	//graphics and animation variable
 	Timeline timeline;
 	private ImageView background, playerImage, zombieImage, bulletImage;
-    private Label HPLabel = new Label();
-    private IntegerProperty HPIntegerProperty;
+    private Label HPLabel = new Label(), BulletLabel = new Label();
+    private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
 
 	
 	public static void main(String[] arg){
@@ -59,11 +61,15 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		Pane pane = new Pane();
 		Image road = null, player= null, zombie = null, bullet = null;
+		Image machinegun = null, rifile = null;
+		ImageView dummy, dummy1;
 		
 		//Loading images and setting GUI
 		try {
-			road =  new Image("road.jpg");
-			player = new Image("machinegun.png");
+			road =  new Image("background.jpg");
+			player = new Image("pistol.png");
+			machinegun = new Image("machinegun.png");
+			rifile = new Image("rifile.png");
 			zombie = new Image("zombie.png");
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
@@ -77,13 +83,26 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImage.setRotate(90);
 		zombieImage = new ImageView(zombie);
 		zombieImage.setRotate(270);
+		
+		dummy = new ImageView(machinegun);
+		dummy.setRotate(90);
+		dummy.setY(200);
+		dummy1 = new ImageView(rifile);
+		dummy1.setRotate(90);
+		
 		HPIntegerProperty = new SimpleIntegerProperty(100);
         HPLabel.textProperty().bind(HPIntegerProperty.asString());
-        HPLabel.setTextFill(Color.RED);
-        HPLabel.setFont(Font.font("Cambria", 40));
-        HPLabel.setOpacity(0.35);
+        HPLabel.setTextFill(Color.YELLOW);
+        HPLabel.setFont(DEFAULT_FONT);
+        HPLabel.setOpacity(0.8);
         
-		pane.getChildren().addAll(background, playerImage, zombieImage, HPLabel);
+        BulletIntegerProperty = new SimpleIntegerProperty(15);
+        BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
+        BulletLabel.setTextFill(Color.YELLOW);
+        BulletLabel.setFont(DEFAULT_FONT);
+        BulletLabel.setOpacity(0.75);
+        
+		pane.getChildren().addAll(background, playerImage, zombieImage, HPLabel, BulletLabel, dummy, dummy1);
 
 		stage.setScene(new Scene(pane));
 		stage.sizeToScene();
@@ -103,14 +122,15 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		zombieImage.setX(primaryScreenBounds.getWidth()/2);
 		zombieImage.setY(primaryScreenBounds.getHeight()/2);
 //		HPLabel.setTranslateX(800);
-//		HPLabel.setTranslateY(500);
-		
+		HPLabel.setTranslateY(600);
+		BulletLabel.setTranslateY(600);
+		BulletLabel.setTranslateX(845);
 		
 		stage.show();
 		System.out.println("Stage being showed.");
 		
 		
-		
+		//TO-DO, bind integer property with health and bulletnumber
 		
 		
 		
@@ -126,5 +146,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public Point2D getPlyaerPosition(){
+		return player.getPosition();
+	} 
 	
 }
