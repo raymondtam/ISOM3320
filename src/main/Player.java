@@ -32,7 +32,7 @@ public class Player extends Character{
 	}
 
 	@Override
-	public void move(int x, int y) {
+	public void move(double x, double y) {
 		Point2D position = getPosition();
 		position = position.add(x,y);
 	}
