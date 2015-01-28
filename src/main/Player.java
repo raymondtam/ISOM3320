@@ -33,8 +33,7 @@ public class Player extends Character{
 
 	@Override
 	public void move(double xIncrement, double yIncrement) {
-		Point2D position = getPosition();
-		position = position.add(xIncrement,yIncrement);
+		changePosition(xIncrement,yIncrement);
 	}
 		
 	public void reload() {
