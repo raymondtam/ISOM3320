@@ -32,9 +32,9 @@ public class Player extends Character{
 	}
 
 	@Override
-	public void move(double x, double y) {
+	public void move(double xIncrement, double yIncrement) {
 		Point2D position = getPosition();
-		position = position.add(x,y);
+		position = position.add(xIncrement,yIncrement);
 	}
 		
 	public void reload() {
@@ -52,7 +52,7 @@ public class Player extends Character{
 			double yCursor; //TODO
 			numberOfUnusedBullet--;
 			bullet[index].setPosition(xPlayer,yPlayer);
-			bullet[index].move(fireVector(xPlayer,yPlayer, xCursor, yCursor)); // TODO
+			bullet[index].move(fireVector(xPlayer,yPlayer, xCursor, yCursor));
 			// TODO
 		}
 		else
@@ -61,7 +61,7 @@ public class Player extends Character{
 	
 	private Point2D fireVector(double xPlayer, double yPlayer, double xCursor, double yCursor) {
 		Point2D bulletPath = new Point2D(xCursor, yCursor);
-		bulletPath.subtract(xPlayer, yPlayer);
+		bulletPath = bulletPath.subtract(xPlayer, yPlayer);
 		return bulletPath;
 		
 	}
