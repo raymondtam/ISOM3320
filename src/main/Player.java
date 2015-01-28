@@ -46,15 +46,21 @@ public class Player extends Character{
 	public void fire() {
 		if (numberOfUnusedBullet > 0) {
 			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
-			bullet[index].setVisible(true);
 			numberOfUnusedBullet--;
-			// TODO
 			bullet[index].setPosition(getXcoord(), getYcoord());
-			bullet[index].move(1,0); // TODO
+			
+			bullet[index].move(fireVector()); // TODO
 			// TODO
 		}
 		else
 			reload();
+	}
+	
+	private Point2D fireVector() {
+		Point2D bulletPath;
+		bulletPath = 
+		return bulletPath;
+		
 	}
 	
 	@Override
