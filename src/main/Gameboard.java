@@ -39,13 +39,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	String[] topThreeScores={"nil", "nil", "nil"};
 	
 	Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS);
-	Player player;
+	static Player player;
 	//Target target;
 	//Boss boss;
 	
 	//graphics and animation variable
 	Timeline timeline;
-	private ImageView background, playerImage, zombieImage, bulletImage;
+	private ImageView background, playerImage, zombieImage, bulletImage, HPIconImage;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
 
@@ -61,7 +61,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		Pane pane = new Pane();
 		Image road = null, player= null, zombie = null, bullet = null;
-		Image machinegun = null, rifile = null;
+		Image machinegun = null, rifile = null, HPIcon = null;
 		ImageView dummy, dummy1;
 		
 		//Loading images and setting GUI
@@ -71,6 +71,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			machinegun = new Image("machinegun.png");
 			rifile = new Image("rifile.png");
 			zombie = new Image("zombie.png");
+			HPIcon = new Image("HP.gif");
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -83,6 +84,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImage.setRotate(90);
 		zombieImage = new ImageView(zombie);
 		zombieImage.setRotate(270);
+		HPIconImage = new ImageView(HPIcon);
+		HPIconImage.setOpacity(0.6);
 		
 		dummy = new ImageView(machinegun);
 		dummy.setRotate(90);
@@ -102,7 +105,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         BulletLabel.setFont(DEFAULT_FONT);
         BulletLabel.setOpacity(0.75);
         
-		pane.getChildren().addAll(background, playerImage, zombieImage, HPLabel, BulletLabel, dummy, dummy1);
+		pane.getChildren().addAll(background, playerImage, zombieImage, HPLabel, BulletLabel, dummy, dummy1, HPIconImage);
 
 		stage.setScene(new Scene(pane));
 		stage.sizeToScene();
@@ -122,7 +125,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		zombieImage.setX(primaryScreenBounds.getWidth()/2);
 		zombieImage.setY(primaryScreenBounds.getHeight()/2);
 //		HPLabel.setTranslateX(800);
+		HPLabel.setTranslateX(70);
 		HPLabel.setTranslateY(600);
+		HPIconImage.setTranslateX(5);
+		HPIconImage.setTranslateY(585);
 		BulletLabel.setTranslateY(600);
 		BulletLabel.setTranslateX(845);
 		
@@ -147,8 +153,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 	}
 	
-	public Point2D getPlyaerPosition(){
-		return player.getPosition();
+	public static Point2D getPlyaerPosition(){
+		Point2D position = player.getPosition();
+		return position;
 	} 
 	
 }
