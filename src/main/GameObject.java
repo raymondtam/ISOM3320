@@ -48,7 +48,7 @@ abstract class GameObject {
 		//TO-DO: set graph property
 	}
 	
-	public void changePostion(double xIncrement, double yIncrement){
+	public void changePosition(double xIncrement, double yIncrement){
 		Point2D vector = new Point2D(xIncrement, yIncrement);
 		position = position.add(vector);
 	}
