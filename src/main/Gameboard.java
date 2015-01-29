@@ -20,8 +20,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.RotateBuilder;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -32,9 +30,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	final int NO_OF_BULLET_TYPE = 3; 
 	final static int[] BULLET_DAMAGE = {2, 3, 5};
 	final static int[] MAGAZINE_SIZE = {15, 40, 100};
-	final static int MAX_MAGAZINE_SIZE = 40;
+	final static int MAX_MAGAZINE_SIZE = 100;
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
-	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[1];
+	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
 	final static double DEFAULT_RADIUS = 0;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
@@ -52,7 +50,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	//graphics and animation variable
 	Timeline timeline;
-	private ImageView backgroundImageView, playerImageView, zombieImageView, bulletImageView, HPIconImageView;
+	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
+	private ImageView[] bulletImageView; 
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -81,8 +80,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			playerImage = new Image("pistol.png");
 			machinegunImage = new Image("machinegun.png");
 			rifileImage = new Image("rifile.png");
-			zombieImage = new Image("zombie.png");
+			zombieImage = new Image("boss.gif");
 			HPIconImage = new Image("HP.gif");
+			bulletImage = new Image("bullet.png");
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -116,9 +116,20 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         BulletLabel.setFont(DEFAULT_FONT);
         BulletLabel.setOpacity(0.75);
         
-		pane.getChildren().addAll(backgroundImageView, playerImageView, zombieImageView, HPLabel, BulletLabel, dummy, dummy1, HPIconImageView);
-
+        bulletImageView = new ImageView[MAX_MAGAZINE_SIZE];
+        
+        for(int i=0 ; i<bulletImageView.length ; i++ ){
+        	bulletImageView[i] = new ImageView(bulletImage);
+        }
 		
+        
+		pane.getChildren().addAll(backgroundImageView, playerImageView, zombieImageView, HPLabel, BulletLabel, dummy, dummy1, HPIconImageView);
+		
+
+		for(ImageView i : bulletImageView){
+			pane.getChildren().addAll(i);
+			i.setVisible(false);
+		} 
 		
 		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         stage.setX(primaryScreenBounds.getMinX());
@@ -132,8 +143,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
 		playerImageView.setY(primaryScreenBounds.getHeight()/2);
 		playerImageView.setX(10);
-		zombieImageView.setX(primaryScreenBounds.getWidth()/2);
-		zombieImageView.setY(primaryScreenBounds.getHeight()/2);
+		zombieImageView.setX(200);
+		zombieImageView.setY(200);
 		HPLabel.setTranslateX(70);
 		HPLabel.setTranslateY(600);
 		HPIconImageView.setTranslateX(5);
@@ -162,7 +173,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		moveRight = true;
             	}
                	key.consume();
-             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
+//             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
 //             	System.out.println(key.toString());
             }
         });
@@ -184,7 +195,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		moveRight = false;
             	}
             	key.consume();
-             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
+//             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
 //             	System.out.println(key.toString());
 
             }
@@ -193,11 +204,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         scene.setOnMouseClicked(new EventHandler<MouseEvent>(){
         	@Override
 			public void handle(MouseEvent mouse) {
-//				System.out.println("X: " + mouse.getSceneX() + " Y: " + mouse.getSceneY());
-//				System.out.println("X: " + mouse.getX() + " Y: "+ mouse.getY());
-//				System.out.println("X: " + mouse.getScreenX() + " Y: "+ mouse.getScreenY());
-				System.out.println("mouse clicked");
-				player.fire(mouse.getX(), mouse.getY());
+//				System.out.println("mouse clicked, Number of Unused Bullets: "+player.getNumberOfUnusedBullet());
+        		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
+				//player.fire(mouse.getX(), mouse.getY(), angle);
+        		player.fire(mouse.getX(), mouse.getY());
+//				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 			}
         	
         });
@@ -205,7 +216,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
-        		System.out.println(angle);
+        		//System.out.println(angle);
                 if(mouse.getY()<player.getYcoord())
                 	playerImageView.setRotate(90-angle);
                 else
@@ -240,14 +251,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	}
 	
 	double getFireAngle(double x, double y){
-//		double playerAngle = player.getPosition().angle(yVector);
-//		double mouseAngle = yVector.angle(mouse.getX(), mouse.getY());
-		Point2D yVector = new Point2D(1, 0);
+		Point2D xVector = new Point2D(1, 0);
 		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
 //	equivalent to
 //		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
 //		Point2D Vector = mouseVector.subtract(player.getPosition());
-		double angle = yVector.angle(Vector);
+		double angle = xVector.angle(Vector);
 		
         return angle; 
 	}
@@ -269,7 +278,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	@Override
 	public void handle(ActionEvent e) {
 		// TODO Auto-generated method stub
-		//player.setPosition(player.getXcoord()+10, player.getYcoord());
+		
+		//player movement
         if(moveUp)
         	player.move(0, -5);
         if(moveDown)
@@ -280,6 +290,22 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	player.move(5, 0);
         playerImageView.setX(player.getXcoord());
         playerImageView.setY(player.getYcoord());
+        
+        //bullet movement
+        for(int i=0; i < Bullet.getMagazineSize() ; i++){
+        	if(bullet[i].getIsMoving()){
+        	//if(bullet[i].getXVelocity()>0 || bullet[i].getYVelocity()>0){
+        		bulletImageView[i].setVisible(true);
+        		bullet[i].move(bullet[i].getXVelocity()*20, bullet[i].getYVelocity()*20);
+        		bulletImageView[i].setX(bullet[i].getXcoord());
+        		bulletImageView[i].setY(bullet[i].getYcoord());
+        	}
+        }
+        
+        //target movement
+        
+        
+        //check ishit()
 		
 	}
 	
