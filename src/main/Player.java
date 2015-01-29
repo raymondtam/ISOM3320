@@ -55,10 +55,9 @@ public class Player extends Character{
 			double fireAngle;
 			if (normalizedX <= 0)
 				fireAngle = 90 + vectorAngle;
-			else if (normalizedY <= 0)
-				fireAngle = 90 - vectorAngle;
 			else
-				fireAngle = 450 - vectorAngle;
+				fireAngle = 90 - vectorAngle;
+			
 			numberOfUnusedBullet--;
 			bullet[index].setVisible(true);
 			bullet[index].setPosition(xPlayer,yPlayer);
