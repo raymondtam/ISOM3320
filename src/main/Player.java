@@ -33,6 +33,7 @@ public class Player extends Character{
 
 	@Override
 	public void move(double xIncrement, double yIncrement) {
+		if ((600 - getYcoord() >= 15 ) || (getYcoord() <= 15) ) //TODO boundary condition
 		changePosition(xIncrement,yIncrement);
 	}
 		
