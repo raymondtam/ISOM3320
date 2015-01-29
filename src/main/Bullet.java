@@ -32,8 +32,9 @@ public class Bullet extends GameObject {
 	}
 	
 	@Override
-	public void move(int x, int y) {
+	public void move(double x, double y) {
 		this.setVisible(true);
+		this.getPosition()
 		
 		// TODO Auto-generated method stub
 	}
