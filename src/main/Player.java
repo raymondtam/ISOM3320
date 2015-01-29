@@ -36,8 +36,8 @@ public class Player extends Character{
 
 	@Override
 	public void move(double xIncrement, double yIncrement) {
-		if ((600 - getYcoord() >= 15 ) || (getYcoord() <= 15) ) //TODO boundary condition
-		changePosition(xIncrement,yIncrement);
+//		if ((600 - getYcoord() >= 15 ) || (getYcoord() <= 15) ) //TODO boundary condition
+			changePosition(xIncrement,yIncrement);
 	}
 		
 	public void reload() {
@@ -46,13 +46,11 @@ public class Player extends Character{
 		}
 	}
 	
-	public void fire() {
+	public void fire(double xCursor, double yCursor) {
 		if (numberOfUnusedBullet > 0) {
 			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
 			double xPlayer = getXcoord(); 
 			double yPlayer = getYcoord();
-			double xCursor; //TODO
-			double yCursor; //TODO
 			numberOfUnusedBullet--;
 			bullet[index].setPosition(xPlayer,yPlayer);
 			bullet[index].move(fireVector(xPlayer,yPlayer, xCursor, yCursor));
