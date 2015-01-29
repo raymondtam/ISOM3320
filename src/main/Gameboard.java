@@ -204,16 +204,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
-//        		double playerAngle = player.getPosition().angle(yVector);
-//        		double mouseAngle = yVector.angle(mouse.getX(), mouse.getY());
-        		Point2D yVector = new Point2D(1, 0);
-        		Point2D Vector = player.getPosition().multiply(-1).add(mouse.getX(), mouse.getY());
-//			equivalent to
-//        		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
-//        		Point2D Vector = mouseVector.subtract(player.getPosition());
-        		double angle = yVector.angle(Vector);
-        		
-                System.out.println(angle);
+        		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
+        		System.out.println(angle);
                 if(mouse.getY()<player.getYcoord())
                 	playerImageView.setRotate(90-angle);
                 else
@@ -230,9 +222,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //		timeline.getKeyFrames().add(new KeyFrame(new Duration(100), this));
 //		timeline.setCycleCount(Timeline.INDEFINITE);
 //		timeline.play();
-		
-		
-		timeline.getKeyFrames().add( new KeyFrame(new Duration(100), this));
+				
+		timeline.getKeyFrames().add( new KeyFrame(new Duration(33), this));
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
 		
@@ -248,6 +239,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 	}
 	
+	double getFireAngle(double x, double y){
+//		double playerAngle = player.getPosition().angle(yVector);
+//		double mouseAngle = yVector.angle(mouse.getX(), mouse.getY());
+		Point2D yVector = new Point2D(1, 0);
+		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
+//	equivalent to
+//		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
+//		Point2D Vector = mouseVector.subtract(player.getPosition());
+		double angle = yVector.angle(Vector);
+		
+        return angle; 
+	}
 	
 	
 
