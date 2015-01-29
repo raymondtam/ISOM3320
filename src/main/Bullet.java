@@ -7,6 +7,7 @@ public class Bullet extends GameObject {
     private boolean isMoving;
     private double xVelocity;
     private double yVelocity;
+    private double fireAngle;
   
     //Constructors
     Bullet () {
@@ -35,7 +36,9 @@ public class Bullet extends GameObject {
     public double getYVelocity () {
     	return yVelocity;
     }
-    
+    public double getFireAngle () {
+    	return fireAngle;
+    }
     public static void setBulletDamage (int bulletDamage) {
     	Bullet.bulletDamage = bulletDamage;
     }
@@ -50,6 +53,9 @@ public class Bullet extends GameObject {
     }
     public void setYVelocity (double yVelocity) {
     	this.yVelocity = yVelocity;
+    }
+    public void setFireAngle (double fireAngle) {
+    	this.fireAngle = fireAngle;
     }
     //Method
 	@Override
