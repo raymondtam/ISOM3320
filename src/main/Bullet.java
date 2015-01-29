@@ -4,6 +4,7 @@ public class Bullet extends GameObject {
     //Attribute
 	private static int bulletDamage;
     private static int magazineSize;
+    private boolean isMoving;
   
     //Constructors
     Bullet () {
@@ -23,7 +24,19 @@ public class Bullet extends GameObject {
     public static int getMagazineSize () {
     	return magazineSize;
     }
-  
+    public boolean getIsMoving (){
+    	return isMoving;
+    }
+    
+    public static void setBulletDamage (int bulletDamage) {
+    	Bullet.bulletDamage = bulletDamage;
+    }
+    public static void setMagazineSize (int magazineSize) {
+    	Bullet.magazineSize = magazineSize;
+    }
+    public void setIsMoving (boolean isMoving) {
+    	this.isMoving = isMoving;
+    }
     //Method
 	@Override
 	public boolean isHit() {
