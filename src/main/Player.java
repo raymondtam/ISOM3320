@@ -1,7 +1,5 @@
 package main;
 
-import javafx.geometry.Point2D;
-
 public class Player extends Character{
 	private int numberOfUnusedBullet;
 	Bullet[] bullet = null;
@@ -57,18 +55,13 @@ public class Player extends Character{
 			numberOfUnusedBullet--;
 			bullet[index].setVisible(true);
 			bullet[index].setPosition(xPlayer,yPlayer);
+			bullet[index].setIsMoving(true);
 			bullet[index].setXVelocity(nomralizedX);
 			bullet[index].setYVelocity(normalizedY);
 		}
 		else
 			reload();
 	}
-	
-//	private Point2D fireVector(double xPlayer, double yPlayer, double xCursor, double yCursor) {
-//		Point2D bulletPath = new Point2D(xCursor, yCursor);
-//		bulletPath = bulletPath.subtract(xPlayer, yPlayer);
-//		return bulletPath;
-//	}
 	
 	@Override
 	public String toString(){
