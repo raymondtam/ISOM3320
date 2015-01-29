@@ -44,20 +44,26 @@ public class Player extends Character{
 		}
 	}
 	
-	public void fire(double xCursor, double yCursor) {
+	public void fire(double xCursor, double yCursor, double vectorAngle) {
 		if (numberOfUnusedBullet > 0) {
 			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
 			double xPlayer = getXcoord(); 
 			double yPlayer = getYcoord();
 			double distance = Math.pow(Math.pow((xCursor - xPlayer),2.0) +Math.pow((yCursor - yPlayer), 2.0), 0.5);
-			double nomralizedX = (xCursor - xPlayer) / distance;
+			double normalizedX = (xCursor - xPlayer) / distance;
 			double normalizedY = (yCursor - yPlayer) / distance;
+			double fireAngle;
+			if (normalizedX >= 0)
+				fireAngle = vectorAngle;
+			else
+				fireAngle = vectorAngle * -1;
 			numberOfUnusedBullet--;
 			bullet[index].setVisible(true);
 			bullet[index].setPosition(xPlayer,yPlayer);
 			bullet[index].setIsMoving(true);
-			bullet[index].setXVelocity(nomralizedX);
+			bullet[index].setXVelocity(normalizedX);
 			bullet[index].setYVelocity(normalizedY);
+			bullet[index].setFireAngle(fireAngle);
 		}
 		else
 			reload();
