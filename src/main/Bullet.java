@@ -32,12 +32,10 @@ public class Bullet extends GameObject {
 	}
 	
 	@Override
-	public void move(double x, double y) {
-		this.setVisible(true);
-		this.getPosition()
-		
-		// TODO Auto-generated method stub
-	}
+	public void move(double xIncrement, double yIncrement) {
+		this.setVisible(true); 
+			changePosition(xIncrement,yIncrement);
+		}
 	
 	public static Bullet[] getBulletArray(int size, int damage, int magazineSize, double radius) {
 		
