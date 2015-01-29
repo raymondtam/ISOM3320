@@ -56,7 +56,8 @@ public class Player extends Character{
 			double normalizedY = (yCursor - yPlayer) / distance;
 			numberOfUnusedBullet--;
 			bullet[index].setPosition(xPlayer,yPlayer);
-			bullet[index].move(nomralizedX, normalizedY);
+			bullet[index].setXVelocity(nomralizedX);
+			bullet[index].setYVelocity(normalizedY);
 		}
 		else
 			reload();
