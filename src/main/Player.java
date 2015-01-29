@@ -26,7 +26,10 @@ public class Player extends Character{
 	
 	@Override
 	public boolean isHit() {
-		
+		// if (tagetPosition.distance(getPlayerPosition()) <= target.radius + player.radius) 
+		// 	   return true;
+		// else 
+		//     return false;
 		// TODO
 		return false;
 	}
