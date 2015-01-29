@@ -1,15 +1,19 @@
 package main;
 
+import javafx.geometry.Point2D;
+
 public class Player extends Character{
-	int numberOfUnusedBullet;
-	Bullet bullet= new Bullet();
+	private int numberOfUnusedBullet;
+	Bullet[] bullet = null;
 	
+	//Constructor
 	Player() {
 	}
 	
-	Player (int numberOfUnusedBullet) {
+	Player(Bullet[] bullet) {
 		super();
-		this.numberOfUnusedBullet = numberOfUnusedBullet;
+		this.bullet = bullet;
+		this.numberOfUnusedBullet = Bullet.getMagazineSize();
 	}
 	
 	public int getNumberOfUnusedBullet() {
@@ -22,36 +26,47 @@ public class Player extends Character{
 	
 	@Override
 	public boolean isHit() {
+		// if (tagetPosition.distance(getPlayerPosition()) <= target.radius + player.radius) 
+		// 	   return true;
+		// else 
+		//     return false;
 		// TODO
 		return false;
 	}
 
 	@Override
-	public boolean move(int x, int y) {
-		// TODO
-		return false;
+	public void move(double xIncrement, double yIncrement) {
+		if ((600 - getYcoord() >= 15 ) || (getYcoord() <= 15) ) //TODO boundary condition
+		changePosition(xIncrement,yIncrement);
 	}
-	
-	@Override
-	public boolean isDead() {
-		return false;
-	}
-	
+		
 	public void reload() {
-		if (numberOfUnusedBullet < bullet.getMagazineSize()) {
-			setNumberOfUnusedBullet (bullet.getMagazineSize());
+		if (numberOfUnusedBullet < Bullet.getMagazineSize()) {
+			setNumberOfUnusedBullet (Bullet.getMagazineSize());
 		}
 	}
 	
 	public void fire() {
 		if (numberOfUnusedBullet > 0) {
-			bullet.setVisible(true);
-			// bullet.setPosition(x, y);
-			// bullet.move(x, y);
+			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
+			double xPlayer = getXcoord(); 
+			double yPlayer = getYcoord();
+			double xCursor; //TODO
+			double yCursor; //TODO
+			numberOfUnusedBullet--;
+			bullet[index].setPosition(xPlayer,yPlayer);
+			bullet[index].move(fireVector(xPlayer,yPlayer, xCursor, yCursor));
 			// TODO
 		}
 		else
 			reload();
+	}
+	
+	private Point2D fireVector(double xPlayer, double yPlayer, double xCursor, double yCursor) {
+		Point2D bulletPath = new Point2D(xCursor, yCursor);
+		bulletPath = bulletPath.subtract(xPlayer, yPlayer);
+		return bulletPath;
+		
 	}
 	
 	@Override

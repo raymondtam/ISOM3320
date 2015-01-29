@@ -23,16 +23,16 @@ abstract class GameObject {
 	
 	//mutator and accessor
 	
-	public int getXcoord(){
-		return (int)position.getX();
+	public double getXcoord(){
+		return position.getX();
 	}
 	
 	private void setXcoord(int xcoord){
 		position = new Point2D(xcoord, position.getY());
 	}
 	
-	public int getYcoord(){
-		return (int)position.getY();
+	public double getYcoord(){
+		return position.getY();
 	}
 	
 	private void setYcoord(int ycoord){
@@ -43,9 +43,14 @@ abstract class GameObject {
 		return position;
 	}
 	
-	public void setPostion(int xcoord, int ycoord){
+	public void setPosition(double xcoord, double ycoord){
 		position = new Point2D(xcoord, ycoord);
 		//TO-DO: set graph property
+	}
+	
+	public void changePosition(double xIncrement, double yIncrement){
+		Point2D vector = new Point2D(xIncrement, yIncrement);
+		position = position.add(vector);
 	}
 	
 	
@@ -89,6 +94,6 @@ abstract class GameObject {
 	
 	abstract public boolean isHit();
 	
-	abstract public boolean move(int x, int y);
+	abstract public void move(double xIncrement, double yIncrement);
 	
 }
