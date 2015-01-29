@@ -26,10 +26,10 @@ public class Player extends Character{
 	
 	@Override
 	public boolean isHit() {
-		// if (tagetPosition.distance(getPlayerPosition()) <= target.radius + player.radius) 
-		// 	   return true;
-		// else 
-		//     return false;
+//		if (tagetPosition.distance(getPlayerPosition()) <= target.radius + player.radius) 
+//		    return true;
+//		else 
+//		    return false;
 		// TODO
 		return false;
 	}
@@ -51,7 +51,7 @@ public class Player extends Character{
 			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
 			double xPlayer = getXcoord(); 
 			double yPlayer = getYcoord();
-			double distance = Math.pow((xCursor - xPlayer),2.0) +Math.pow((yCursor - yPlayer), 2.0);
+			double distance = Math.pow(Math.pow((xCursor - xPlayer),2.0) +Math.pow((yCursor - yPlayer), 2.0), 0.5);
 			double nomralizedX = (xCursor - xPlayer) / distance;
 			double normalizedY = (yCursor - yPlayer) / distance;
 			numberOfUnusedBullet--;
