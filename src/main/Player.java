@@ -51,21 +51,22 @@ public class Player extends Character{
 			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
 			double xPlayer = getXcoord(); 
 			double yPlayer = getYcoord();
+			double distance = Math.pow((xCursor - xPlayer),2.0) +Math.pow((yCursor - yPlayer), 2.0);
+			double nomralizedX = (xCursor - xPlayer) / distance;
+			double normalizedY = (yCursor - yPlayer) / distance;
 			numberOfUnusedBullet--;
 			bullet[index].setPosition(xPlayer,yPlayer);
-			bullet[index].move(fireVector(xPlayer,yPlayer, xCursor, yCursor));
-			// TODO
+			bullet[index].move(nomralizedX, normalizedY);
 		}
 		else
 			reload();
 	}
 	
-	private Point2D fireVector(double xPlayer, double yPlayer, double xCursor, double yCursor) {
-		Point2D bulletPath = new Point2D(xCursor, yCursor);
-		bulletPath = bulletPath.subtract(xPlayer, yPlayer);
-		return bulletPath;
-		
-	}
+//	private Point2D fireVector(double xPlayer, double yPlayer, double xCursor, double yCursor) {
+//		Point2D bulletPath = new Point2D(xCursor, yCursor);
+//		bulletPath = bulletPath.subtract(xPlayer, yPlayer);
+//		return bulletPath;
+//	}
 	
 	@Override
 	public String toString(){
