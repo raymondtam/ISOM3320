@@ -55,13 +55,13 @@ public class Bullet extends GameObject {
 	}
 
 	public static void main (String[] args){
-		Bullet b1 = new Bullet(10,20);
+		Bullet b1 = new Bullet(10,20,5);
 		System.out.println("Bullet Damage is " + b1.getBulletDamage() + 
                    " and magazine size is " + b1.getMagazineSize());
-		Bullet b2 = new Bullet (15, 15);
+		Bullet b2 = new Bullet (15, 15,5);
 		System.out.println("Bullet Damage is " + b2.getBulletDamage() + 
                    " and magazine size is " + b2.getMagazineSize());
-		Bullet b3 = new Bullet (20, 10);
+		Bullet b3 = new Bullet (20, 10,5);
 		System.out.println("Bullet Damage is " + b3.getBulletDamage() + 
                    " and magazine size is " + b3.getMagazineSize());
 		
