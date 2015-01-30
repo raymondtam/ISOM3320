@@ -70,23 +70,40 @@ public class Target extends Character{
 	public void move(Point2D playerPosition) {
 		double xIncrement, yIncrement;
 		double angle = getAngleOfChase(playerPosition);
+		double cosAngle = Math.cos(this.getAngleOfChase(playerPosition));
+		double sinAngle = Math.sin(this.getAngleOfChase(playerPosition));
+		
 		if (this.getXcoord() < playerPosition.getX() && this.getYcoord() < playerPosition.getY()){
-			xIncrement = Math.cos(this.getMovingSpeed());
-			yIncrement = Math.sin(this.getMovingSpeed());
+			xIncrement = this.getMovingSpeed() * cosAngle;
+			yIncrement = this.getMovingSpeed() * sinAngle;
 		}
 		else if (this.getXcoord() < playerPosition.getX() && this.getYcoord() > playerPosition.getY()){
-			xIncrement = Math.cos(this.getMovingSpeed());
-			yIncrement = - Math.sin(this.getMovingSpeed());
+			xIncrement = this.getMovingSpeed() * cosAngle;
+			yIncrement = - this.getMovingSpeed() * sinAngle;
 		}
 		else if (this.getXcoord() > playerPosition.getX() && this.getYcoord() < playerPosition.getY()){
-			xIncrement = - Math.cos(this.getMovingSpeed());
-			yIncrement = Math.sin(this.getMovingSpeed());
+			xIncrement = - this.getMovingSpeed() * cosAngle;
+			yIncrement = this.getMovingSpeed() * sinAngle;
 		}
 		else {
-			xIncrement = - Math.cos(this.getMovingSpeed());
-			yIncrement = - Math.sin(this.getMovingSpeed());
+			xIncrement = - this.getMovingSpeed() * cosAngle;
+			yIncrement = - this.getMovingSpeed() * sinAngle;
 		}
 		this.move(xIncrement, yIncrement);
+	}
+	
+	public void setVisible(Point2D playerPosition){
+		int randomNum = -1 + (Math.random() * 2 - 1);
+		
+		if (number > 0.0 && number <= 0.25){
+			this.setXcoord = playerPosition.getX() - 450;
+			
+		}
+		else{
+			
+		}
+		this.setVisible(true);
+		
 	}
 
     /*
