@@ -66,7 +66,6 @@ public class Bullet extends GameObject {
 	
 	@Override
 	public void move(double xIncrement, double yIncrement) {
-		this.setVisible(true); 
 			changePosition(xIncrement,yIncrement);
 		}
 	
