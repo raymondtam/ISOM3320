@@ -43,7 +43,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS);
 	static Player player = new Player(bullet);
-	//Target target;
+	//static Target target = 
 	//Boss boss;
 	
 	Point2D CursorPosition;
@@ -51,7 +51,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	//graphics and animation variable
 	Timeline timeline;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
-	private ImageView[] bulletImageView; 
+	private ImageView[] bulletImageView, TargetImageView; 
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -80,7 +80,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			playerImage = new Image("pistol.png");
 			machinegunImage = new Image("machinegun.png");
 			rifileImage = new Image("rifile.png");
-			zombieImage = new Image("boss.gif");
+			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
 			System.out.println("Image being imported.");
@@ -120,6 +120,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         for(int i=0 ; i<bulletImageView.length ; i++ ){
         	bulletImageView[i] = new ImageView(bulletImage);
+        }
+        
+        TargetImageView = new ImageView[10];
+        for(int i=0 ; i<TargetImageView.length ; i++ ){
+        	TargetImageView[i] = new ImageView(zombieImage);
         }
 		
         
@@ -224,10 +229,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	public void handle(MouseEvent mouse){
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
         		System.out.println(angle);
-                if(mouse.getY()<player.getYcoord())
-                	playerImageView.setRotate(90-angle);
-                else
-                	playerImageView.setRotate(90+angle);
+        		
+//        		playerImageView.setRotate(angle);
+        		if(mouse.getX()>player.getXcoord())
+        			playerImageView.setRotate(angle);
+        		else
+        			playerImageView.setRotate(-1*angle);
+        		
+//                if(mouse.getY()<player.getYcoord())
+//                	playerImageView.setRotate(90-angle);
+//                else
+//                	playerImageView.setRotate(90+angle);
         	}
         });
                 
@@ -254,13 +266,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	}
 	
 	double getFireAngle(double x, double y){
-		Point2D xVector = new Point2D(1, 0);
-		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
+		Point2D xVector = new Point2D(x, 0);
+//		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
 //	equivalent to
 //		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
 //		Point2D Vector = mouseVector.subtract(player.getPosition());
-		double angle = xVector.angle(Vector);
+		//double angle = xVector.angle(Vector);
 		
+		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
+		double angle = player.getPosition().angle(dummyVector, cursorVector);
+		//calculate the angle of player from vertical axis to cursor		
         return angle; 
 	}
 	
