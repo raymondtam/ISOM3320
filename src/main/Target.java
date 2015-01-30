@@ -22,30 +22,60 @@ public class Target extends Character{
 	}
 	
 	public boolean isHit(Bullet getShot){	
-		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) + Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) >= 0){
+		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) + Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) <= 0){
 			return true;
 		}
 		return false;
 	}
-	
-	public static TargetArray[] getTargetArray(int size, int damage, int magazineSize, double radius) {
-		Bullet[] TargetArray = new Bullet [size];
+
+	public static Target[] getTargetArray(int numberOfZombies, int health, int movingSpeed, int radius) {
+		Target[] TargetArray = new Target [numberOfZombies];
 		for (int i = 0; i < TargetArray.length; i++){
-			TargetArray[i] = new TargetArray (damage, magazineSize, radius);
+			TargetArray[i] = new Target(health, movingSpeed, radius);
 		}
 		return TargetArray;
 	}
 	
-	public chase(){
-		Point2D playerPosition = Gameboard.getPlyaerPosition();
+	public xVelocity(){	
 		
 	}
-
-	public void move(int x, int y) {
+	
+	public yVelocity(){
 		
 	}
+	
+	// AI code to chase the Player
+	public void chase(Point2D playerPosition){
+		Point2D zombiePosition = this.getPosition();
+		Point2D Horizons = new Point2D(this.getXcoord() + 1, 0);
+		double angleOfChase = zombiePosition.angle(Horizons, playerPosition);
+		
+		
+		
+		
+		playerPosition = null;
+		zombiePosition = null;
+		Horizons = null;
+	}
 
+	
 	public void move(double xIncrement, double yIncrement) {
-		// TODO Auto-generated method stub
-		
+		this.setVisible(true); 
+			changePosition(xIncrement,yIncrement);
 	}
+	
+	public int getAttackDamage(){
+		return this.
+	}
+	
+	public int getAttackDamage(){
+		return this.
+	}
+
+	public String toString(){
+		return "This Target is at" + this.position.toString() + "with radius: " + this.getRadius() 
+				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + movingSpeed +
+				+ " attackDamage" + this.attackDamage + "\n" ;
+	}
+
+}
