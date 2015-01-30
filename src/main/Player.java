@@ -1,7 +1,5 @@
 package main;
 
-import javafx.geometry.Point2D;
-
 public class Player extends Character{
 	private int numberOfUnusedBullet;
 	Bullet[] bullet = null;
