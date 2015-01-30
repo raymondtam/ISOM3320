@@ -6,6 +6,8 @@ import javafx.geometry.Point2D;
 public class Target extends Character{
 	private static final int NUMBER_OF_ZOMBIES = 10;
 	private int attackDamage = 5;
+	private double xVelocity;
+	private double yVelocity;
 	
 	public Target(){
 		this(3, 3, 15);
@@ -36,27 +38,27 @@ public class Target extends Character{
 		return TargetArray;
 	}
 	
-	public xVelocity(){	
+	public double xVelocity(Point2D playerPosition){	
+		double angle = getAngleOfChase(playerPosition);
 		
 	}
 	
-	public yVelocity(){
+	public double yVelocity(Point2D playerPosition){
+		double angle = getAngleOfChase(playerPosition);
 		
 	}
 	
 	// AI code to chase the Player
-	public void chase(Point2D playerPosition){
+	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
 		Point2D Horizons = new Point2D(this.getXcoord() + 1, 0);
 		double angleOfChase = zombiePosition.angle(Horizons, playerPosition);
-		
-		
-		
-		
-		playerPosition = null;
 		zombiePosition = null;
 		Horizons = null;
+		return angleOfChase;
 	}
+	
+	public 
 
 	
 	public void move(double xIncrement, double yIncrement) {
