@@ -27,6 +27,10 @@ public class Target extends Character{
 		}
 		return false;
 	}
+	
+	public void attackPlayer(Point2D playerPosition){
+		
+	}
 
 	public static Target[] getTargetArray(int numberOfZombies, int health, int movingSpeed, int radius) {
 		Target[] TargetArray = new Target [numberOfZombies];
@@ -93,17 +97,21 @@ public class Target extends Character{
 	}
 	
 	public void setVisible(Point2D playerPosition){
-		int randomNum = -1 + (Math.random() * 2 - 1);
-		
-		if (number > 0.0 && number <= 0.25){
-			this.setXcoord = playerPosition.getX() - 450;
-			
+		double randomEdge = Math.random();
+		double randomCoord = Math.random() - 0.5;
+		if (randomEdge >= 0 && randomEdge < 0.25){
+			this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
 		}
-		else{
-			
+		else if (randomEdge >= 0.25 && randomEdge < 0.5){
+			this.setPosition((int)(playerPosition.getX() + (900 / 2)), (int)(playerPosition.getY() + randomCoord * 600)); 
+		}
+		else if (randomEdge >= 0.5 && randomEdge < 0.75){
+			this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() + (600 / 2))); 
+		}
+		else {
+			this.setPosition((int)(playerPosition.getX() - (900 / 2)), (int)(playerPosition.getY() + randomCoord * 600)); 
 		}
 		this.setVisible(true);
-		
 	}
 
     /*
