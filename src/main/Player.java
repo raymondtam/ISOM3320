@@ -1,5 +1,7 @@
 package main;
 
+import javafx.geometry.Point2D;
+
 public class Player extends Character{
 	private int numberOfUnusedBullet;
 	Bullet[] bullet = null;
@@ -24,11 +26,10 @@ public class Player extends Character{
 	
 	@Override
 	public boolean isHit() {
-//		if (tagetPosition.distance(getPlayerPosition()) <= target.radius + player.radius) 
-//		    return true;
-//		else 
-//		    return false;
-		// TODO
+//		if (target.distance(getPosition()) <= target.radius + player.radius) {
+//		    minusHealth(getAttackDamage());
+//			return true;
+//		}
 		return false;
 	}
 
