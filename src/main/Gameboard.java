@@ -207,16 +207,23 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //				System.out.println("mouse clicked, Number of Unused Bullets: "+player.getNumberOfUnusedBullet());
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
 				//player.fire(mouse.getX(), mouse.getY(), angle);
-        		player.fire(mouse.getX(), mouse.getY());
+        		player.fire(mouse.getX(), mouse.getY(), angle);
+        		if(player.getNumberOfUnusedBullet()<=0){
+        			timeline.setDelay(Duration.seconds(2));  //might not be the best way
+        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+        		}
+        		else
+        			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+        		
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 			}
         	
         });
-        
+               
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
-        		//System.out.println(angle);
+        		System.out.println(angle);
                 if(mouse.getY()<player.getYcoord())
                 	playerImageView.setRotate(90-angle);
                 else
@@ -230,10 +237,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
 		
-//		timeline.getKeyFrames().add(new KeyFrame(new Duration(100), this));
-//		timeline.setCycleCount(Timeline.INDEFINITE);
-//		timeline.play();
-				
 		timeline.getKeyFrames().add( new KeyFrame(new Duration(33), this));
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.play();
@@ -291,10 +294,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         playerImageView.setX(player.getXcoord());
         playerImageView.setY(player.getYcoord());
         
+        
         //bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
         	if(bullet[i].getIsMoving()){
         	//if(bullet[i].getXVelocity()>0 || bullet[i].getYVelocity()>0){
+        		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
         		bullet[i].move(bullet[i].getXVelocity()*20, bullet[i].getYVelocity()*20);
         		bulletImageView[i].setX(bullet[i].getXcoord());
@@ -309,7 +314,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 	}
 	
-	public static Point2D getPlyaerPosition(){
+	public static Point2D getPlayerPosition(){
 		Point2D position = player.getPosition();
 		return position;
 	} 
