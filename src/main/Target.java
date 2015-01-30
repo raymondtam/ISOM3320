@@ -22,14 +22,18 @@ public class Target extends Character{
 	}
 	
 	public boolean isHit(Bullet getShot){	
-		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) + Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) <= 0){
+		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) + Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) <= this.getRadius()){
 			return true;
 		}
 		return false;
 	}
 	
-	public void attackPlayer(Point2D playerPosition){
-		
+	public boolean didAttackPlayer(Point2D playerPosition, int playerRadius){
+		if (Math.pow(Math.pow(playerPosition.getX() - this.getXcoord(),2.0) + Math.pow(playerPosition.getY() - this.getYcoord(),2.0), 0.5) 
+				<= this.getRadius() + playerRadius){
+			return true;
+		}
+		return false;
 	}
 
 	public static Target[] getTargetArray(int numberOfZombies, int health, int movingSpeed, int radius) {
