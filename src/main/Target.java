@@ -4,10 +4,10 @@ package main;
 import javafx.geometry.Point2D;
 
 public class Target extends Character{
-	private static final int NUMBER_OF_ZOMBIES = 10;
-	private int attackDamage = 5;
+	private int attackDamage;
 	private double xVelocity;
 	private double yVelocity;
+	private boolean isMoving;
 	
 	public Target(){
 		this(3, 3, 15);
@@ -38,15 +38,38 @@ public class Target extends Character{
 		return TargetArray;
 	}
 	
-	public double xVelocity(Point2D playerPosition){	
-		double angle = getAngleOfChase(playerPosition);
-		
+    public double getXVelocity () {
+    	return xVelocity;
+    }
+    
+    public void setXVelocity (double xVelocity) {
+    	this.xVelocity = xVelocity;
+    }
+    
+    public double getYVelocity () {
+    	return yVelocity;
+    }
+    
+    public void setYVelocity (double yVelocity) {
+    	this.yVelocity = yVelocity;
+    }
+    
+    public boolean getIsMoving () {
+    	return isMoving;
+    }
+    
+    public void setIsMoving (boolean isMoving) {
+    	this.isMoving = isMoving;
+    }
+    
+	public int getAttackDamage(){
+		return this.attackDamage;
 	}
 	
-	public double yVelocity(Point2D playerPosition){
-		double angle = getAngleOfChase(playerPosition);
-		
+	public void setAttackDamage(int attackDamage){
+		this.attackDamage = attackDamage;
 	}
+    
 	
 	// AI code to chase the Player
 	public double getAngleOfChase(Point2D playerPosition){
@@ -58,25 +81,15 @@ public class Target extends Character{
 		return angleOfChase;
 	}
 	
-	public 
-
-	
 	public void move(double xIncrement, double yIncrement) {
 		this.setVisible(true); 
-			changePosition(xIncrement,yIncrement);
-	}
-	
-	public int getAttackDamage(){
-		return this.
-	}
-	
-	public int getAttackDamage(){
-		return this.
+		this.changePosition(xIncrement,yIncrement);
 	}
 
+
 	public String toString(){
-		return "This Target is at" + this.position.toString() + "with radius: " + this.getRadius() 
-				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + movingSpeed +
+		return "This Target is at" + this.position.toString() + "with radius: " + this.getRadius()
+				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + this.getmovingSpeed +
 				+ " attackDamage" + this.attackDamage + "\n" ;
 	}
 
