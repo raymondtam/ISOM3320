@@ -5,8 +5,6 @@ import javafx.geometry.Point2D;
 
 public class Target extends Character{
 	private int attackDamage;
-	private double xVelocity;
-	private double yVelocity;
 	private boolean isMoving;
 	
 	public Target(){
@@ -37,22 +35,6 @@ public class Target extends Character{
 		}
 		return TargetArray;
 	}
-	
-    public double getXVelocity () {
-    	return xVelocity;
-    }
-    
-    public void setXVelocity (double xVelocity) {
-    	this.xVelocity = xVelocity;
-    }
-    
-    public double getYVelocity () {
-    	return yVelocity;
-    }
-    
-    public void setYVelocity (double yVelocity) {
-    	this.yVelocity = yVelocity;
-    }
     
     public boolean getIsMoving () {
     	return isMoving;
@@ -74,23 +56,45 @@ public class Target extends Character{
 	// AI code to chase the Player
 	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
-		Point2D Horizons = new Point2D(this.getXcoord() + 1, 0);
+		Point2D Horizons = new Point2D(1, 0);
 		double angleOfChase = zombiePosition.angle(Horizons, playerPosition);
 		zombiePosition = null;
 		Horizons = null;
 		return angleOfChase;
 	}
 	
-	public void move(double xIncrement, double yIncrement) {
-		this.setVisible(true); 
-		this.changePosition(xIncrement,yIncrement);
+	public void move(double xIncrement, double yIncrement){
+		 this.changePosition(xIncrement, yIncrement);
+	}
+	
+	public void move(Point2D playerPosition) {
+		double xIncrement, yIncrement;
+		double angle = getAngleOfChase(playerPosition);
+		if (this.getXcoord() < playerPosition.getX() && this.getYcoord() < playerPosition.getY()){
+			xIncrement = Math.cos(this.getMovingSpeed());
+			yIncrement = Math.sin(this.getMovingSpeed());
+		}
+		else if (this.getXcoord() < playerPosition.getX() && this.getYcoord() > playerPosition.getY()){
+			xIncrement = Math.cos(this.getMovingSpeed());
+			yIncrement = - Math.sin(this.getMovingSpeed());
+		}
+		else if (this.getXcoord() > playerPosition.getX() && this.getYcoord() < playerPosition.getY()){
+			xIncrement = - Math.cos(this.getMovingSpeed());
+			yIncrement = Math.sin(this.getMovingSpeed());
+		}
+		else {
+			xIncrement = - Math.cos(this.getMovingSpeed());
+			yIncrement = - Math.sin(this.getMovingSpeed());
+		}
+		this.move(xIncrement, yIncrement);
 	}
 
-
+    /*
 	public String toString(){
-		return "This Target is at" + this.position.toString() + "with radius: " + this.getRadius()
+		return "This Target is at" + this.getPosition().toString() + "with radius: " + this.getRadius()
 				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + this.getmovingSpeed +
 				+ " attackDamage" + this.attackDamage + "\n" ;
 	}
+	*/
 
 }
