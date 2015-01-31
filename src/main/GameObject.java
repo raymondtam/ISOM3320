@@ -14,7 +14,7 @@ abstract class GameObject {
 		this(0, 0, 0, false, 0);
 	}
 	
-	GameObject(int xcoord, int ycoord, double radius, boolean visible, int movingSpeed){
+	GameObject(double xcoord, double ycoord, double radius, boolean visible, int movingSpeed){
 		position = new Point2D(xcoord, ycoord);
 		this.radius = radius;
 		this.visible = false;
@@ -27,7 +27,7 @@ abstract class GameObject {
 		return position.getX();
 	}
 	
-	private void setXcoord(int xcoord){
+	private void setXcoord(double xcoord){
 		position = new Point2D(xcoord, position.getY());
 	}
 	
@@ -35,7 +35,7 @@ abstract class GameObject {
 		return position.getY();
 	}
 	
-	private void setYcoord(int ycoord){
+	private void setYcoord(double ycoord){
 		position = new Point2D(position.getX(), ycoord);
 	}
 	

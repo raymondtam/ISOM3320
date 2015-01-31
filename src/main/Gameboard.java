@@ -43,12 +43,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS);
 	static Player player = new Player(bullet);
-	//static Target target = 
+	static Target target = new Target(); 
 	//Boss boss;
 	
 	Point2D CursorPosition;
 	
 	//graphics and animation variable
+	Pane pane;
+	Scene scene;
 	Timeline timeline;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
 	private ImageView[] bulletImageView, TargetImageView; 
@@ -66,7 +68,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				
 		//player = new Player(); 
 		
-		Pane pane = new Pane();
+		pane = new Pane();
 		Image roadImage = null;
 		Image playerImage= null;
 		Image zombieImage = null, bulletImage = null;
@@ -136,18 +138,22 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			i.setVisible(false);
 		} 
 		
-		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        stage.setX(primaryScreenBounds.getMinX());
-        stage.setY(primaryScreenBounds.getMinY());
-        stage.setWidth(primaryScreenBounds.getWidth());
-        stage.setHeight(primaryScreenBounds.getHeight());
-        
+//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+//        stage.setX(primaryScreenBounds.getMinX());
+//        stage.setY(primaryScreenBounds.getMinY());
+//        stage.setWidth(primaryScreenBounds.getWidth());
+//        stage.setHeight(primaryScreenBounds.getHeight());
+          
         //Set Positioning
         
-        player.setPosition(10, primaryScreenBounds.getHeight()/2);
+		scene = new Scene(pane);
         
-		playerImageView.setY(primaryScreenBounds.getHeight()/2);
-		playerImageView.setX(10);
+        player.setPosition(10, scene.getHeight()/2); 
+//        		primaryScreenBounds.getHeight()/2);
+        
+		playerImageView.setY(player.getYcoord());
+		playerImageView.setX(player.getXcoord());
+		
 		zombieImageView.setX(200);
 		zombieImageView.setY(200);
 		HPLabel.setTranslateX(70);
@@ -157,10 +163,21 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		BulletLabel.setTranslateY(600);
 		BulletLabel.setTranslateX(845);
 		
-		Scene scene = new Scene(pane);
 		
 		
 		
+//		scene.setOnKeyTyped(new EventHandler<KeyEvent>(){
+//			public void handle(KeyEvent key){
+//				KeyCode keycode = key.getCode();
+//				System.out.println(keycode+" A key is pressed");
+//				switch(keycode){
+//					case R:
+//						player.reload();
+//						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+//				}
+//			}
+//		});
+//		
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
@@ -176,6 +193,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		break;
 	            	case D:
 	            		moveRight = true;
+	            		break;
+					case R:
+						player.reload();
+						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+						break;
             	}
                	key.consume();
 //             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
@@ -211,7 +233,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			public void handle(MouseEvent mouse) {
 //				System.out.println("mouse clicked, Number of Unused Bullets: "+player.getNumberOfUnusedBullet());
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
-				//player.fire(mouse.getX(), mouse.getY(), angle);
         		player.fire(mouse.getX(), mouse.getY(), angle);
         		if(player.getNumberOfUnusedBullet()<=0){
         			timeline.setDelay(Duration.seconds(2));  //might not be the best way
@@ -219,7 +240,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		}
         		else
         			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
-        		
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 			}
         	
@@ -228,9 +248,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
-        		System.out.println(angle);
-        		
-//        		playerImageView.setRotate(angle);
+//        		System.out.println(angle);
         		if(mouse.getX()>player.getXcoord())
         			playerImageView.setRotate(angle);
         		else
@@ -261,7 +279,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//TO-DO, bind integer property with health and bulletnumber
 			
-
+		
+		
+//		Target target = new Target();
+//		target.setPosition(3, 3);
+//		Bullet bullet1 = new Bullet();
+//		bullet1.setPosition(200, 3);
+//		System.out.println(bullet1.isHit(target));
 		
 	}
 	
@@ -296,11 +320,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	@Override
 	public void handle(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(player.getYcoord()+" "+scene.getHeight());
 		//player movement
-        if(moveUp)
+        if(moveUp && player.getYcoord() -5 >= 0)
         	player.move(0, -5);
-        if(moveDown)
+        if(moveDown && player.getYcoord() +100 + 5 <= scene.getHeight())
         	player.move(0, 5);
         if(moveLeft)
         	player.move(-5, 0);
