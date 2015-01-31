@@ -6,7 +6,6 @@ import javafx.geometry.Point2D;
 public class Target extends Character{
 	private int attackDamage;
 	private boolean isMoving;
-	
 	public Target(){
 		this(3, 3, 15);
 	}
@@ -60,8 +59,6 @@ public class Target extends Character{
 		this.attackDamage = attackDamage;
 	}
     
-	
-	// AI code to chase the Player
 	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
 		Point2D Horizons = new Point2D(1, 0);
@@ -97,6 +94,7 @@ public class Target extends Character{
 			xIncrement = - this.getMovingSpeed() * cosAngle;
 			yIncrement = - this.getMovingSpeed() * sinAngle;
 		}
+		
 		this.move(xIncrement, yIncrement);
 	}
 	
@@ -118,12 +116,12 @@ public class Target extends Character{
 		this.setVisible(true);
 	}
 
-    /*
+    
 	public String toString(){
 		return "This Target is at" + this.getPosition().toString() + "with radius: " + this.getRadius()
-				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + this.getmovingSpeed +
-				+ " attackDamage" + this.attackDamage + "\n" ;
+				+ "and is " + ((this.isVisible())?"Visible":"Invisible") + " with movingspeed " + this.getMovingSpeed() +
+			    " and attackDamage:" + this.getAttackDamage() + "/n";
 	}
-	*/
+	
 
 }
