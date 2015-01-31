@@ -48,7 +48,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
-	static Target[] target = Target.getTargetArray(10, 10, 10, 50); 
+	static Target[] target = Target.getTargetArray(10, 10, 2, 50); 
 	//Boss boss;
 	
 	
@@ -357,10 +357,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         //target movement
         
-//		for(int i=0;i<target.length ; i++){
-//			target[i].move(player.getPosition());
-//			targetImageView[i]
-//		}
+		for(int i=0;i<target.length ; i++){
+			target[i].move(player.getPosition());
+			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+			targetImageView[i].setX(target[i].getXcoord());
+			targetImageView[i].setY(target[i].getYcoord());
+		}
         
 		
         //check ishit()
