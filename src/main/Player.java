@@ -8,10 +8,10 @@ public class Player extends Character{
 	Player() {
 	}
 	
-	Player(Bullet[] bullet) {
-		super();
+	Player(Bullet[] bullet, int movingSpeed) {
 		this.bullet = bullet;
 		this.numberOfUnusedBullet = Bullet.getMagazineSize();
+		this.setMovingSpeed(movingSpeed);
 	}
 	
 	public int getNumberOfUnusedBullet() {
@@ -21,19 +21,22 @@ public class Player extends Character{
 	private void setNumberOfUnusedBullet(int numberOfUnusedBullet) {
 		this.numberOfUnusedBullet = numberOfUnusedBullet;
 	}
-	
+		
 	@Override
 	public boolean isHit() {
-//		if (target.distance(getPosition()) <= target.radius + player.radius) {
-//		    minusHealth(getAttackDamage());
-//			return true;
-//		}
+		return true;
+	}
+	
+	public boolean isHit(Target target,int attackDamage) {
+		if (target.getPosition().distance(getPosition()) <= this.getRadius() + target.getRadius()) {
+			minusHealth(attackDamage);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public void move(double xIncrement, double yIncrement) {
-//		if ((600 - getYcoord() >= 15 ) || (getYcoord() <= 15) ) //TODO boundary condition
 			changePosition(xIncrement,yIncrement);
 	}
 		
