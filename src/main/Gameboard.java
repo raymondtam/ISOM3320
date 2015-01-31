@@ -154,7 +154,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
 		scene = new Scene(pane);
         
-        player.setPosition(300, 300); 
+        player.setPosition(450, 325); 
 //        		primaryScreenBounds.getHeight()/2);
         
 		playerImageView.setY(player.getYcoord());
@@ -340,15 +340,24 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		// TODO Auto-generated method stub
 //		System.out.println(player.getYcoord()+" "+scene.getHeight()+scene.getY());
 		//player movement
-        if(moveUp && player.getYcoord() - 10 >= 0)
-        	player.move(0, -5);
-        if(moveDown && player.getYcoord() +100 + 5 <= scene.getHeight())
-        	player.move(0, 5);
-        if(moveLeft)
-        	player.move(-5, 0);
-        if(moveRight)
-//        	backgroundImageView.setTranslateX(-5);
-        	player.move(5, 0);
+        if(moveUp){
+        	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
+//        	player.move(0, -5);
+        }
+        if(moveDown){
+        	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()-5);
+//        	player.move(0, 5);
+        }
+        if(moveLeft){
+        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+//        	player.move(-5, 0);
+        }
+        if(moveRight){
+        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	System.out.println(player.getXcoord());
+        	//player.move(5,0);
+        }
+//        	player.move(5, 0);
         playerImageView.setX(player.getXcoord());
         playerImageView.setY(player.getYcoord());
         
