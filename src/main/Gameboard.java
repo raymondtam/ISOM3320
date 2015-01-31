@@ -43,7 +43,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS);
 	static Player player = new Player(bullet);
-	static Target target = new Target(); 
+	static Target[] target = Target.getTargetArray(10, 10, 10, 50); 
 	//Boss boss;
 	
 	Point2D CursorPosition;
@@ -53,7 +53,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Scene scene;
 	Timeline timeline;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
-	private ImageView[] bulletImageView, TargetImageView; 
+	private ImageView[] bulletImageView, targetImageView; 
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -124,19 +124,25 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	bulletImageView[i] = new ImageView(bulletImage);
         }
         
-        TargetImageView = new ImageView[10];
-        for(int i=0 ; i<TargetImageView.length ; i++ ){
-        	TargetImageView[i] = new ImageView(zombieImage);
+        targetImageView = new ImageView[10];
+        for(int i=0 ; i<targetImageView.length ; i++ ){
+        	targetImageView[i] = new ImageView(zombieImage);
         }
-		
-        
-		pane.getChildren().addAll(backgroundImageView, playerImageView, zombieImageView, HPLabel, BulletLabel, dummy, dummy1, HPIconImageView);
+       
+		pane.getChildren().addAll(backgroundImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
 		
 
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
 			i.setVisible(false);
 		} 
+
+		
+		for(ImageView i: targetImageView){
+			pane.getChildren().addAll(i);
+        	i.setVisible(false);
+        }
+
 		
 //		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 //        stage.setX(primaryScreenBounds.getMinX());
@@ -148,7 +154,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
 		scene = new Scene(pane);
         
-        player.setPosition(10, scene.getHeight()/2); 
+        player.setPosition(300, 300); 
 //        		primaryScreenBounds.getHeight()/2);
         
 		playerImageView.setY(player.getYcoord());
@@ -274,7 +280,19 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		stage.show();
 		System.out.println("Stage being showed.");
 		
+		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
+		for(int i=0;i<target.length;i++){
+			target[i].setVisible(player.getPosition());
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+
+			targetImageView[i].setX(target[i].getXcoord());
+			targetImageView[i].setY(target[i].getYcoord());
+			targetImageView[i].setVisible(true);
+		}
+//
+//		
+//		
 		//new Thread(this).start();
 		
 		//TO-DO, bind integer property with health and bulletnumber
@@ -320,19 +338,19 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	@Override
 	public void handle(ActionEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println(player.getYcoord()+" "+scene.getHeight());
+//		System.out.println(player.getYcoord()+" "+scene.getHeight()+scene.getY());
 		//player movement
-        if(moveUp && player.getYcoord() -5 >= 0)
+        if(moveUp && player.getYcoord() - 10 >= 0)
         	player.move(0, -5);
         if(moveDown && player.getYcoord() +100 + 5 <= scene.getHeight())
         	player.move(0, 5);
         if(moveLeft)
         	player.move(-5, 0);
         if(moveRight)
+//        	backgroundImageView.setTranslateX(-5);
         	player.move(5, 0);
         playerImageView.setX(player.getXcoord());
         playerImageView.setY(player.getYcoord());
-        
         
         //bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
@@ -348,7 +366,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         //target movement
         
+//		for(int i=0;i<target.length ; i++){
+//			target[i].move(player.getPosition());
+//			targetImageView[i]
+//		}
         
+		
         //check ishit()
 		
 	}
