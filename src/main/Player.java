@@ -46,7 +46,7 @@ public class Player extends Character{
 		}
 	}
 	
-	public void fire(double xCursor, double yCursor, double vectorAngle) {
+	public boolean fire(double xCursor, double yCursor, double vectorAngle) {
 		if (numberOfUnusedBullet > 0) {
 			int index = Bullet.getMagazineSize() - numberOfUnusedBullet;
 			double xPlayer = getXcoord(); 
@@ -66,9 +66,10 @@ public class Player extends Character{
 			bullet[index].setXVelocity(normalizedX);
 			bullet[index].setYVelocity(normalizedY);
 			bullet[index].setFireAngle(fireAngle);
+			return true;
 		}
 		else
-			reload();
+			return false;
 	}
 	
 	@Override
