@@ -1,6 +1,9 @@
 package main;
 
+import java.util.concurrent.TimeUnit;
+
 import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.application.Application;
@@ -41,17 +44,20 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	int score = 0;
 	String[] topThreeScores={"nil", "nil", "nil"};
 	
+	long reloadStartTime = 0;
+	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS);
-	static Player player = new Player(bullet);
+	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(10, 10, 10, 50); 
 	//Boss boss;
+	
 	
 	Point2D CursorPosition;
 	
 	//graphics and animation variable
 	Pane pane;
 	Scene scene;
-	Timeline timeline;
+	Timeline timeline, refreshScreen;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
     private Label HPLabel = new Label(), BulletLabel = new Label();
@@ -74,7 +80,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image zombieImage = null, bulletImage = null;
 		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
 		ImageView dummy, dummy1;
-		timeline = new Timeline();				
+		timeline = new Timeline();
+		refreshScreen = new Timeline();				
 		
 		//Loading images and setting GUI
 		try {
@@ -154,7 +161,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
 		scene = new Scene(pane);
         
-        player.setPosition(450, 325); 
+        player.setPosition(450, 275); 
 //        		primaryScreenBounds.getHeight()/2);
         
 		playerImageView.setY(player.getYcoord());
@@ -201,6 +208,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		moveRight = true;
 	            		break;
 					case R:
+	        			reloadStartTime = System.currentTimeMillis();
 						player.reload();
 						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 						break;
@@ -238,14 +246,19 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	@Override
 			public void handle(MouseEvent mouse) {
 //				System.out.println("mouse clicked, Number of Unused Bullets: "+player.getNumberOfUnusedBullet());
-        		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
-        		player.fire(mouse.getX(), mouse.getY(), angle);
-        		if(player.getNumberOfUnusedBullet()<=0){
-        			timeline.setDelay(Duration.seconds(2));  //might not be the best way
+        		double angle = getFireAngle(mouse.getX(), mouse.getY());
+        		
+        		if((System.currentTimeMillis() - reloadStartTime) < 2000)
+        			return;
+        		
+        		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
+        			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+        		} 
+        		else{  //failed to fire, reload
+        			reloadStartTime = System.currentTimeMillis();
+        			player.reload();
         			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
         		}
-        		else
-        			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 			}
         	
@@ -272,24 +285,31 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		stage.setResizable(false);
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
+
 		
-		timeline.getKeyFrames().add( new KeyFrame(new Duration(33), this));
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.play();
+//		timeline.getKeyFrames().add( new KeyFrame(new Duration(33), this));
+//		timeline.setCycleCount(Timeline.INDEFINITE);
+//		timeline.play();
+//		
+//
+//        
+		
+		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
+		refreshScreen.setCycleCount(Timeline.INDEFINITE);
+		refreshScreen.play();
 		
 		stage.show();
 		System.out.println("Stage being showed.");
 		
 		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
-		for(int i=0;i<target.length;i++){
-			target[i].setVisible(player.getPosition());
-			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-
-			targetImageView[i].setX(target[i].getXcoord());
-			targetImageView[i].setY(target[i].getYcoord());
-			targetImageView[i].setVisible(true);
-		}
+//		for(int i=0;i<target.length;i++){
+//			target[i].setVisible(player.getPosition());
+//			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+//			targetImageView[i].setX(target[i].getXcoord());
+//			targetImageView[i].setY(target[i].getYcoord());
+//			targetImageView[i].setVisible(true);
+//		}
 //
 //		
 //		
@@ -357,9 +377,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	System.out.println(player.getXcoord());
         	//player.move(5,0);
         }
-//        	player.move(5, 0);
-        playerImageView.setX(player.getXcoord());
-        playerImageView.setY(player.getYcoord());
+//        playerImageView.setX(player.getXcoord());
+//        playerImageView.setY(player.getYcoord());
         
         //bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
