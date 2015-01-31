@@ -48,7 +48,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
-	static Target[] target = Target.getTargetArray(10, 10, 2, 50); 
+	static Target[] target = Target.getTargetArray(10, 10, 7, 50); 
 	//Boss boss;
 	
 	
@@ -324,19 +324,31 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//player movement
         if(moveUp){
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
+        	for(Target i : target){
+        		i.changePosition(0, 5);
+        	}
 //        	player.move(0, -5);
         }
         if(moveDown){
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()-5);
+        	for(Target i : target){
+        		i.changePosition(0, -5);
+        	}
 //        	player.move(0, 5);
         }
         if(moveLeft && backgroundImageView.getTranslateX() < 0){
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        	for(Target i : target){
+        		i.changePosition(+5, 0);
+        	}
         	//System.out.println(backgroundImageView.getTranslateX());
 //        	player.move(-5, 0);
         }
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	for(Target i : target){
+        		i.changePosition(-5, 0);
+        	}
 //        	System.out.println(backgroundImageView.getTranslateX());  //0 return to startpoint else negative
         	//player.move(5,0);
         }
@@ -364,6 +376,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setY(target[i].getYcoord());
 		}
         
+		
+		for(int i=0;i<target.length;i++){
+			
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
+		}
 		
         //check ishit()
 		
