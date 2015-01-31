@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 
 
 public class Gameboard extends Application implements EventHandler<ActionEvent> {
-	
+	//852 * 7680
 	//constant
 	final int NO_OF_BULLET_TYPE = 3; 
 	final static int[] BULLET_DAMAGE = {2, 3, 5};
@@ -46,7 +46,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	long reloadStartTime = 0;
 	
-	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS);
+	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(10, 10, 10, 50); 
 	//Boss boss;
@@ -85,7 +85,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Loading images and setting GUI
 		try {
-			roadImage =  new Image("background.jpg");
+			roadImage =  new Image("newBackground.jpg");
 			playerImage = new Image("pistol.png");
 			machinegunImage = new Image("machinegun.png");
 			rifileImage = new Image("rifile.png");
@@ -170,27 +170,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		zombieImageView.setX(200);
 		zombieImageView.setY(200);
 		HPLabel.setTranslateX(70);
-		HPLabel.setTranslateY(600);
-		HPIconImageView.setTranslateX(5);
-		HPIconImageView.setTranslateY(585);
-		BulletLabel.setTranslateY(600);
+		HPLabel.setTranslateY(530);
+		HPIconImageView.setX(5);
+		HPIconImageView.setY(500);
+		BulletLabel.setTranslateY(530);
 		BulletLabel.setTranslateX(845);
 		
-		
-		
-		
-//		scene.setOnKeyTyped(new EventHandler<KeyEvent>(){
-//			public void handle(KeyEvent key){
-//				KeyCode keycode = key.getCode();
-//				System.out.println(keycode+" A key is pressed");
-//				switch(keycode){
-//					case R:
-//						player.reload();
-//						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-//				}
-//			}
-//		});
-//		
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
@@ -279,21 +264,15 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //                	playerImageView.setRotate(90+angle);
         	}
         });
-                
+
 		stage.setScene(scene);
-		stage.sizeToScene();
+		stage.setHeight(600);
+		stage.setWidth(900);
+		//stage.sizeToScene();
 		stage.setResizable(false);
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
 
-		
-//		timeline.getKeyFrames().add( new KeyFrame(new Duration(33), this));
-//		timeline.setCycleCount(Timeline.INDEFINITE);
-//		timeline.play();
-//		
-//
-//        
-		
 		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
 		refreshScreen.setCycleCount(Timeline.INDEFINITE);
 		refreshScreen.play();
@@ -301,34 +280,31 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		stage.show();
 		System.out.println("Stage being showed.");
 		
-		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
+//		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
-//		for(int i=0;i<target.length;i++){
-//			target[i].setVisible(player.getPosition());
-//			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-//			targetImageView[i].setX(target[i].getXcoord());
-//			targetImageView[i].setY(target[i].getYcoord());
-//			targetImageView[i].setVisible(true);
-//		}
-//
-//		
-//		
-		//new Thread(this).start();
+		for(int i=0;i<target.length;i++){
+			target[i].setVisible(player.getPosition());
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+			targetImageView[i].setX(target[i].getXcoord());
+			targetImageView[i].setY(target[i].getYcoord());
+			targetImageView[i].setVisible(true);
+		}
+
+		
+		
 		
 		//TO-DO, bind integer property with health and bulletnumber
-			
-		
-		
+//		
 //		Target target = new Target();
 //		target.setPosition(3, 3);
 //		Bullet bullet1 = new Bullet();
 //		bullet1.setPosition(200, 3);
 //		System.out.println(bullet1.isHit(target));
-		
+//		
 	}
 	
 	double getFireAngle(double x, double y){
-		Point2D xVector = new Point2D(x, 0);
 //		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
 //	equivalent to
 //		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
@@ -340,20 +316,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//calculate the angle of player from vertical axis to cursor		
         return angle; 
 	}
-	
-	
-
-//    public void run() {
-//        while(true) {
-//            try {
-//
-//                Thread.sleep(200);
-//            } catch(Exception exc) {
-//                exc.printStackTrace();
-//                break;
-//            }
-//        }
-//    }
 
 	@Override
 	public void handle(ActionEvent e) {
@@ -368,13 +330,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()-5);
 //        	player.move(0, 5);
         }
-        if(moveLeft){
+        if(moveLeft && backgroundImageView.getTranslateX() < 0){
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        	//System.out.println(backgroundImageView.getTranslateX());
 //        	player.move(-5, 0);
         }
-        if(moveRight){
+        if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
-        	System.out.println(player.getXcoord());
+//        	System.out.println(backgroundImageView.getTranslateX());  //0 return to startpoint else negative
         	//player.move(5,0);
         }
 //        playerImageView.setX(player.getXcoord());
