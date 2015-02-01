@@ -1,6 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -12,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.media.AudioClip;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -57,8 +59,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
+
 	private ImageView backgroundImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView;
-	private ImageView[] bulletImageView, targetImageView, playerImageView; 
+	private ImageView[] bulletImageView, targetImageView, playerImageView, bossImageView; 
+
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
     private Label HPLabel = new Label(), BulletLabel = new Label();
@@ -77,9 +81,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		pane = new Pane();
 		Image roadImage = null;
-		Image playerImageHandGun = null, playerImageRifle = null, playerImageMachineGun = null;
-		Image zombieImage = null, bulletImage = null;
 
+		Image playerImageHandGun = null, playerImageRifle = null, playerImageMachineGun = null;
+		Image zombieImage = null, bulletImage = null, bossImage = null;
+		
 		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
 		Image crossHairImage = null;
@@ -104,16 +109,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			rifleIconImage = new Image ("rifle_icon.png");
 			
 			zombieImage = new Image("zombie1.png");
+			bossImage = new Image ("boss.gif");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
 			crossHairImage = new Image("crosshair_pick3.png");
 			gunShoot[0] = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
-			gunShoot[1] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			gunShoot[1] = new AudioClip(Paths.get("src\\RifleShoot.mp3").toUri().toString());
 			gunShoot[2] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
-			gunReload = gunShoot;
-//			gunReload[0] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
-//			gunReload[1] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
-//			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			gunReload[0] = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
+			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
+			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+
 
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
@@ -171,6 +177,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, rifleIconImageView, machinegunIconImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 
+
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
 			i.setVisible(false);
@@ -181,6 +188,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			pane.getChildren().addAll(i);
         	i.setVisible(false);
         }
+
+		bossImageView.setVisible(false);
 
 		
 //		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -520,7 +529,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	public void newWeapon(ImageView weapon) {
 			weapon.setVisible(true);
-			weapon.setX((int)(Math.random()*900));
+			weapon.setX((int)(player.getXcoord() + Math.random()*400));
 			weapon.setY((int)(Math.random()*600));
 	}
 	public void pickWeapon (ImageView weapon, int index) {
