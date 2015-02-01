@@ -60,8 +60,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Scene scene;
 	Timeline timeline, refreshScreen;
 
-	private ImageView backgroundImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView;
-	private ImageView[] bulletImageView, targetImageView, playerImageView, bossImageView; 
+	private ImageView backgroundImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, bossImageView;
+	private ImageView[] bulletImageView, targetImageView, playerImageView; 
 
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
