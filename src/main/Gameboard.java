@@ -39,13 +39,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	//game variable and objects
 	String name = "Player1";
+	short weaponSetting = 0; //0default 
 	int score = 0;
 	String[] topThreeScores={"nil", "nil", "nil"};
 	
 	long reloadStartTime = 0, startTime = 0;
 	
-//	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
-	static Bullet[] bullet = Bullet.getBulletArray(DEFAULT_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
+	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(10, 10, 3, 50); 
 	//Boss boss;
@@ -59,7 +59,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Timeline timeline, refreshScreen;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
-	private AudioClip handGunShoot, handGunReload, machineGunShoot, machineGunReload;
+	private AudioClip[] gunShoot, gunReload; 
+	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -82,10 +83,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
 		Image crossHairImage = null;
-
+		
 		ImageView dummy, dummy1;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
+		
+		gunShoot = new AudioClip[3];
+		
 		
 		//Loading images and setting GUI
 		try {
@@ -100,10 +104,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
 			crossHairImage = new Image("crosshair_pick3.png");
-			handGunShoot = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
-			handGunReload = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
-			machineGunShoot = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
-			machineGunReload = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+			gunShoot[0] = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
+			gunShoot[1] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			gunShoot[2] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			gunReload[0] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+			gunReload[1] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
 
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
@@ -213,7 +219,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					case R:
 						if (player.reload()) {
 	        			reloadStartTime = System.currentTimeMillis();
-	        			handGunReload.play(100);
+	        			gunReload[weaponSetting].play(100);
 						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 						}
 						break;
@@ -258,12 +264,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		
         		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
         			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
-        			handGunShoot.play(100);
+        			gunShoot[weaponSetting].play(100);
         		} 
         		else{  //failed to fire, reload
         			reloadStartTime = System.currentTimeMillis();
         			player.reload();
-        			handGunReload.play(100);
+        			gunReload[weaponSetting].play(100);
         			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
         		}
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
@@ -439,24 +445,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setX(target[i].getXcoord());
 			targetImageView[i].setY(target[i].getYcoord());
 		}
-		
-		//show weapon
-				if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 )
-					newWeapon(rifleIconImageView);
-				if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000)
-					newWeapon(machinegunIconImageView);
-		//change weapon
-				if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
-						+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
-						<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
-					pickWeapon(rifleIconImageView, 1);
-				}
-				if ((Math.pow(Math.pow(player.getXcoord() - machinegunIconImageView.getX(),2.0) 
-							+ Math.pow(player.getYcoord() - machinegunIconImageView.getY(),2.0), 0.5) 
-							<= (player.getRadius() + 50)) && machinegunIconImageView.isVisible()){
-					pickWeapon(machinegunIconImageView, 2);
-				}
-        
+		        
 		for(int i=0 ; i<bullet.length ; i++){
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
@@ -499,25 +488,38 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
 //		}
 //		
-        //check ishit()
-
-		
-        //check ishit()
+		//show weapon
+		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 )
+			newWeapon(rifleIconImageView);
+		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000)
+			newWeapon(machinegunIconImageView);
+//change weapon
+		if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
+				+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
+				<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
+			pickWeapon(rifleIconImageView, 1);
+		}
+		if ((Math.pow(Math.pow(player.getXcoord() - machinegunIconImageView.getX(),2.0) 
+					+ Math.pow(player.getYcoord() - machinegunIconImageView.getY(),2.0), 0.5) 
+					<= (player.getRadius() + 50)) && machinegunIconImageView.isVisible()){
+			pickWeapon(machinegunIconImageView, 2);
+		}
 	
 	}
 	
 	
 	public void newWeapon(ImageView weapon) {
 			weapon.setVisible(true);
-			//weapon.setX(200);
-			//weapon.setY(200);
 			weapon.setX((int)(Math.random()*900));
 			weapon.setY((int)(Math.random()*600));
 		
 	}
 	public void pickWeapon (ImageView weapon, int index) {
 		weapon.setVisible(false);
-		pane.getChildren().remove(weapon);	
+		pane.getChildren().remove(weapon);
+		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
+		Bullet.setMagazineSize(MAGAZINE_SIZE[index]);
+		weaponSetting = (short)index;
 		//weapon = null;
 			//To do change bullet Damage
 			 //DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[index];
