@@ -1,7 +1,6 @@
 package main;
 
 import java.nio.file.Paths;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -69,6 +68,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
+    
+    boolean mousePressed = false, handgunTrigger = false;
+    double angle, mouseX, mouseY;
+    long lastShootTime;
 	
 	public static void main(String[] arg){
 		launch(arg);
@@ -189,7 +192,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	i.setVisible(false);
         }
 
-		bossImageView.setVisible(false);
+//		bossImageView.setVisible(false);
 
 		
 //		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -268,34 +271,66 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
             }
         });
         
+        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+        	public void handle(MouseEvent mouse){
+        		mouseX = mouse.getX();
+        		mouseY = mouse.getY();
+        		double angle = getFireAngle(mouseX, mouseY); 
+        		if(mouseX>player.getXcoord())
+        			playerImageView[weaponSetting].setRotate(angle);
+        		else
+        			playerImageView[weaponSetting].setRotate(-1*angle);
+        		
+        	}
+        });
+        
         scene.setOnMouseClicked(new EventHandler<MouseEvent>(){
         	@Override
 			public void handle(MouseEvent mouse) {
 //				System.out.println("mouse clicked, Number of Unused Bullets: "+player.getNumberOfUnusedBullet());
-        		double angle = getFireAngle(mouse.getX(), mouse.getY());
-        		
-        		if((System.currentTimeMillis() - reloadStartTime) < 2000)
-        			return;
-        		
-        		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
-        			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
-        			gunShoot[weaponSetting].play(100);
-        		} 
-        		else{  //failed to fire, reload
-        			reloadStartTime = System.currentTimeMillis();
-        			player.reload();
-        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-        			gunReload[weaponSetting].play(100);
-        		}
+//        		double angle = getFireAngle(mouse.getX(), mouse.getY());
+//        		
+//        		if((System.currentTimeMillis() - reloadStartTime) < 2000)
+//        			return;
+//        		
+//        		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
+//        			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+//        			gunShoot[weaponSetting].play(100);
+//        		} 
+//        		else{  //failed to fire, reload
+//        			reloadStartTime = System.currentTimeMillis();
+//        			player.reload();
+//        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+//        			gunReload[weaponSetting].play(100);
+//        		}
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 			}
         	
+        });
+        
+        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+        	public void handle(MouseEvent mouse){
+        		mousePressed = true;
+        		handgunTrigger = true;
+//        		mouseX = mouse.getX();
+//        		mouseY = mouse.getY();
+        	}
+        });
+        
+        scene.setOnMouseReleased(new EventHandler<MouseEvent>() {
+        	public void handle(MouseEvent mouse){
+        		mousePressed = false;
+        		handgunTrigger = false;
+        		System.out.println("Mouse Released");
+        	}
         });
                
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
 //        		System.out.println(angle);
+        		mouseX = mouse.getX();
+        		mouseY = mouse.getY();
         		if(mouse.getX()>player.getXcoord())
         			playerImageView[weaponSetting].setRotate(angle);
         		else
@@ -318,7 +353,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
 
-		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
+		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33d), this));
 		refreshScreen.setCycleCount(Timeline.INDEFINITE);
 		refreshScreen.play();
 		
@@ -365,7 +400,43 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	@Override
 	public void handle(ActionEvent e) {
 		// TODO Auto-generated method stub
-//		System.out.println(player.getYcoord()+" "+scene.getHeight()+scene.getY());
+		
+		if(mousePressed && ( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > 33*5) || ( handgunTrigger && System.currentTimeMillis() - lastShootTime > 33*20))){
+			handgunTrigger = false;
+			double angle = getFireAngle(mouseX, mouseY);
+			if((System.currentTimeMillis() - reloadStartTime) > 2000){
+				if(player.fire(mouseX, mouseY, angle)){ 
+					BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+					gunShoot[weaponSetting].play(100);
+					lastShootTime = System.currentTimeMillis();
+				} 
+				else{  //failed to fire, reload
+					reloadStartTime = System.currentTimeMillis();
+					player.reload();
+					BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+					gunReload[weaponSetting].play(100);
+				}		
+			}
+		}
+		
+//		System.out.println("mouse clicked, Number of Unused Bullets: "+player.getNumberOfUnusedBullet());
+//		double angle = getFireAngle(mouse.getX(), mouse.getY());
+//		
+//		if((System.currentTimeMillis() - reloadStartTime) < 2000)
+//			return;
+//		
+//		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
+//			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+//			gunShoot[weaponSetting].play(100);
+//		} 
+//		else{  //failed to fire, reload
+//			reloadStartTime = System.currentTimeMillis();
+//			player.reload();
+//			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+//			gunReload[weaponSetting].play(100);
+//		}
+//		System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
+		
 		//player movement
         if(moveUp){
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
