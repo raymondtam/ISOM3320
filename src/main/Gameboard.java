@@ -86,10 +86,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image zombieImage = null, bulletImage = null;
 		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
 		ImageView dummy, dummy1;
-		Media handGunShoot = null; //Media
-		Media handGunReload = null; //Media
-		Media machineGunShoot = null; //Media
-		Media machineGunReload = null; //Media
+		Media handGunShoot = null;
+		Media handGunReload = null;
+		Media machineGunShoot = null;
+		Media machineGunReload = null;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
@@ -102,10 +102,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
-			handGunShoot = new Media("HandGun shoot.mp3"); //Media
-			handGunReload = new Media("HandGun Reload.mp3"); //Media
-			machineGunShoot = new Media("HandGun single shoot.mp3"); //Media
-			machineGunReload = new Media("HandGun reload.mp3"); //Media
+//			handGunShoot = new Media("HandGunShoot.mp3");
+//			handGunReload = new Media("HandGunReload.mp3");
+//			machineGunShoot = new Media("MachineGunShoot.mp3");
+//			machineGunReload = new Media("MachineGunReload.mp3");
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -121,16 +121,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
 		
-		//MediaPlayer
-		playHandGunShoot = new MediaPlayer(handGunShoot);
-		playHandGunReload = new MediaPlayer(handGunReload);
-		playMachineGunShoot = new MediaPlayer(machineGunShoot);
-		playMachineGunReload = new MediaPlayer(machineGunReload);
-		//MediaView
-		playHandGunShootMediaView = new MediaView(playHandGunShoot);
-		playHandGunReloadMediaView = new MediaView(playHandGunReload);
-		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
-		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
+//		//MediaPlayer
+//		playHandGunShoot = new MediaPlayer(handGunShoot);
+//		playHandGunReload = new MediaPlayer(handGunReload);
+//		playMachineGunShoot = new MediaPlayer(machineGunShoot);
+//		playMachineGunReload = new MediaPlayer(machineGunReload);
+//		//MediaView
+//		playHandGunShootMediaView = new MediaView(playHandGunShoot);
+//		playHandGunReloadMediaView = new MediaView(playHandGunReload);
+//		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
+//		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
