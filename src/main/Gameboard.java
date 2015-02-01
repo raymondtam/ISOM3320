@@ -515,7 +515,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	public void newWeapon(ImageView weapon) {
 			weapon.setVisible(true);
-			weapon.setX((int)(Math.random()*900));
+			weapon.setX((int)(player.getXcoord() + Math.random()*400));
 			weapon.setY((int)(Math.random()*600));
 	}
 	public void pickWeapon (ImageView weapon, int index) {
