@@ -1,5 +1,6 @@
 package main;
 
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 import javafx.animation.KeyFrame;
@@ -13,9 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
+import javafx.scene.media.AudioClip;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -64,8 +63,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Timeline timeline, refreshScreen;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
-	private MediaPlayer playHandGunShoot, playHandGunReload, playMachineGunShoot, playMachineGunReload;
-	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView;
+	private AudioClip handGunShoot, handGunReload, machineGunShoot, machineGunReload;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -86,10 +84,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image zombieImage = null, bulletImage = null;
 		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
 		ImageView dummy, dummy1;
-		Media handGunShoot = null;
-		Media handGunReload = null;
-		Media machineGunShoot = null;
-		Media machineGunReload = null;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
@@ -102,16 +96,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
-//			handGunShoot = new Media("HandGunShoot.mp3");
-//			handGunReload = new Media("HandGunReload.mp3");
-//			machineGunShoot = new Media("MachineGunShoot.mp3");
-//			machineGunReload = new Media("MachineGunReload.mp3");
+			handGunShoot = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
+			handGunReload = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
+			machineGunShoot = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			machineGunReload = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-								
+		
 		//Initialize the variable and set necessary property
 		backgroundImageView = new ImageView(roadImage);
 		playerImageView = new ImageView(playerImage);
@@ -120,17 +114,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		zombieImageView.setRotate(270);
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
-		
-		//MediaPlayer
-//		playHandGunShoot = new MediaPlayer(handGunShoot);
-//		playHandGunReload = new MediaPlayer(handGunReload);
-//		playMachineGunShoot = new MediaPlayer(machineGunShoot);
-//		playMachineGunReload = new MediaPlayer(machineGunReload);
-		//MediaView
-//		playHandGunShootMediaView = new MediaView(playHandGunShoot);
-//		playHandGunReloadMediaView = new MediaView(playHandGunReload);
-//		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
-//		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -143,6 +126,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         HPLabel.setTextFill(Color.YELLOW);
         HPLabel.setFont(DEFAULT_FONT);
         HPLabel.setOpacity(0.8);
+        
+        
         
         BulletIntegerProperty = new SimpleIntegerProperty(100);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
@@ -220,6 +205,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					case R:
 	        			reloadStartTime = System.currentTimeMillis();
 						player.reload();
+	        			handGunReload.play(100);
 						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 						break;
             	}
@@ -263,11 +249,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		
         		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
         			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
-//        			playHandGunShoot.play();
+        			handGunShoot.play(100);
         		} 
         		else{  //failed to fire, reload
         			reloadStartTime = System.currentTimeMillis();
         			player.reload();
+        			handGunReload.play(100);
         			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
         		}
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
