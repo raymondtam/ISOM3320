@@ -65,7 +65,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
 	private MediaPlayer playHandGunShoot, playHandGunReload, playMachineGunShoot, playMachineGunReload; //Media
-	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunreloadMediaView;
+	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
