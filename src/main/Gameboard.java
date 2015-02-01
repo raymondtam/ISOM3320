@@ -1,9 +1,7 @@
 package main;
 
-import java.util.concurrent.TimeUnit;
-
+import java.nio.file.Paths;
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.application.Application;
@@ -12,7 +10,8 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.media.AudioClip;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -23,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
@@ -36,7 +34,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	final static int MAX_MAGAZINE_SIZE = 100;
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
-	final static double DEFAULT_RADIUS = 0;
+	final static double DEFAULT_RADIUS = 20;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
 	//game variable and objects
@@ -44,12 +42,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	int score = 0;
 	String[] topThreeScores={"nil", "nil", "nil"};
 	
-	long reloadStartTime = 0;
+	long reloadStartTime = 0, startTime = 0;
 	
 //	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
-	static Bullet[] bullet = Bullet.getBulletArray(100, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
+	static Bullet[] bullet = Bullet.getBulletArray(DEFAULT_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
-	static Target[] target = Target.getTargetArray(10, 10, 7, 50); 
+	static Target[] target = Target.getTargetArray(10, 10, 3, 50); 
 	//Boss boss;
 	
 	
@@ -61,6 +59,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Timeline timeline, refreshScreen;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
+	private AudioClip handGunShoot, handGunReload, machineGunShoot, machineGunReload;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -79,8 +78,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image roadImage = null;
 		Image playerImage= null;
 		Image zombieImage = null, bulletImage = null;
+
 		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
+		Image crossHairImage = null;
+
 		ImageView dummy, dummy1;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
@@ -97,6 +99,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
+			crossHairImage = new Image("crosshair_pick3.png");
+			handGunShoot = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
+			handGunReload = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
+			machineGunShoot = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			machineGunReload = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -126,6 +134,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         HPLabel.setFont(DEFAULT_FONT);
         HPLabel.setOpacity(0.8);
         
+        
+        
         BulletIntegerProperty = new SimpleIntegerProperty(100);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
@@ -143,8 +153,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	targetImageView[i] = new ImageView(zombieImage);
         }
        
+
 		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
-		
+
 
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
@@ -200,9 +211,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		moveRight = true;
 	            		break;
 					case R:
+						if (player.reload()) {
 	        			reloadStartTime = System.currentTimeMillis();
-						player.reload();
+	        			handGunReload.play(100);
 						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+						}
 						break;
             	}
                	key.consume();
@@ -245,10 +258,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		
         		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
         			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+        			handGunShoot.play(100);
         		} 
         		else{  //failed to fire, reload
         			reloadStartTime = System.currentTimeMillis();
         			player.reload();
+        			handGunReload.play(100);
         			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
         		}
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
@@ -271,6 +286,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //                	playerImageView.setRotate(90+angle);
         	}
         });
+        
+        scene.setCursor(new ImageCursor(crossHairImage));
 
 		stage.setScene(scene);
 		stage.setHeight(600);
@@ -288,6 +305,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		rifleIconImageView.setVisible(false);
 		machinegunIconImageView.setVisible(false);
 		System.out.println("Stage being showed.");
+		startTime = System.currentTimeMillis();
 		
 //		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
@@ -439,13 +457,50 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					pickWeapon(machinegunIconImageView, 2);
 				}
         
-//		
+		for(int i=0 ; i<bullet.length ; i++){
+			for(int j=0 ; j<target.length;j++){
+				if(target[j].isVisible() && bullet[i].isHit(target[j])){
+					target[j].minusHealth(Bullet.getBulletDamage());
+					
+					bullet[i].setVisible(false);
+					bullet[i].setIsMoving(false);
+					bullet[i].setPosition(-999, -999);  //void the bullet
+					bulletImageView[i].setVisible(false);
+					
+					if(target[j].isDead()){
+						targetImageView[j].setVisible(false);
+						target[j].setPosition(0,0);
+						score++;
+						System.out.println(score);
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		//reborbZombie
+		if(System.currentTimeMillis()-startTime>20000){
+			Target.rebornZombie(target, player.getPosition());
+			System.out.println("reborned");
+			startTime=System.currentTimeMillis();
+			for(int i=0; i<target.length ; i++){
+				if(target[i].isVisible()){
+					targetImageView[i].setVisible(true);
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord());
+					targetImageView[i].setY(target[i].getYcoord());
+				}
+			}
+		}
+		
 //		for(int i=0;i<target.length;i++){
-//			
 //			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
 //			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
 //		}
-		System.out.println(backgroundImageView.getTranslateX());
+//		
+        //check ishit()
+
 		
         //check ishit()
 	

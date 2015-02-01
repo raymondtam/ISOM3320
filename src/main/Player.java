@@ -8,7 +8,7 @@ public class Player extends Character{
 	Player() {
 	}
 	
-	Player(Bullet[] bullet, int movingSpeed) {
+	public Player(Bullet[] bullet, int movingSpeed) {
 		this.bullet = bullet;
 		this.numberOfUnusedBullet = Bullet.getMagazineSize();
 		this.setMovingSpeed(movingSpeed);
@@ -40,10 +40,13 @@ public class Player extends Character{
 			changePosition(xIncrement,yIncrement);
 	}
 		
-	public void reload() {
+	public boolean reload() {
 		if (numberOfUnusedBullet < Bullet.getMagazineSize()) {
 			setNumberOfUnusedBullet (Bullet.getMagazineSize());
+			return true;
 		}
+		else
+			return false;
 	}
 	
 	public boolean fire(double xCursor, double yCursor, double vectorAngle) {
