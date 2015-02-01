@@ -47,7 +47,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	int score = 0;
 	String[] topThreeScores={"nil", "nil", "nil"};
 	
-	long reloadStartTime = 0;
+	long reloadStartTime = 0, startTime = 0;
 	
 //	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Bullet[] bullet = Bullet.getBulletArray(100, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
@@ -103,10 +103,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
 
-			handGunShoot = new Media("HandGunShoot.mp3");
-			handGunReload = new Media("HandGunReload.mp3");
-			machineGunShoot = new Media("MachineGunShoot.mp3");
-			machineGunReload = new Media("MachineGunReload.mp3");
+//			handGunShoot = new Media("HandGunShoot.mp3");
+//			handGunReload = new Media("HandGunReload.mp3");
+//			machineGunShoot = new Media("MachineGunShoot.mp3");
+//			machineGunReload = new Media("MachineGunReload.mp3");
 
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
@@ -124,15 +124,15 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		HPIconImageView.setOpacity(0.6);
 		
 		//MediaPlayer
-		playHandGunShoot = new MediaPlayer(handGunShoot);
-		playHandGunReload = new MediaPlayer(handGunReload);
-		playMachineGunShoot = new MediaPlayer(machineGunShoot);
-		playMachineGunReload = new MediaPlayer(machineGunReload);
+//		playHandGunShoot = new MediaPlayer(handGunShoot);
+//		playHandGunReload = new MediaPlayer(handGunReload);
+//		playMachineGunShoot = new MediaPlayer(machineGunShoot);
+//		playMachineGunReload = new MediaPlayer(machineGunReload);
 		//MediaView
-		playHandGunShootMediaView = new MediaView(playHandGunShoot);
-		playHandGunReloadMediaView = new MediaView(playHandGunReload);
-		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
-		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
+//		playHandGunShootMediaView = new MediaView(playHandGunShoot);
+//		playHandGunReloadMediaView = new MediaView(playHandGunReload);
+//		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
+//		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -306,6 +306,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		stage.show();
 		System.out.println("Stage being showed.");
+		startTime = System.currentTimeMillis();
 		
 //		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
@@ -416,12 +417,26 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					}
 					
 					
-					System.out.println(j + ": " + Bullet.getBulletDamage());
+//					System.out.println(j + ": " + Bullet.getBulletDamage());
 					break;
 				}
 			}
 		}
 		
+		//reborbZombie
+		if(System.currentTimeMillis()-startTime>20000){
+			Target.rebornZombie(target, player.getPosition());
+			System.out.println("reborned");
+			startTime=System.currentTimeMillis();
+			for(int i=0; i<target.length ; i++){
+				if(target[i].isVisible()){
+					targetImageView[i].setVisible(true);
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord());
+					targetImageView[i].setY(target[i].getYcoord());
+				}
+			}
+		}
 		
 //		for(int i=0;i<target.length;i++){
 //			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
