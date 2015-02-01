@@ -105,10 +105,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bulletImage = new Image("bullet.png");
 			crossHairImage = new Image("crosshair_pick3.png");
 			gunShoot[0] = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
-			gunShoot[1] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
+			gunShoot[1] = new AudioClip(Paths.get("src\\RifleShoot.mp3").toUri().toString());
 			gunShoot[2] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
-			gunReload[0] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
-			gunReload[1] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+			gunReload[0] = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
+			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
 
 			System.out.println("Image being imported.");
