@@ -57,7 +57,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
-	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView;
+	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, rifleImageView, machinegunImageView;
 	private ImageView[] bulletImageView, targetImageView; 
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
@@ -127,6 +127,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		HPIconImageView.setOpacity(0.6);
 		rifleIconImageView = new ImageView (rifleIconImage);
 		machinegunIconImageView = new ImageView (machinegunIconImage);
+		rifleImageView = new ImageView (rifleImage);
+		rifleImageView.setRotate(90);
+		machinegunImageView = new ImageView (machinegunImage);		
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -160,7 +163,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
        
 
-		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
+		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView, rifleImageView, machinegunImageView);
 
 
 		for(ImageView i : bulletImageView){
@@ -514,7 +517,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			weapon.setVisible(true);
 			weapon.setX((int)(Math.random()*900));
 			weapon.setY((int)(Math.random()*600));
-		
 	}
 	public void pickWeapon (ImageView weapon, int index) {
 		weapon.setVisible(false);
@@ -522,11 +524,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
 		Bullet.setMagazineSize(MAGAZINE_SIZE[index]);
 		weaponSetting = (short)index;
+
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-		//weapon = null;
-			//To do change bullet Damage
-			 //DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[index];
+
 	}
 
 	public static Point2D getPlayerPosition(){
