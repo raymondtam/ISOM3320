@@ -46,7 +46,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	int score = 0;
 	String[] topThreeScores={"nil", "nil", "nil"};
 	
-	long reloadStartTime = 0;
+	long reloadStartTime = 0, startTime = 0;
 	
 //	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Bullet[] bullet = Bullet.getBulletArray(100, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
@@ -100,6 +100,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			handGunReload = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			machineGunShoot = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
 			machineGunReload = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -147,7 +148,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
        
 		pane.getChildren().addAll(backgroundImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
-//		pane.getChildren().addAll(playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView);
 
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
@@ -292,6 +292,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		stage.show();
 		System.out.println("Stage being showed.");
+		startTime = System.currentTimeMillis();
 		
 //		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
@@ -393,13 +394,35 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
-					System.out.println(j + ": " + Bullet.getBulletDamage());
+					
+					bullet[i].setVisible(false);
+					//bullet[i].setPosition(0, 0);
+					
+					if(target[j].isDead()){
+						targetImageView[j].setVisible(false);
+					}
+					
+					break;
 				}
 				if(target[j].isDead())
 					targetImageView[j].setVisible(false);
 			}
 		}
 		
+		//reborbZombie
+		if(System.currentTimeMillis()-startTime>20000){
+			Target.rebornZombie(target, player.getPosition());
+			System.out.println("reborned");
+			startTime=System.currentTimeMillis();
+			for(int i=0; i<target.length ; i++){
+				if(target[i].isVisible()){
+					targetImageView[i].setVisible(true);
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord());
+					targetImageView[i].setY(target[i].getYcoord());
+				}
+			}
+		}
 		
 //		for(int i=0;i<target.length;i++){
 //			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());

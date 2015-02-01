@@ -108,7 +108,7 @@ public class Target extends Character{
 		this.setVisible(true);
 	}
 	
-	public void rebornZombie (Target[] zombies, Point2D playerPosition){
+	static public void rebornZombie (Target[] zombies, Point2D playerPosition){
 		double random = Math.random(); 
 		int numberOfDeadZombies = 0;
 		int numberOfZombiesToReborn = 0;
@@ -117,7 +117,10 @@ public class Target extends Character{
 		}
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
-			if (zombies[j].isDead()) zombies[j].setVisible(playerPosition);
+			if (zombies[j].isDead()){ 
+				zombies[j].setVisible(playerPosition);
+				i++;
+			}
 		}
 	}
 	
