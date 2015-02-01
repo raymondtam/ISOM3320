@@ -15,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.media.AudioClip;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -83,6 +84,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image playerImage= null;
 		Image zombieImage = null, bulletImage = null;
 		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
+		Image crossHairImage = null;
 		ImageView dummy, dummy1;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
@@ -96,6 +98,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
+			crossHairImage = new Image("crosshair_pick2.png");
 			handGunShoot = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
 			handGunReload = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			machineGunShoot = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
@@ -277,6 +280,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //                	playerImageView.setRotate(90+angle);
         	}
         });
+        
+        scene.setCursor(new ImageCursor(crossHairImage));
 
 		stage.setScene(scene);
 		stage.setHeight(600);
