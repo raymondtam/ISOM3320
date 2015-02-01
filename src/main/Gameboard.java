@@ -64,8 +64,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Timeline timeline, refreshScreen;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
-	private MediaPlayer playHandGunShoot, playHandGunReload, playMachineGunShoot, playMachineGunReload; //Media
-	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView;
+//	private MediaPlayer playHandGunShoot, playHandGunReload, playMachineGunShoot, playMachineGunReload; //Media
+//	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -86,10 +86,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image zombieImage = null, bulletImage = null;
 		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
 		ImageView dummy, dummy1;
-		Media handGunShoot = null;
-		Media handGunReload = null;
-		Media machineGunShoot = null;
-		Media machineGunReload = null;
+//		Media handGunShoot = null;
+//		Media handGunReload = null;
+//		Media machineGunShoot = null;
+//		Media machineGunReload = null;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
@@ -102,10 +102,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
-			handGunShoot = new Media("HandGunShoot.mp3");
-			handGunReload = new Media("HandGunReload.mp3");
-			machineGunShoot = new Media("MachineGunShoot.mp3");
-			machineGunReload = new Media("MachineGunReload.mp3");
+//			handGunShoot = new Media("HandGunShoot.mp3");
+//			handGunReload = new Media("HandGunReload.mp3");
+//			machineGunShoot = new Media("MachineGunShoot.mp3");
+//			machineGunReload = new Media("MachineGunReload.mp3");
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -127,10 +127,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //		playMachineGunShoot = new MediaPlayer(machineGunShoot);
 //		playMachineGunReload = new MediaPlayer(machineGunReload);
 		//MediaView
-		playHandGunShootMediaView = new MediaView(playHandGunShoot);
-		playHandGunReloadMediaView = new MediaView(playHandGunReload);
-		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
-		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
+//		playHandGunShootMediaView = new MediaView(playHandGunShoot);
+//		playHandGunReloadMediaView = new MediaView(playHandGunReload);
+//		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
+//		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -162,7 +162,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
        
 		pane.getChildren().addAll(backgroundImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
-		pane.getChildren().addAll(playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView);
+//		pane.getChildren().addAll(playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView);
 
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
