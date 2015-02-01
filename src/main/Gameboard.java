@@ -59,7 +59,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
-	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
+	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
@@ -79,7 +79,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image roadImage = null;
 		Image playerImage= null;
 		Image zombieImage = null, bulletImage = null;
-		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
+		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
+		Image machinegunIconImage = null, rifleIconImage = null;
 		ImageView dummy, dummy1;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
@@ -89,7 +90,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			roadImage =  new Image("newBackground.jpg");
 			playerImage = new Image("pistol.png");
 			machinegunImage = new Image("machinegun.png");
-			rifileImage = new Image("rifile.png");
+			rifleImage = new Image("rifle.png");
+			machinegunIconImage = new Image ("machinegun_icon.png");
+			rifleIconImage = new Image ("rifle_icon.png");
+			
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
@@ -107,11 +111,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		zombieImageView.setRotate(270);
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
+		rifleIconImageView = new ImageView (rifleIconImage);
+		machinegunIconImageView = new ImageView (machinegunIconImage);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
 		dummy.setY(200);
-		dummy1 = new ImageView(rifileImage);
+		dummy1 = new ImageView(rifleImage);
 		dummy1.setRotate(90);
 		
 		HPIntegerProperty = new SimpleIntegerProperty(100);
@@ -137,7 +143,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	targetImageView[i] = new ImageView(zombieImage);
         }
        
-		pane.getChildren().addAll(backgroundImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
+		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
 		
 
 		for(ImageView i : bulletImageView){
@@ -279,6 +285,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		refreshScreen.play();
 		
 		stage.show();
+		rifleIconImageView.setVisible(false);
+		machinegunIconImageView.setVisible(false);
 		System.out.println("Stage being showed.");
 		
 //		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
@@ -292,9 +300,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setVisible(true);
 		}
 
-		
-		
-		
 		//TO-DO, bind integer property with health and bulletnumber
 //		
 //		Target target = new Target();
@@ -325,6 +330,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//player movement
         if(moveUp){
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
+        	if(rifleIconImageView.isVisible()){
+        	//rifleIconImageView.setTranslateY(rifleIconImageView.getTranslateY()+5);
+        	//rifleIconImageView.setX(rifleIconImageView.getX());
+        	rifleIconImageView.setY(rifleIconImageView.getY()+5);
+        	}
+        	if(machinegunIconImageView.isVisible()){
+        	//machinegunIconImageView.setTranslateY(machinegunIconImageView.getTranslateY()+5);
+        	//machinegunIconImageView.setX(machinegunIconImageView.getX());
+        	machinegunIconImageView.setY(machinegunIconImageView.getY()+5);
+        	}
         	for(Target i : target){
         		i.changePosition(0, 5);
         	}
@@ -332,6 +347,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
         if(moveDown){
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()-5);
+        	if(rifleIconImageView.isVisible()){
+        	//rifleIconImageView.setTranslateY(rifleIconImageView.getTranslateY()-5);
+        	//rifleIconImageView.setX(rifleIconImageView.getX());
+        	rifleIconImageView.setY(rifleIconImageView.getY()-5);
+        	}
+        	if(machinegunIconImageView.isVisible()){
+        	//machinegunIconImageView.setTranslateY(machinegunIconImageView.getTranslateY()-5);
+        		//machinegunIconImageView.setX(machinegunIconImageView.getX());
+            	machinegunIconImageView.setY(machinegunIconImageView.getY()-5);
+        	}
         	for(Target i : target){
         		i.changePosition(0, -5);
         	}
@@ -339,6 +364,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
         if(moveLeft && backgroundImageView.getTranslateX() < 0){
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        	if(rifleIconImageView.isVisible()){
+        	//rifleIconImageView.setTranslateX(rifleIconImageView.getTranslateX()+5);
+        	rifleIconImageView.setX(rifleIconImageView.getX()+5);
+        	//rifleIconImageView.setY(rifleIconImageView.getY());
+        	}
+        	if(machinegunIconImageView.isVisible()){
+        	//machinegunIconImageView.setTranslateX(machinegunIconImageView.getTranslateX()+5);
+        		machinegunIconImageView.setX(machinegunIconImageView.getX()+5);
+            	//machinegunIconImageView.setY(machinegunIconImageView.getY());
+        	}
         	for(Target i : target){
         		i.changePosition(+5, 0);
         	}
@@ -347,6 +382,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	if(rifleIconImageView.isVisible()){
+        	//rifleIconImageView.setTranslateX(rifleIconImageView.getTranslateX()-5);
+        	rifleIconImageView.setX(rifleIconImageView.getX()-5);
+        	//rifleIconImageView.setY(rifleIconImageView.getY());
+        	}
+        	if(machinegunIconImageView.isVisible()){
+        	//machinegunIconImageView.setTranslateX(machinegunIconImageView.getTranslateX()-5);
+        		machinegunIconImageView.setX(machinegunIconImageView.getX()-5);
+            	//machinegunIconImageView.setY(machinegunIconImageView.getY());
+        	}
         	for(Target i : target){
         		i.changePosition(-5, 0);
         	}
@@ -376,18 +421,53 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setX(target[i].getXcoord());
 			targetImageView[i].setY(target[i].getYcoord());
 		}
+		
+		//show weapon
+				if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 )
+					newWeapon(rifleIconImageView);
+				if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000)
+					newWeapon(machinegunIconImageView);
+		//change weapon
+				if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
+						+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
+						<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
+					pickWeapon(rifleIconImageView, 1);
+				}
+				if ((Math.pow(Math.pow(player.getXcoord() - machinegunIconImageView.getX(),2.0) 
+							+ Math.pow(player.getYcoord() - machinegunIconImageView.getY(),2.0), 0.5) 
+							<= (player.getRadius() + 50)) && machinegunIconImageView.isVisible()){
+					pickWeapon(machinegunIconImageView, 2);
+				}
         
 //		
-		for(int i=0;i<target.length;i++){
-			
-			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
-		}
-//		
-        //check ishit()
+//		for(int i=0;i<target.length;i++){
+//			
+//			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+//			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
+//		}
+		System.out.println(backgroundImageView.getTranslateX());
 		
+        //check ishit()
+	
 	}
 	
+	
+	public void newWeapon(ImageView weapon) {
+			weapon.setVisible(true);
+			//weapon.setX(200);
+			//weapon.setY(200);
+			weapon.setX((int)(Math.random()*900));
+			weapon.setY((int)(Math.random()*600));
+		
+	}
+	public void pickWeapon (ImageView weapon, int index) {
+		weapon.setVisible(false);
+		pane.getChildren().remove(weapon);	
+		//weapon = null;
+			//To do change bullet Damage
+			 //DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[index];
+	}
+
 	public static Point2D getPlayerPosition(){
 		Point2D position = player.getPosition();
 		return position;
