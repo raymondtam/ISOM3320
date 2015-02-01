@@ -502,7 +502,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000)
 			newWeapon(machinegunIconImageView);
-//change weapon
+		
+		//change weapon
 		if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
 				+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
 				<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
@@ -512,6 +513,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					+ Math.pow(player.getYcoord() - machinegunIconImageView.getY(),2.0), 0.5) 
 					<= (player.getRadius() + 50)) && machinegunIconImageView.isVisible()){
 			pickWeapon(machinegunIconImageView, 2);
+		}
+		
+		//Show Boss
+		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 ){
+			bossImageView.setVisible(true);
+			bossImageView.setX(600);
+			bossImageView.setY(150);
+			System.out.println("Boss");
 		}
 	
 	}
