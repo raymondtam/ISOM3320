@@ -102,10 +102,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
-//			handGunShoot = new Media("HandGunShoot.mp3");
-//			handGunReload = new Media("HandGunReload.mp3");
-//			machineGunShoot = new Media("MachineGunShoot.mp3");
-//			machineGunReload = new Media("MachineGunReload.mp3");
+			handGunShoot = new Media("HandGunShoot.mp3");
+			handGunReload = new Media("HandGunReload.mp3");
+			machineGunShoot = new Media("MachineGunShoot.mp3");
+			machineGunReload = new Media("MachineGunReload.mp3");
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -402,12 +402,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
         
 		for(int i=0 ; i<bullet.length ; i++){
-			if(!bullet[i].isVisible())
-				continue;
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
-					bullet[i].setVisible(false);
-					bullet[i].setPosition(0, 0);
 					target[j].minusHealth(Bullet.getBulletDamage());
 					System.out.println(j + ": " + Bullet.getBulletDamage());
 				}
