@@ -36,7 +36,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	final static int MAX_MAGAZINE_SIZE = 100;
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
-	final static double DEFAULT_RADIUS = 0;
+	final static double DEFAULT_RADIUS = 20;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
 	//game variable and objects
@@ -49,7 +49,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Bullet[] bullet = Bullet.getBulletArray(100, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
-	static Target[] target = Target.getTargetArray(10, 10, 7, 50); 
+	static Target[] target = Target.getTargetArray(10, 10, 3, 50); 
 	//Boss boss;
 	
 	
@@ -377,12 +377,26 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setY(target[i].getYcoord());
 		}
         
-//		
-		for(int i=0;i<target.length;i++){
-			
-			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
+		for(int i=0 ; i<bullet.length ; i++){
+			if(!bullet[i].isVisible())
+				continue;
+			for(int j=0 ; j<target.length;j++){
+				if(target[j].isVisible() && bullet[i].isHit(target[j])){
+					bullet[i].setVisible(false);
+					bullet[i].setPosition(0, 0);
+					target[j].minusHealth(Bullet.getBulletDamage());
+					System.out.println(j + ": " + Bullet.getBulletDamage());
+				}
+				if(target[j].isDead())
+					targetImageView[j].setVisible(false);
+			}
 		}
+		
+		
+//		for(int i=0;i<target.length;i++){
+//			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+//			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
+//		}
 //		
         //check ishit()
 		
