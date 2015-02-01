@@ -1,6 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -12,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.media.AudioClip;
 import javafx.scene.ImageCursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -57,8 +59,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
-	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, rifleImageView, machinegunImageView, bossImageView;
-	private ImageView[] bulletImageView, targetImageView; 
+
+	private ImageView backgroundImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, bossImageView;
+	private ImageView[] bulletImageView, targetImageView, playerImageView; 
+
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
     private Label HPLabel = new Label(), BulletLabel = new Label();
@@ -77,9 +81,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		pane = new Pane();
 		Image roadImage = null;
-		Image playerImage= null;
-		Image zombieImage = null, bossImage = null, bulletImage = null;
 
+		Image playerImageHandGun = null, playerImageRifle = null, playerImageMachineGun = null;
+		Image zombieImage = null, bulletImage = null, bossImage = null;
+		
 		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
 		Image crossHairImage = null;
@@ -89,14 +94,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		refreshScreen = new Timeline();				
 		
 		gunShoot = new AudioClip[3];
+		gunReload = new AudioClip[3];
 		
+		playerImageView = new ImageView[3];
 		
 		//Loading images and setting GUI
 		try {
 			roadImage =  new Image("newBackground.jpg");
-			playerImage = new Image("pistol.png");
-			machinegunImage = new Image("machinegun.png");
-			rifleImage = new Image("rifle.png");
+			playerImageHandGun = new Image(Paths.get("src\\pistol.png").toUri().toString());
+			playerImageRifle = new Image("rifle.png");
+			playerImageMachineGun = new Image("machinegun.png");
+			
 			machinegunIconImage = new Image ("machinegun_icon.png");
 			rifleIconImage = new Image ("rifle_icon.png");
 			
@@ -112,6 +120,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
 
+
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -120,19 +129,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Initialize the variable and set necessary property
 		backgroundImageView = new ImageView(roadImage);
-		playerImageView = new ImageView(playerImage);
-		playerImageView.setRotate(90);
-		zombieImageView = new ImageView(zombieImage);
-		zombieImageView.setRotate(270);
-		bossImageView = new ImageView (bossImage);
-		bossImageView.setRotate(270);
+		playerImageView[0] = new ImageView(playerImageHandGun);
+		playerImageView[1] = new ImageView(playerImageRifle);
+		playerImageView[2] = new ImageView(playerImageMachineGun);
+		playerImageView[0].setRotate(90);
+		playerImageView[1].setRotate(90);
+		playerImageView[1].setVisible(false);
+		playerImageView[2].setRotate(90);
+		playerImageView[2].setVisible(false);
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
 		rifleIconImageView = new ImageView (rifleIconImage);
 		machinegunIconImageView = new ImageView (machinegunIconImage);
-		rifleImageView = new ImageView (rifleImage);
-		rifleImageView.setRotate(90);
-		machinegunImageView = new ImageView (machinegunImage);		
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -166,7 +174,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
        
 
-		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView, rifleImageView, machinegunImageView, bossImageView);
+		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, rifleIconImageView, machinegunIconImageView);
+		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 
 
 		for(ImageView i : bulletImageView){
@@ -179,6 +188,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			pane.getChildren().addAll(i);
         	i.setVisible(false);
         }
+
 		bossImageView.setVisible(false);
 
 		
@@ -195,11 +205,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         player.setPosition(450, 275); 
 //        		primaryScreenBounds.getHeight()/2);
         
-		playerImageView.setY(player.getYcoord());
-		playerImageView.setX(player.getXcoord());
+		playerImageView[weaponSetting].setY(player.getYcoord());
+		playerImageView[weaponSetting].setX(player.getXcoord());
 		
-		zombieImageView.setX(200);
-		zombieImageView.setY(200);
 		HPLabel.setTranslateX(70);
 		HPLabel.setTranslateY(530);
 		HPIconImageView.setX(5);
@@ -289,9 +297,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
 //        		System.out.println(angle);
         		if(mouse.getX()>player.getXcoord())
-        			playerImageView.setRotate(angle);
+        			playerImageView[weaponSetting].setRotate(angle);
         		else
-        			playerImageView.setRotate(-1*angle);
+        			playerImageView[weaponSetting].setRotate(-1*angle);
         		
 //                if(mouse.getY()<player.getYcoord())
 //                	playerImageView.setRotate(90-angle);
@@ -500,10 +508,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			newWeapon(rifleIconImageView);
 			System.out.println("Rifile");
 		}
-		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000)
+		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000){
 			newWeapon(machinegunIconImageView);
+<<<<<<< HEAD
 		
 		//change weapon
+=======
+			System.out.println("MachineGUnww");
+		}
+//change weapon
+>>>>>>> origin/master
 		if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
 				+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
 				<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
@@ -536,8 +550,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		pane.getChildren().remove(weapon);
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
 		Bullet.setMagazineSize(MAGAZINE_SIZE[index]);
+		playerImageView[weaponSetting].setVisible(false); // original
 		weaponSetting = (short)index;
-
+		playerImageView[weaponSetting].setVisible(true);
+		playerImageView[weaponSetting].setX(player.getXcoord());
+		playerImageView[weaponSetting].setY(player.getYcoord());
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 
