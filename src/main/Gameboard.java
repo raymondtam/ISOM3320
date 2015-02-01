@@ -121,16 +121,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
 		
-//		//MediaPlayer
+		//MediaPlayer
 //		playHandGunShoot = new MediaPlayer(handGunShoot);
 //		playHandGunReload = new MediaPlayer(handGunReload);
 //		playMachineGunShoot = new MediaPlayer(machineGunShoot);
 //		playMachineGunReload = new MediaPlayer(machineGunReload);
-//		//MediaView
-//		playHandGunShootMediaView = new MediaView(playHandGunShoot);
-//		playHandGunReloadMediaView = new MediaView(playHandGunReload);
-//		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
-//		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
+		//MediaView
+		playHandGunShootMediaView = new MediaView(playHandGunShoot);
+		playHandGunReloadMediaView = new MediaView(playHandGunReload);
+		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
+		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -162,7 +162,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
        
 		pane.getChildren().addAll(backgroundImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView);
-		
+		pane.getChildren().addAll(playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView);
 
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
@@ -263,6 +263,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		
         		if(player.fire(mouse.getX(), mouse.getY(), angle)){ 
         			BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
+//        			playHandGunShoot.play();
         		} 
         		else{  //failed to fire, reload
         			reloadStartTime = System.currentTimeMillis();
