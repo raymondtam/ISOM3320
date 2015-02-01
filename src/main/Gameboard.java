@@ -102,10 +102,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
-			handGunShoot = new Media("HandGun shoot.mp3"); //Media
-			handGunReload = new Media("HandGun Reload.mp3"); //Media
-			machineGunShoot = new Media("HandGun single shoot.mp3"); //Media
-			machineGunReload = new Media("HandGun reload.mp3"); //Media
+//			handGunShoot = new Media("HandGun shoot.mp3"); //Media
+//			handGunReload = new Media("HandGun Reload.mp3"); //Media
+//			machineGunShoot = new Media("HandGun single shoot.mp3"); //Media
+//			machineGunReload = new Media("HandGun reload.mp3"); //Media
 			System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -121,16 +121,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
 		
-		//MediaPlayer
-		playHandGunShoot = new MediaPlayer(handGunShoot);
-		playHandGunReload = new MediaPlayer(handGunReload);
-		playMachineGunShoot = new MediaPlayer(machineGunShoot);
-		playMachineGunReload = new MediaPlayer(machineGunReload);
-		//MediaView
-		playHandGunShootMediaView = new MediaView(playHandGunShoot);
-		playHandGunReloadMediaView = new MediaView(playHandGunReload);
-		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
-		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
+//		//MediaPlayer
+//		playHandGunShoot = new MediaPlayer(handGunShoot);
+//		playHandGunReload = new MediaPlayer(handGunReload);
+//		playMachineGunShoot = new MediaPlayer(machineGunShoot);
+//		playMachineGunReload = new MediaPlayer(machineGunReload);
+//		//MediaView
+//		playHandGunShootMediaView = new MediaView(playHandGunShoot);
+//		playHandGunReloadMediaView = new MediaView(playHandGunReload);
+//		playMachineGunShootMediaView = new MediaView(playMachineGunShoot);
+//		playMachineGunReloadMediaView = new MediaView(playMachineGunReload);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -402,17 +402,23 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
         
 		for(int i=0 ; i<bullet.length ; i++){
-			if(!bullet[i].isVisible())
-				continue;
+//			if(!bullet[i].isVisible())
+//				continue;
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
-					bullet[i].setVisible(false);
-					bullet[i].setPosition(0, 0);
 					target[j].minusHealth(Bullet.getBulletDamage());
+					
+					bullet[i].setVisible(false);
+					//bullet[i].setPosition(0, 0);
+					
+					if(target[j].isDead()){
+						targetImageView[j].setVisible(false);
+					}
+					
+					
 					System.out.println(j + ": " + Bullet.getBulletDamage());
+					break;
 				}
-				if(target[j].isDead())
-					targetImageView[j].setVisible(false);
 			}
 		}
 		
