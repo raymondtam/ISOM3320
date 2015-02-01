@@ -206,10 +206,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		moveRight = true;
 	            		break;
 					case R:
+						if (player.reload()) {
 	        			reloadStartTime = System.currentTimeMillis();
-						player.reload();
 	        			handGunReload.play(100);
 						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+						}
 						break;
             	}
                	key.consume();
