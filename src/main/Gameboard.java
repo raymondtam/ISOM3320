@@ -98,7 +98,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			zombieImage = new Image("zombie1.png");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
-			crossHairImage = new Image("crosshair_pick2.png");
+			crossHairImage = new Image("crosshair_pick3.png");
 			handGunShoot = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
 			handGunReload = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			machineGunShoot = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
