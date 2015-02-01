@@ -69,7 +69,8 @@ public class Bullet extends GameObject {
 					<= (targetShot.getRadius() + this.getRadius())){
 				return true;
 			}
-		return false;
+			else {
+		return false;}
 	}
 	
 	@Override
