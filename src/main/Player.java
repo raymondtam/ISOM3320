@@ -8,7 +8,7 @@ public class Player extends Character{
 	Player() {
 	}
 	
-	Player(Bullet[] bullet, int movingSpeed) {
+	public Player(Bullet[] bullet, int movingSpeed) {
 		this.bullet = bullet;
 		this.numberOfUnusedBullet = Bullet.getMagazineSize();
 		this.setMovingSpeed(movingSpeed);
