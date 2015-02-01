@@ -26,7 +26,7 @@ public abstract class Character extends GameObject{
 	}
 	
 	public boolean isDead() {
-		return (health <= 0)? false: true;
+		return (health <= 0)? true: false;
 	}
 	
 	@Override
