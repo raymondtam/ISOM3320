@@ -142,7 +142,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         
         
-        BulletIntegerProperty = new SimpleIntegerProperty(100);
+        BulletIntegerProperty = new SimpleIntegerProperty(DEFAULT_MAGAZINE_SIZE);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
         BulletLabel.setFont(DEFAULT_FONT);
@@ -218,9 +218,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	            		break;
 					case R:
 						if (player.reload()) {
-	        			reloadStartTime = System.currentTimeMillis();
-	        			gunReload[weaponSetting].play(100);
-						BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+		        			reloadStartTime = System.currentTimeMillis();
+		        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+		        			gunReload[weaponSetting].play(100);
 						}
 						break;
             	}
@@ -269,8 +269,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		else{  //failed to fire, reload
         			reloadStartTime = System.currentTimeMillis();
         			player.reload();
-        			gunReload[weaponSetting].play(100);
         			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
+        			gunReload[weaponSetting].play(100);
         		}
 //				System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 			}
@@ -460,7 +460,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(0,0);
 						score++;
-						System.out.println(score);
+//						System.out.println(score);
 					}
 					
 					break;
@@ -489,8 +489,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //		}
 //		
 		//show weapon
-		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 )
+		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 ){
 			newWeapon(rifleIconImageView);
+			System.out.println("Rifile");
+		}
 		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000)
 			newWeapon(machinegunIconImageView);
 //change weapon
@@ -520,6 +522,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
 		Bullet.setMagazineSize(MAGAZINE_SIZE[index]);
 		weaponSetting = (short)index;
+		player.reload();
+		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 		//weapon = null;
 			//To do change bullet Damage
 			 //DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[index];
