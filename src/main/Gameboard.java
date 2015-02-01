@@ -1,10 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
-import java.util.concurrent.TimeUnit;
-
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.application.Application;
@@ -13,7 +10,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.media.AudioClip;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -26,7 +22,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 
@@ -405,11 +400,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					bullet[i].setIsMoving(false);
 					bullet[i].setPosition(-999, -999);  //void the bullet
 					bulletImageView[i].setVisible(false);
-					//bullet[i].setPosition(0, 0);
 					
 					if(target[j].isDead()){
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(0,0);
+						score++;
+						System.out.println(score);
 					}
 					
 					break;
