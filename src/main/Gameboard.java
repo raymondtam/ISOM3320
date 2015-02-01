@@ -64,8 +64,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Timeline timeline, refreshScreen;
 	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView;
 	private ImageView[] bulletImageView, targetImageView; 
-//	private MediaPlayer playHandGunShoot, playHandGunReload, playMachineGunShoot, playMachineGunReload; //Media
-//	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView;
+	private MediaPlayer playHandGunShoot, playHandGunReload, playMachineGunShoot, playMachineGunReload;
+	private MediaView playHandGunShootMediaView, playHandGunReloadMediaView, playMachineGunShootMediaView, playMachineGunReloadMediaView;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
@@ -86,10 +86,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image zombieImage = null, bulletImage = null;
 		Image machinegunImage = null, rifileImage = null, HPIconImage = null;
 		ImageView dummy, dummy1;
-//		Media handGunShoot = null;
-//		Media handGunReload = null;
-//		Media machineGunShoot = null;
-//		Media machineGunReload = null;
+		Media handGunShoot = null;
+		Media handGunReload = null;
+		Media machineGunShoot = null;
+		Media machineGunReload = null;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
