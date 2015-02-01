@@ -49,7 +49,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	long reloadStartTime = 0, startTime = 0;
 	
 //	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
-	static Bullet[] bullet = Bullet.getBulletArray(100, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
+	static Bullet[] bullet = Bullet.getBulletArray(DEFAULT_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(10, 10, 3, 50); 
 	//Boss boss;
@@ -396,16 +396,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					target[j].minusHealth(Bullet.getBulletDamage());
 					
 					bullet[i].setVisible(false);
+					bullet[i].setIsMoving(false);
+					bullet[i].setPosition(-999, -999);  //void the bullet
+					bulletImageView[i].setVisible(false);
 					//bullet[i].setPosition(0, 0);
 					
 					if(target[j].isDead()){
 						targetImageView[j].setVisible(false);
+						target[j].setPosition(0,0);
 					}
 					
 					break;
 				}
-				if(target[j].isDead())
-					targetImageView[j].setVisible(false);
 			}
 		}
 		

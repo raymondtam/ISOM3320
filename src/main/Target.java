@@ -6,6 +6,8 @@ import javafx.geometry.Point2D;
 public class Target extends Character{
 	private int attackDamage;
 	private boolean isMoving;
+	private static int maxHealth; 
+	
 	public Target(){
 		this(3, 3, 15);
 	}
@@ -14,6 +16,7 @@ public class Target extends Character{
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
+		maxHealth = health;
 	}
 	
 	public boolean isHit() {
@@ -118,6 +121,7 @@ public class Target extends Character{
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 			if (zombies[j].isDead()){ 
+				zombies[j].setHealth(maxHealth);
 				zombies[j].setVisible(playerPosition);
 				i++;
 			}
