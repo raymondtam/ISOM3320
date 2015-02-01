@@ -89,7 +89,7 @@ public class Target extends Character{
 
 		this.move(xIncrement, yIncrement);
 	}
-	
+		
 	public void setVisible(Point2D playerPosition){
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
@@ -107,8 +107,25 @@ public class Target extends Character{
 		}
 		this.setVisible(true);
 	}
+	
+	public void rebornZombie (Target[] zombies, Point2D playerPosition){
+		double random = Math.random(); 
+		int numberOfDeadZombies = 0;
+		int numberOfZombiesToReborn = 0;
+		for (int i = 0; i < zombies.length; i++){
+			if (zombies[i].isDead()) numberOfDeadZombies++;
+		}
+		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
+		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
+			if (zombies[j].isDead()) zombies[j].setVisible(playerPosition);
+		}
+	}
+	
+	// with level
+	public void rebornZombie (Target[] zombies, int level){
+		double random = Math.random(); 
+	}
 
-    
 	public String toString(){
 		return "This Target is at" + this.getPosition().toString() + "with radius: " + this.getRadius()
 				+ "and is " + ((this.isVisible())?"Visible":"Invisible") + " with movingspeed " + this.getMovingSpeed() +
