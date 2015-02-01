@@ -61,10 +61,16 @@ public class Target extends Character{
     
 	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
-		Point2D Horizons = new Point2D(1, 0);
-		double angleOfChase = zombiePosition.angle(Horizons, playerPosition);
-		zombiePosition = null;
-		Horizons = null;
+		Point2D yVector;
+		
+		if(this.getYcoord()>0)
+			yVector = new Point2D(this.getXcoord(), 0);
+		else
+			yVector = new Point2D(this.getXcoord(), this.getYcoord()-1);
+		
+		double angleOfChase = zombiePosition.angle(yVector, playerPosition);
+		if(playerPosition.getX()<zombiePosition.getX())
+			angleOfChase*=-1;
 		return angleOfChase;
 	}
 	
@@ -75,26 +81,12 @@ public class Target extends Character{
 	public void move(Point2D playerPosition) {
 		double xIncrement, yIncrement;
 		double angle = getAngleOfChase(playerPosition);
-		double cosAngle = Math.cos(this.getAngleOfChase(playerPosition));
-		double sinAngle = Math.sin(this.getAngleOfChase(playerPosition));
+		double cosAngle = Math.cos(angle);
+		double sinAngle = Math.sin(angle);
 		
-		if (this.getXcoord() < playerPosition.getX() && this.getYcoord() < playerPosition.getY()){
-			xIncrement = this.getMovingSpeed() * cosAngle;
-			yIncrement = this.getMovingSpeed() * sinAngle;
-		}
-		else if (this.getXcoord() < playerPosition.getX() && this.getYcoord() > playerPosition.getY()){
-			xIncrement = this.getMovingSpeed() * cosAngle;
-			yIncrement = - this.getMovingSpeed() * sinAngle;
-		}
-		else if (this.getXcoord() > playerPosition.getX() && this.getYcoord() < playerPosition.getY()){
-			xIncrement = - this.getMovingSpeed() * cosAngle;
-			yIncrement = this.getMovingSpeed() * sinAngle;
-		}
-		else {
-			xIncrement = - this.getMovingSpeed() * cosAngle;
-			yIncrement = - this.getMovingSpeed() * sinAngle;
-		}
-		
+		xIncrement = this.getMovingSpeed() * sinAngle;
+		yIncrement = this.getMovingSpeed() * cosAngle *-1;  // to compensate to revser of y axis of javafx
+
 		this.move(xIncrement, yIncrement);
 	}
 	

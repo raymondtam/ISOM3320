@@ -46,7 +46,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	long reloadStartTime = 0;
 	
-	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
+//	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
+	static Bullet[] bullet = Bullet.getBulletArray(100, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(10, 10, 7, 50); 
 	//Boss boss;
@@ -119,7 +120,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         HPLabel.setFont(DEFAULT_FONT);
         HPLabel.setOpacity(0.8);
         
-        BulletIntegerProperty = new SimpleIntegerProperty(15);
+        BulletIntegerProperty = new SimpleIntegerProperty(100);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
         BulletLabel.setFont(DEFAULT_FONT);
@@ -376,13 +377,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setY(target[i].getYcoord());
 		}
         
-		
+//		
 		for(int i=0;i<target.length;i++){
 			
 			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
 			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
 		}
-		
+//		
         //check ishit()
 		
 	}
