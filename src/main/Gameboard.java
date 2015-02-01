@@ -57,7 +57,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
-	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, rifleImageView, machinegunImageView;
+	private ImageView backgroundImageView, playerImageView, zombieImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, rifleImageView, machinegunImageView, bossImageView;
 	private ImageView[] bulletImageView, targetImageView; 
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
@@ -78,7 +78,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		pane = new Pane();
 		Image roadImage = null;
 		Image playerImage= null;
-		Image zombieImage = null, bulletImage = null;
+		Image zombieImage = null, bossImage = null, bulletImage = null;
 
 		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
@@ -101,6 +101,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			rifleIconImage = new Image ("rifle_icon.png");
 			
 			zombieImage = new Image("zombie1.png");
+			bossImage = new Image ("boss.gif");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
 			crossHairImage = new Image("crosshair_pick3.png");
@@ -123,6 +124,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImageView.setRotate(90);
 		zombieImageView = new ImageView(zombieImage);
 		zombieImageView.setRotate(270);
+		bossImageView = new ImageView (bossImage);
+		bossImageView.setRotate(270);
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
 		rifleIconImageView = new ImageView (rifleIconImage);
@@ -163,7 +166,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
        
 
-		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView, rifleImageView, machinegunImageView);
+		pane.getChildren().addAll(backgroundImageView, rifleIconImageView, machinegunIconImageView, playerImageView, HPLabel, BulletLabel, HPIconImageView, rifleImageView, machinegunImageView, bossImageView);
 
 
 		for(ImageView i : bulletImageView){
@@ -176,6 +179,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			pane.getChildren().addAll(i);
         	i.setVisible(false);
         }
+		bossImageView.setVisible(false);
 
 		
 //		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
