@@ -100,7 +100,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Loading images and setting GUI
 		try {
-			roadImage =  new Image("newBackground.jpg");
+			roadImage =  new Image("FullBackground.png");
 			playerImageHandGun = new Image(Paths.get("src\\pistol.png").toUri().toString());
 			playerImageRifle = new Image("rifle.png");
 			playerImageMachineGun = new Image("machinegun.png");
@@ -510,14 +510,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000){
 			newWeapon(machinegunIconImageView);
-<<<<<<< HEAD
-		
-		//change weapon
-=======
 			System.out.println("MachineGUnww");
 		}
 //change weapon
->>>>>>> origin/master
+
 		if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
 				+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
 				<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
