@@ -55,6 +55,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
 	static Boss boss = new Boss (100, 2, 100);
 	static int infectionThreshold = 0;
+	static int bossShowCount = 0;
 	
 	Point2D CursorPosition;
 	
@@ -642,14 +643,15 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 
 				&& backgroundImageView.getTranslateY() < - 600 
-				&& backgroundImageView.getTranslateY() > - 1620){
+				&& backgroundImageView.getTranslateY() > - 1620 && bossShowCount < 1){
 			System.out.println("Boss");
 			boss.setVisible(true);
 			boss.setPosition(600, 150);
 			bossImageView.setVisible(true);
 			bossImageView.setX(600);
 			bossImageView.setY(150);
-			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
+			bossShowCount += 1;
+			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		}
 		
 		//Game Over
