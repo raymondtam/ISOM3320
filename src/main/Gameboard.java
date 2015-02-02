@@ -447,18 +447,21 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
         
         if(moveLeft){
-        	if(backgroundImageView.getTranslateX() < 0)
+        	if(backgroundImageView.getTranslateX() < 0){
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        		for(Target i : target){
+            		i.changePosition(+5, 0);
+            	}
+        	}
         	else{
-        		player.move(-5, 0);
-        		playerImageView[weaponSetting].setX(player.getXcoord());
+        		if(player.getXcoord()>0){
+        			player.move(-5, 0);
+        			playerImageView[weaponSetting].setX(player.getXcoord());
+        		}
         	}
         	for(ImageView i : weaponIconImageView){
         		if(i.isVisible())
         			i.setX(i.getX()+5);
-        	}
-        	for(Target i : target){
-        		i.changePosition(+5, 0);
         	}
         	boss.changePosition(+5, 0);
         	//System.out.println(backgroundImageView.getTranslateX());
@@ -469,18 +472,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	if(player.getXcoord()<scene.getWidth()/2){
         		player.move(5, 0);
     			playerImageView[weaponSetting].setX(player.getXcoord());
-    			System.out.println("playerositionchanged");
         	}
         	else{
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        		for(Target i : target){
+            		i.changePosition(-5, 0);
+            	}
         	}
         	
         	for(ImageView i : weaponIconImageView){
         		if(i.isVisible())
         			i.setX(i.getX()-5);
-        	}
-        	for(Target i : target){
-        		i.changePosition(-5, 0);
         	}
         	boss.changePosition(-5, 0);
         	//player.move(5,0);
