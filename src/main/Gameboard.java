@@ -86,7 +86,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image roadImage = null;
 
 		Image playerImageHandGun = null, playerImageRifle = null, playerImageMachineGun = null;
-		Image zombieImage = null, bulletImage = null, bossImage = null;
+		Image zombieImage = null, zombieImage1 = null, zombieImage2 = null, bulletImage = null, bossImage = null;
 		
 		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
@@ -112,6 +112,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			rifleIconImage = new Image ("rifle_icon.png");
 			
 			zombieImage = new Image("zombie1.png");
+			zombieImage1 = new Image("zombie2.png");
+			zombieImage2 = new Image("zombie3.png");
 			bossImage = new Image ("boss.gif");
 			HPIconImage = new Image("HP.gif");
 			bulletImage = new Image("bullet.png");
@@ -171,9 +173,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	bulletImageView[i] = new ImageView(bulletImage);
         }
         
-        targetImageView = new ImageView[10];
-        for(int i=0 ; i<targetImageView.length ; i++ ){
+        targetImageView = new ImageView[12];
+        for(int i=0 ; i<targetImageView.length/3 ; i++ ){
         	targetImageView[i] = new ImageView(zombieImage);
+        	targetImageView[i+4] = new ImageView(zombieImage1);
+        	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
        
 
@@ -618,7 +622,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			weapon.setX((int)(player.getXcoord() + Math.random()*400));
 			weapon.setY((int)(Math.random()*600));
 	}
-	public void pickWeapon (ImageView weapon, short index) {
+	public void pickWeapon (ImageView weapon, int index) {
 		weapon.setVisible(false);
 		pane.getChildren().remove(weapon);
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
