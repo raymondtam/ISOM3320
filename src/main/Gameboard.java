@@ -53,7 +53,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
-	static Boss boss = new Boss (100, 2, 200);
+	static Boss boss = new Boss (100, 2, 100);
 	static int infectionThreshold = 0;
 	
 	Point2D CursorPosition;
@@ -553,7 +553,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		for(int i=0 ; i < bullet.length ; i++){
-			if(boss.isVisible() && bullet[i].isHit(boss)){
+			if(boss.isVisible() && bullet[i].isHit(boss) && bullet[i].isVisible()){
 				boss.minusHealth(Bullet.getBulletDamage());
 				bullet[i].setVisible(false);
 				bullet[i].setIsMoving(false);
