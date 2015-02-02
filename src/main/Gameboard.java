@@ -563,7 +563,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
-					
+					System.out.println("Zombie " + j + " is hit");
 					bullet[i].setVisible(false);
 					bullet[i].setIsMoving(false);
 					bullet[i].setPosition(-999, -999);  //void the bullet
@@ -610,7 +610,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//summon zombie
-		if(boss.getHealth() % 50 == 0){
+		if(boss.isVisible() && boss.getHealth() % 50 == 0){
 			boss.summonZombie(target, getPlayerPosition(), 200);
 		}
 		
