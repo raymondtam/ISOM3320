@@ -611,6 +611,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setY(150);
 			System.out.println("Boss");
 		}
+		
+		//GameOver
+		//if (player.isDead()) {
+		//Change background to black, maybe
+		//Systme.out.println (Game over and total score is ....);
+		//Ask to input name and show a button for restart
 	}
 	
 	
@@ -638,4 +644,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Point2D position = player.getPosition();
 		return position;
 	}
+	
+	// calculate total score
+		public void totalScore() {
+			//To Do, e.g.
+			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
+		}
+	
+	
 }
+
+
