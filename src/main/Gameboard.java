@@ -390,24 +390,23 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	public void handle(ActionEvent e) {
 		
 		//Shooting
-		if(mousePressed && ( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > 33*5) || ( handgunTrigger && System.currentTimeMillis() - lastShootTime > 33*20))){
+		if(mousePressed && ( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > 33*5) || ( handgunTrigger && System.currentTimeMillis() - lastShootTime > 33*10))){
 			handgunTrigger = false;
 			double angle = getFireAngle(mouseX, mouseY);
 			if((System.currentTimeMillis() - reloadStartTime) > 2000){
 				if(player.fire(mouseX, mouseY, angle)){ 
-					BulletIntegerProperty.setValue(BulletIntegerProperty.getValue()-1);
 					gunShoot[weaponSetting].play(100);
 					lastShootTime = System.currentTimeMillis();
 				} 
 				else{  //failed to fire, reload
 					reloadStartTime = System.currentTimeMillis();
 					player.reload();
-					BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 					gunReload[weaponSetting].play(100);
 				}		
+				BulletIntegerProperty.setValue(player.getNumberOfUnusedBullet());
 			}
 		}
-				
+
 		//Player movement with relative translation of graphics
         if(moveUp && backgroundImageView.getTranslateY() < - 300){
         	// && backgroundImageView.getTranslateY() > - 500
@@ -435,7 +434,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
             	machinegunIconImageView.setY(machinegunIconImageView.getY() - 5);
         	}
         	for(Target i : target){
-        		i.changePosition(0, -5);
+//        		if(i.getYcoord()>0)
+        			i.changePosition(0, -5);
+//        		else
+//        			i.changePosition(0, 5);
         	}
         	boss.changePosition(0, -5);
 //        	player.move(0, 5);
@@ -501,46 +503,49 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         //target movement
         
         
-        double minTargetDistance;
-        double targetDistance;
-		for(int i = 0; i < target.length; i++){
-			if (!target[i].isDead()){
-				minTargetDistance = 100;
-				for(int j = 0; j < target.length; j++){
-					if (i == j){
-						break;
-					}
-					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
-						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
-					if (targetDistance <= minTargetDistance){
-						minTargetDistance = targetDistance;
-					}
-				}
-				if (minTargetDistance >= 100){
-				target[i].move(player.getPosition());
-				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-				targetImageView[i].setX(target[i].getXcoord());
-				targetImageView[i].setY(target[i].getYcoord());
-				}
-			}
-		}
+//        double minTargetDistance;
+//        double targetDistance;
+//		for(int i = 0; i < target.length; i++){
+//			if (!target[i].isDead()){
+//				minTargetDistance = 100;
+//				for(int j = 0; j < target.length; j++){
+//					if (i == j){
+//						break;
+//					}
+//					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
+//						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
+//					if (targetDistance <= minTargetDistance){
+//						minTargetDistance = targetDistance;
+//					}
+//				}
+//				if (minTargetDistance >= 100){
+//				target[i].move(player.getPosition());
+//				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+//				targetImageView[i].setX(target[i].getXcoord());
+//				targetImageView[i].setY(target[i].getYcoord());
+//				}
+//			}
+//		}
 		
 		
 		//boss movement
+
+		
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 		bossImageView.setX(boss.getXcoord());
 		bossImageView.setY(boss.getYcoord());
+
 		
 		
 		
 		
-//		for(int i = 0; i < target.length; i++){
-//			target[i].move(player.getPosition());
-//			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-//			targetImageView[i].setX(target[i].getXcoord());
-//			targetImageView[i].setY(target[i].getYcoord());
-//		}
+		for(int i = 0; i < target.length; i++){
+			target[i].move(player.getPosition());
+			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+			targetImageView[i].setX(target[i].getXcoord());
+			targetImageView[i].setY(target[i].getYcoord());
+		}
 		
 		
 		
@@ -565,7 +570,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 			
 			for(int j=0 ; j<target.length;j++){
-				if(target[j].isVisible() && bullet[i].isHit(target[j])){
+				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
 					
 					bullet[i].setVisible(false);
@@ -577,7 +582,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
 						score++;
-//						System.out.println(score);
+						System.out.println("Score: " +score);
 					}
 					
 					break;
