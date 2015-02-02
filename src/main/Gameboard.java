@@ -510,6 +510,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
+		//boss movement
+		
+		if (!boss.isDead()){
+			minTargetDistance = 60;
+			boss.move(player.getPosition());
+			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			bossImageView.setX(boss.getXcoord());
+			bossImageView.setY(boss.getYcoord());
+			
+		}
+		
 		
 		
 		/*
@@ -588,15 +599,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 ){
-			bossImageView.setVisible(true);
-			bossImageView.setX(600);
-			bossImageView.setY(150);
+			//bossImageView.setVisible(true);
+			//bossImageView.setX(600);
+			//bossImageView.setY(150);
 			System.out.println("Boss");
 			//boss.setVisible(player.getPosition());
 			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
-			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-			bossImageView.setX(boss.getXcoord());
-			bossImageView.setY(boss.getYcoord());
+			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			bossImageView.setX(600);
+			bossImageView.setY(150);
+			//bossImageView.setX(boss.getXcoord());
+			//bossImageView.setY(boss.getYcoord());
 			bossImageView.setVisible(true);
 		}
 		
