@@ -583,7 +583,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						target[j].setVisible(false);
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
-						score++;
+						score+=10;
 						System.out.println("Score: " +score);
 					}
 					
