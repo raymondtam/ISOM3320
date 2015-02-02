@@ -363,6 +363,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		System.out.println("Stage being showed.");
 		startTime = System.currentTimeMillis();
 		
+		backgroundImageView.setTranslateY(- 1431);
+		
 //		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
 		
 		for(int i=0;i<target.length;i++){
@@ -438,7 +440,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //		System.out.println("After fired,  "+player.getNumberOfUnusedBullet());
 		
 		//player movement
-        if(moveUp){
+        if(moveUp && backgroundImageView.getTranslateY() < - 300){
+        	// && backgroundImageView.getTranslateY() > - 500
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
         	if(rifleIconImageView.isVisible()){
         	//rifleIconImageView.setTranslateY(rifleIconImageView.getTranslateY()+5);
@@ -455,23 +458,26 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	}
 //        	player.move(0, -5);
         }
-        if(moveDown){
-        	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()-5);
+        
+        if(moveDown && backgroundImageView.getTranslateY() > - 1920){
+        	// && backgroundImageView.getTranslateY() < 500
+        	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY() - 5);
         	if(rifleIconImageView.isVisible()){
         	//rifleIconImageView.setTranslateY(rifleIconImageView.getTranslateY()-5);
         	//rifleIconImageView.setX(rifleIconImageView.getX());
-        	rifleIconImageView.setY(rifleIconImageView.getY()-5);
+        	rifleIconImageView.setY(rifleIconImageView.getY() - 5);
         	}
         	if(machinegunIconImageView.isVisible()){
-        	//machinegunIconImageView.setTranslateY(machinegunIconImageView.getTranslateY()-5);
+        	//machinegunIconImageView.setTranslateY(machinegunIconImageView.getTranslateY() - 5);
         		//machinegunIconImageView.setX(machinegunIconImageView.getX());
-            	machinegunIconImageView.setY(machinegunIconImageView.getY()-5);
+            	machinegunIconImageView.setY(machinegunIconImageView.getY() - 5);
         	}
         	for(Target i : target){
         		i.changePosition(0, -5);
         	}
 //        	player.move(0, 5);
         }
+        
         if(moveLeft && backgroundImageView.getTranslateX() < 0){
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
         	if(rifleIconImageView.isVisible()){
@@ -490,6 +496,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	//System.out.println(backgroundImageView.getTranslateX());
 //        	player.move(-5, 0);
         }
+        
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
         	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
         	if(rifleIconImageView.isVisible()){
@@ -544,7 +551,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					
 					if(target[j].isDead()){
 						targetImageView[j].setVisible(false);
-						target[j].setPosition(0,0);
+						target[j].setPosition(-999,-999);
 						score++;
 //						System.out.println(score);
 					}
@@ -603,7 +610,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setY(150);
 			System.out.println("Boss");
 		}
-	
 	}
 	
 	
@@ -612,7 +618,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			weapon.setX((int)(player.getXcoord() + Math.random()*400));
 			weapon.setY((int)(Math.random()*600));
 	}
-	public void pickWeapon (ImageView weapon, int index) {
+	public void pickWeapon (ImageView weapon, short index) {
 		weapon.setVisible(false);
 		pane.getChildren().remove(weapon);
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
@@ -630,8 +636,5 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	public static Point2D getPlayerPosition(){
 		Point2D position = player.getPosition();
 		return position;
-	} 
-	
-	
-	
+	}
 }
