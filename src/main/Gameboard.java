@@ -51,7 +51,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
-	static Boss boss = new Boss (100, 10, 30);
+	static Boss boss = new Boss (100, 2, 200);
 	
 	Point2D CursorPosition;
 	
@@ -591,6 +591,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setX(600);
 			bossImageView.setY(150);
 			System.out.println("Boss");
+			//boss.setVisible(player.getPosition());
+			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
+			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			bossImageView.setX(boss.getXcoord());
+			bossImageView.setY(boss.getYcoord());
+			bossImageView.setVisible(true);
 		}
 		
 		//Game Over
