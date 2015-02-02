@@ -53,7 +53,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
-	static Boss boss = new Boss (100, 2, 200);
+	static Boss boss = new Boss (100, 2, 100);
 	static int infectionThreshold = 0;
 	
 	Point2D CursorPosition;
@@ -70,8 +70,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
-    private Label HPLabel = new Label(), BulletLabel = new Label();
-    private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
+    private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label();
+    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty;
     
     //movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
@@ -166,6 +166,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         HPLabel.setFont(DEFAULT_FONT);
         HPLabel.setOpacity(0.8);
         
+        ScoreIntegerProperty = new SimpleIntegerProperty(0);
+        ScoreLabel.textProperty().bind(ScoreIntegerProperty.asString());
+        ScoreLabel.setTextFill(Color.YELLOW);
+        ScoreLabel.setFont(DEFAULT_FONT);
+        ScoreLabel.setOpacity(0.8);
+        
         BulletIntegerProperty = new SimpleIntegerProperty(DEFAULT_MAGAZINE_SIZE);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
@@ -219,6 +225,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		HPLabel.setTranslateX(70);
 		HPLabel.setTranslateY(530);
+		ScoreLabel.setTranslateX(300);
+		ScoreLabel.setTranslateY(530);
 		HPIconImageView.setX(5);
 		HPIconImageView.setY(500);
 		BulletLabel.setTranslateY(530);
@@ -581,6 +589,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					break;
 				}
 			}
+			ScoreIntegerProperty.setValue(score);
 		}
 		
 		// minusHealth of player
