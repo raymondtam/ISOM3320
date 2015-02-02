@@ -52,8 +52,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
-	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
-	static Boss boss = new Boss (100, 2, 100);
+	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 80); 
+	static Boss boss = new Boss (500, 2, 130);
 	static int infectionThreshold = 0;
 	static int bossShowCount = 0;
 	
