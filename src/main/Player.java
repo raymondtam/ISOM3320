@@ -8,9 +8,10 @@ public class Player extends Character{
 	Player() {
 	}
 	
-	public Player(Bullet[] bullet, int movingSpeed) {
+	public Player(Bullet[] bullet, int movingSpeed, int health) {
 		this.bullet = bullet;
 		this.numberOfUnusedBullet = Bullet.getMagazineSize();
+		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 	}
 	
@@ -27,9 +28,8 @@ public class Player extends Character{
 		return true;
 	}
 	
-	public boolean isHit(Target target,int attackDamage) {
+	public boolean isHit(Target target) {
 		if (target.getPosition().distance(getPosition()) <= this.getRadius() + target.getRadius()) {
-			minusHealth(attackDamage);
 			return true;
 		}
 		return false;

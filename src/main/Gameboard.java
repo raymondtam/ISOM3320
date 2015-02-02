@@ -38,6 +38,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
 	final static double DEFAULT_RADIUS = 20;
 	final static int NUMBER_OF_ZOMBIES = 10;
+	final static int ZOMBIES_DAMAGE = 5;
+	final static int PLAYER_MAXHEALTH = 100;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
 	//game variable and objects
@@ -49,9 +51,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	long reloadStartTime = 0, startTime = 0;
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
-	static Player player = new Player(bullet, 5);
+	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
 	static Boss boss = new Boss (100, 2, 200);
+	static int infectionThreshold = 0;
 	
 	Point2D CursorPosition;
 	
@@ -510,6 +513,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
+		
 		//boss movement
 		
 		if (!boss.isDead()){
@@ -535,7 +539,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		
-		for(int i=0 ; i<bullet.length ; i++){
+		
+		for(int i=0 ; i < bullet.length ; i++){
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
@@ -554,6 +559,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					
 					break;
 				}
+			}
+		}
+		
+		// minusHealth of player
+		for(int i = 0; i < target.length; i++){
+			if(player.isHit(target[i])){
+				infectionThreshold += 1;
+			}
+			if(infectionThreshold == 30){
+				player.minusHealth(ZOMBIES_DAMAGE);
+				HPIntegerProperty.setValue(player.getHealth());
+				infectionThreshold = 0;
 			}
 		}
 		
