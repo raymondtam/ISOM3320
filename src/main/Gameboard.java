@@ -578,7 +578,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
-<<<<<<< HEAD
 		// minusHealth of player
 		for(int i = 0; i < target.length; i++){
 			if(player.isHit(target[i])){
@@ -592,9 +591,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//rebornZombie
-=======
 		//reborn Zombie
->>>>>>> origin/master
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
 			System.out.println("reborned");
@@ -642,17 +639,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 
 				&& backgroundImageView.getTranslateY() < - 600 
 				&& backgroundImageView.getTranslateY() > - 1620){
-			//bossImageView.setVisible(true);
-			//bossImageView.setX(600);
-			//bossImageView.setY(150);
 			System.out.println("Boss");
-			//boss.setVisible(player.getPosition());
-			//bossImageView.setX(boss.getXcoord());
-			//bossImageView.setY(boss.getYcoord());
+			boss.setPosition(600, 150);
 			bossImageView.setVisible(true);
 			bossImageView.setX(600);
 			bossImageView.setY(150);
-			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		}
 		
