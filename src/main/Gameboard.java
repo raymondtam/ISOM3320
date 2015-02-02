@@ -612,11 +612,21 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			System.out.println("Boss");
 		}
 		
-		//GameOver
+		//Game Over
 		//if (player.isDead()) {
 		//Change background to black, maybe
 		//Systme.out.println (Game over and total score is ....);
-		//Ask to input name and show a button for restart
+		//Ask to input name
+		//show top 3 score and show a button for restart
+		//}
+		
+		//Win Game
+		//if (Boss.isDead()){
+		//Change background to black, maybe
+		//Systme.out.println (Congratulation and total score is ....);
+		//Ask to input name
+		//show top 3 score and show a button for restart
+		//}
 	}
 	
 	
@@ -646,10 +656,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	}
 	
 	// calculate total score
-		public void totalScore() {
+		//public double totalScore() {
 			//To Do, e.g.
 			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
-		}
+		//}
 	
 	
 }
