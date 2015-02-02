@@ -2,6 +2,8 @@ package main;
 
 public class Boss extends Target{
 	
+	private int maxHeath;
+
 	public Boss(){
 	}
 	
@@ -9,6 +11,7 @@ public class Boss extends Target{
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
+		this.maxHeath = health;
 		//maxHealth = health;
 	}
 	

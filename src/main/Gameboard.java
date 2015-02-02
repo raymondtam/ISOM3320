@@ -436,8 +436,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //        	player.move(0, 5);
         }
         
-        if(moveLeft && backgroundImageView.getTranslateX() < 0){
-        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        if(moveLeft){
+        	if(backgroundImageView.getTranslateX() < 0)
+        		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        	else{
+        		player.move(-5, 0);
+        		playerImageView[weaponSetting].setX(player.getXcoord());
+        	}
         	if(rifleIconImageView.isVisible()){
         		rifleIconImageView.setX(rifleIconImageView.getX()+5);
         	}
@@ -452,16 +457,20 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
         
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
-        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	if(player.getXcoord()<scene.getWidth()/2){
+        		player.move(5, 0);
+    			playerImageView[weaponSetting].setX(player.getXcoord());
+    			System.out.println("playerositionchanged");
+        	}
+        	else{
+        		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	}
+        	
         	if(rifleIconImageView.isVisible()){
-        	//rifleIconImageView.setTranslateX(rifleIconImageView.getTranslateX()-5);
-        	rifleIconImageView.setX(rifleIconImageView.getX()-5);
-        	//rifleIconImageView.setY(rifleIconImageView.getY());
+        		rifleIconImageView.setX(rifleIconImageView.getX()-5);
         	}
         	if(machinegunIconImageView.isVisible()){
-        	//machinegunIconImageView.setTranslateX(machinegunIconImageView.getTranslateX()-5);
         		machinegunIconImageView.setX(machinegunIconImageView.getX()-5);
-            	//machinegunIconImageView.setY(machinegunIconImageView.getY());
         	}
         	for(Target i : target){
         		i.changePosition(-5, 0);
@@ -474,7 +483,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         //bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
         	if(bullet[i].getIsMoving()){
-        	//if(bullet[i].getXVelocity()>0 || bullet[i].getYVelocity()>0){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
         		bullet[i].move(bullet[i].getXVelocity()*20, bullet[i].getYVelocity()*20);
@@ -507,14 +515,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		
-		/*
-		for(int i = 0; i < target.length; i++){
-			target[i].move(player.getPosition());
-			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord());
-			targetImageView[i].setY(target[i].getYcoord());
-		}
-		*/
+		
+//		for(int i = 0; i < target.length; i++){
+//			target[i].move(player.getPosition());
+//			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+//			targetImageView[i].setX(target[i].getXcoord());
+//			targetImageView[i].setY(target[i].getYcoord());
+//		}
+		
 		
 		
 		for(int i=0 ; i<bullet.length ; i++){
@@ -539,7 +547,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
-		//rebornZombie
+		//reborn Zombie
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
 			System.out.println("reborned");
