@@ -528,16 +528,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		//boss movement
-
-		
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 		bossImageView.setX(boss.getXcoord());
 		bossImageView.setY(boss.getYcoord());
-
-		
-		
-		
 		
 		for(int i = 0; i < target.length; i++){
 			target[i].move(player.getPosition());
@@ -545,11 +539,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setX(target[i].getXcoord());
 			targetImageView[i].setY(target[i].getYcoord());
 		}
-		
-		
-		
-		
-		
 		
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
@@ -677,8 +666,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			weapon.setY((int)(Math.random()*600));
 	}
 	public void pickWeapon (ImageView weapon, int index) {
-		weapon.setVisible(false);
-		pane.getChildren().remove(weapon);
+//		weapon.setVisible(false);
+		weapon.setX(-999);
+		weapon.setY(-999);
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
 		Bullet.setMagazineSize(MAGAZINE_SIZE[index]);
 		playerImageView[weaponSetting].setVisible(false); // original
