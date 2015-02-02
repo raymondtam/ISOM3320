@@ -421,6 +421,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(0, 5);
         	}
+        	boss.changePosition(0, 5);
 //        	player.move(0, -5);
         }
         
@@ -436,11 +437,17 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(0, -5);
         	}
+        	boss.changePosition(0, -5);
 //        	player.move(0, 5);
         }
         
-        if(moveLeft && backgroundImageView.getTranslateX() < 0){
-        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        if(moveLeft){
+        	if(backgroundImageView.getTranslateX() < 0)
+        		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+        	else{
+        		player.move(-5, 0);
+        		playerImageView[weaponSetting].setX(player.getXcoord());
+        	}
         	if(rifleIconImageView.isVisible()){
         		rifleIconImageView.setX(rifleIconImageView.getX()+5);
         	}
@@ -450,25 +457,31 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(+5, 0);
         	}
+        	boss.changePosition(+5, 0);
         	//System.out.println(backgroundImageView.getTranslateX());
 //        	player.move(-5, 0);
         }
         
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
-        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	if(player.getXcoord()<scene.getWidth()/2){
+        		player.move(5, 0);
+    			playerImageView[weaponSetting].setX(player.getXcoord());
+    			System.out.println("playerositionchanged");
+        	}
+        	else{
+        		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
+        	}
+        	
         	if(rifleIconImageView.isVisible()){
-        	//rifleIconImageView.setTranslateX(rifleIconImageView.getTranslateX()-5);
-        	rifleIconImageView.setX(rifleIconImageView.getX()-5);
-        	//rifleIconImageView.setY(rifleIconImageView.getY());
+        		rifleIconImageView.setX(rifleIconImageView.getX()-5);
         	}
         	if(machinegunIconImageView.isVisible()){
-        	//machinegunIconImageView.setTranslateX(machinegunIconImageView.getTranslateX()-5);
         		machinegunIconImageView.setX(machinegunIconImageView.getX()-5);
-            	//machinegunIconImageView.setY(machinegunIconImageView.getY());
         	}
         	for(Target i : target){
         		i.changePosition(-5, 0);
         	}
+        	boss.changePosition(-5, 0);
         	//player.move(5,0);
         }
 //        playerImageView.setX(player.getXcoord());
@@ -477,7 +490,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         //bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
         	if(bullet[i].getIsMoving()){
-        	//if(bullet[i].getXVelocity()>0 || bullet[i].getYVelocity()>0){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
         		bullet[i].move(bullet[i].getXVelocity()*20, bullet[i].getYVelocity()*20);
@@ -517,7 +529,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//boss movement
 		
 		if (!boss.isDead()){
-			minTargetDistance = 60;
+			minTargetDistance = 100;
 			boss.move(player.getPosition());
 			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 			bossImageView.setX(boss.getXcoord());
@@ -527,14 +539,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		
-		/*
-		for(int i = 0; i < target.length; i++){
-			target[i].move(player.getPosition());
-			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord());
-			targetImageView[i].setY(target[i].getYcoord());
-		}
-		*/
+		
+//		for(int i = 0; i < target.length; i++){
+//			target[i].move(player.getPosition());
+//			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+//			targetImageView[i].setX(target[i].getXcoord());
+//			targetImageView[i].setY(target[i].getYcoord());
+//		}
+		
 		
 		
 		
@@ -562,6 +574,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
+<<<<<<< HEAD
 		// minusHealth of player
 		for(int i = 0; i < target.length; i++){
 			if(player.isHit(target[i])){
@@ -575,6 +588,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//rebornZombie
+=======
+		//reborn Zombie
+>>>>>>> origin/master
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
 			System.out.println("reborned");
@@ -595,10 +611,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //		}
 //		
 		//show weapon
-		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 ){
+		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 
+				&& backgroundImageView.getTranslateY() < - 600 
+				&& backgroundImageView.getTranslateY() > - 1620){
 			newWeapon(rifleIconImageView);
 		}
-		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000){
+		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000
+				&& backgroundImageView.getTranslateY() < - 600 
+				&& backgroundImageView.getTranslateY() > - 1620){
 			newWeapon(machinegunIconImageView);
 		}
 //change weapon
@@ -615,19 +635,21 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//Show Boss
-		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 ){
+		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 
+				&& backgroundImageView.getTranslateY() < - 600 
+				&& backgroundImageView.getTranslateY() > - 1620){
 			//bossImageView.setVisible(true);
 			//bossImageView.setX(600);
 			//bossImageView.setY(150);
 			System.out.println("Boss");
 			//boss.setVisible(player.getPosition());
-			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
-			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-			bossImageView.setX(600);
-			bossImageView.setY(150);
 			//bossImageView.setX(boss.getXcoord());
 			//bossImageView.setY(boss.getYcoord());
 			bossImageView.setVisible(true);
+			bossImageView.setX(600);
+			bossImageView.setY(150);
+			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		}
 		
 		//Game Over
