@@ -99,7 +99,6 @@ public class Target extends Character{
 		// xIncrement = this.getMovingSpeed() * sinAngle;
 		// yIncrement = this.getMovingSpeed() * cosAngle *-1;  // to compensate to revser of y axis of javafx
 		// this.move(xIncrement, yIncrement);
-		
 	}
 		
 	public void setVisible(Point2D playerPosition){
