@@ -554,8 +554,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					bossImageView.setVisible(false);
 					boss.setPosition(-999,-999);
 					score+=1000;
-					//call win Game
-//					System.out.println(score);
+					System.out.println("Boss Dead");
 				}
 			}
 			
@@ -573,7 +572,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
 						score+=10;
-						System.out.println("Score: " +score);
+						System.out.println("Zombie " + j + " Dead");
 					}
 					
 					break;
@@ -683,7 +682,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImageView[weaponSetting].setY(player.getYcoord());
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-		
 	}
 
 	public static Point2D getPlayerPosition(){
