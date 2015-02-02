@@ -83,13 +83,22 @@ public class Target extends Character{
 	
 	public void move(Point2D playerPosition) {
 		double xIncrement, yIncrement;
-		double angle = getAngleOfChase(playerPosition);
-		double cosAngle = Math.cos(angle);
-		double sinAngle = Math.sin(angle);
+		double distance, xDifference, yDifference;
+		// double angle = getAngleOfChase(playerPosition);
+		// double cosAngle = Math.cos(angle);
+		// double sinAngle = Math.sin(angle);
+		xDifference = playerPosition.getX() - this.getXcoord();
+		yDifference = playerPosition.getY() - this.getYcoord();
+		distance = Math.pow(Math.pow(xDifference, 2.0) + Math.pow(yDifference, 2.0), 0.5);
 		
-		xIncrement = this.getMovingSpeed() * sinAngle;
-		yIncrement = this.getMovingSpeed() * cosAngle *-1;  // to compensate to revser of y axis of javafx
+		//if (xDifference > 0 && yDifference > 0){
+		xIncrement = this.getMovingSpeed() * xDifference / distance;
+		yIncrement = this.getMovingSpeed() * yDifference / distance;
 		this.move(xIncrement, yIncrement);
+		//}
+		// xIncrement = this.getMovingSpeed() * sinAngle;
+		// yIncrement = this.getMovingSpeed() * cosAngle *-1;  // to compensate to revser of y axis of javafx
+		// this.move(xIncrement, yIncrement);
 		
 	}
 		

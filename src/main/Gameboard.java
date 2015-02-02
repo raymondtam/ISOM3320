@@ -36,6 +36,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
 	final static double DEFAULT_RADIUS = 20;
+	final static int NUMBER_OF_ZOMBIES = 10;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
 	//game variable and objects
@@ -48,9 +49,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
-	static Target[] target = Target.getTargetArray(10, 10, 3, 50); 
+	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
 	//Boss boss;
-	
 	
 	Point2D CursorPosition;
 	
@@ -58,7 +58,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
-
+	
 	private ImageView backgroundImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, bossImageView;
 	private ImageView[] bulletImageView, targetImageView, playerImageView; 
 
@@ -159,8 +159,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         HPLabel.setFont(DEFAULT_FONT);
         HPLabel.setOpacity(0.8);
         
-        
-        
         BulletIntegerProperty = new SimpleIntegerProperty(DEFAULT_MAGAZINE_SIZE);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
@@ -180,17 +178,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
        
-
 		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, rifleIconImageView, machinegunIconImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
-
-
+		
 		for(ImageView i : bulletImageView){
 			pane.getChildren().addAll(i);
 			i.setVisible(false);
 		} 
 
-		
 		for(ImageView i: targetImageView){
 			pane.getChildren().addAll(i);
         	i.setVisible(false);
@@ -588,11 +583,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//show weapon
 		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 ){
 			newWeapon(rifleIconImageView);
-			System.out.println("Rifile");
+			// System.out.println("Rifile");
 		}
 		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000){
 			newWeapon(machinegunIconImageView);
-			System.out.println("MachineGUnww");
+			// System.out.println("MachineGUnww");
 		}
 //change weapon
 
@@ -612,7 +607,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setVisible(true);
 			bossImageView.setX(600);
 			bossImageView.setY(150);
-			System.out.println("Boss");
+			// System.out.println("Boss");
 		}
 	}
 	
@@ -634,7 +629,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImageView[weaponSetting].setY(player.getYcoord());
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-
+		
 	}
 
 	public static Point2D getPlayerPosition(){
