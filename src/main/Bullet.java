@@ -66,7 +66,7 @@ public class Bullet extends GameObject {
 	public boolean isHit(Target targetShot) {
 			if (Math.pow(Math.pow(targetShot.getXcoord() - this.getXcoord(),2.0) 
 					+ Math.pow(targetShot.getYcoord() - this.getYcoord(),2.0), 0.5) 
-					<= (targetShot.getRadius() + this.getRadius())){
+					<= (targetShot.getRadius() + this.getRadius()) && this.isVisible()){
 				return true;
 			}
 			else {
