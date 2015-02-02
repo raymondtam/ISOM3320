@@ -554,6 +554,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isHit(boss)){
+				System.out.println("hit bossed");
 				boss.minusHealth(Bullet.getBulletDamage());
 				bullet[i].setVisible(false);
 				bullet[i].setIsMoving(false);
