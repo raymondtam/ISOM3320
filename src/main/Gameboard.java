@@ -368,13 +368,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		for(int i=0;i<target.length;i++){
 			target[i].setVisible(player.getPosition());
-			// System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 			targetImageView[i].setX(target[i].getXcoord());
 			targetImageView[i].setY(target[i].getYcoord());
 			targetImageView[i].setVisible(true);
 		}
-		
 
 		//TO-DO, bind integer property with health and bulletnumber
 //		
@@ -531,52 +530,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         }
         
         //target movement
-        /*
+        
 		for(int i=0;i<target.length ; i++){
 			target[i].move(player.getPosition());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 			targetImageView[i].setX(target[i].getXcoord());
 			targetImageView[i].setY(target[i].getYcoord());
 		}
-		*/
-		
-		
-		double distanceBetweenTargets;
-		double minDistanceBetweenTargets[] = new double[NUMBER_OF_ZOMBIES - 1];
-		for(int i = 0; i < target.length - 1; i++){
-			minDistanceBetweenTargets[i] = 1000d;
-			for (int j = i + 1; j < target.length; j++){
-				distanceBetweenTargets = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
-							+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
-				if (distanceBetweenTargets <= minDistanceBetweenTargets[i]){
-					minDistanceBetweenTargets[i] = distanceBetweenTargets;
-				}
-			}
-			if (minDistanceBetweenTargets[i] >= 60){
-				target[i].move(player.getPosition());
-				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-				targetImageView[i].setX(target[i].getXcoord());
-				targetImageView[i].setY(target[i].getYcoord());
-				targetImageView[i].setVisible(true);
-			}
-			/*
-			else {
-				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-				target[i].move(target[i].getPosition());
-				targetImageView[i].setX(target[i].getXcoord());
-				targetImageView[i].setY(target[i].getYcoord());
-				targetImageView[i].setVisible(true);
-			}
-			*/
-		}
-		/*
-		if (distanceBetweenTarget >= 60){
-			target[i].move(player.getPosition());
-			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord());
-			targetImageView[i].setY(target[i].getYcoord());
-			targetImageView[i].setVisible(true);
-		*/
 		        
 		for(int i=0 ; i<bullet.length ; i++){
 			for(int j=0 ; j<target.length;j++){
