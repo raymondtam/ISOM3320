@@ -418,6 +418,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(0, 5);
         	}
+        	boss.changePosition(0, 5);
 //        	player.move(0, -5);
         }
         
@@ -433,6 +434,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(0, -5);
         	}
+        	boss.changePosition(0, -5);
 //        	player.move(0, 5);
         }
         
@@ -452,6 +454,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(+5, 0);
         	}
+        	boss.changePosition(+5, 0);
         	//System.out.println(backgroundImageView.getTranslateX());
 //        	player.move(-5, 0);
         }
@@ -475,6 +478,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	for(Target i : target){
         		i.changePosition(-5, 0);
         	}
+        	boss.changePosition(-5, 0);
         	//player.move(5,0);
         }
 //        playerImageView.setX(player.getXcoord());
@@ -618,13 +622,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			//bossImageView.setY(150);
 			System.out.println("Boss");
 			//boss.setVisible(player.getPosition());
-			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
-			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-			bossImageView.setX(600);
-			bossImageView.setY(150);
 			//bossImageView.setX(boss.getXcoord());
 			//bossImageView.setY(boss.getYcoord());
 			bossImageView.setVisible(true);
+			bossImageView.setX(600);
+			bossImageView.setY(150);
+			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		}
 		
 		//Game Over
