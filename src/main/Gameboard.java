@@ -1,6 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -533,13 +534,38 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         //target movement
         
-		for(int i=0;i<target.length ; i++){
+        double minTargetDistance;
+        double targetDistance;
+		for(int i = 0; i < target.length - 1; i++){
+			if (!target[i].isDead()){
+				minTargetDistance = 60;
+				for(int j = i; j < target.length; j++){
+					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
+						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
+					if (targetDistance <= minTargetDistance){
+						minTargetDistance = targetDistance;
+					}
+				}
+				if (minTargetDistance >= 30){
+				target[i].move(player.getPosition());
+				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+				targetImageView[i].setX(target[i].getXcoord());
+				targetImageView[i].setY(target[i].getYcoord());
+				}
+			}
+		}
+		
+		
+		/*
+		for(int i = 0; i < target.length; i++){
 			target[i].move(player.getPosition());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 			targetImageView[i].setX(target[i].getXcoord());
 			targetImageView[i].setY(target[i].getYcoord());
 		}
-		        
+		*/
+		
+		
 		for(int i=0 ; i<bullet.length ; i++){
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
@@ -562,7 +588,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
-		//reborbZombie
+		//rebornZombie
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
 			System.out.println("reborned");
@@ -628,7 +654,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//show top 3 score and show a button for restart
 		//}
 	}
-	
 	
 	public void newWeapon(ImageView weapon) {
 			weapon.setVisible(true);
