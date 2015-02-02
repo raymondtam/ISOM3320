@@ -650,6 +650,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				&& backgroundImageView.getTranslateY() < - 600 
 				&& backgroundImageView.getTranslateY() > - 1620){
 			System.out.println("Boss");
+			boss.setVisible(true);
 			boss.setPosition(600, 150);
 			bossImageView.setVisible(true);
 			bossImageView.setX(600);
