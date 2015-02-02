@@ -146,6 +146,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		HPIconImageView.setOpacity(0.6);
 		rifleIconImageView = new ImageView (rifleIconImage);
 		machinegunIconImageView = new ImageView (machinegunIconImage);
+		bossImageView = new ImageView (bossImage);
+		bossImageView.setRotate(270);
 		
 		dummy = new ImageView(machinegunImage);
 		dummy.setRotate(90);
@@ -178,7 +180,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
        
-		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, rifleIconImageView, machinegunIconImageView);
+		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, rifleIconImageView, machinegunIconImageView, bossImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 		
 		for(ImageView i : bulletImageView){
@@ -191,7 +193,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	i.setVisible(false);
         }
 
-//		bossImageView.setVisible(false);
+		bossImageView.setVisible(false);
 
 		
 //		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
@@ -607,7 +609,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setVisible(true);
 			bossImageView.setX(600);
 			bossImageView.setY(150);
-			// System.out.println("Boss");
+			System.out.println("Boss");
 		}
 	}
 	
