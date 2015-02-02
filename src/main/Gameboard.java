@@ -527,15 +527,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		//boss movement
-		
-		//if (!boss.isDead()){
-			//minTargetDistance = 100;
-			//boss.move(player.getPosition());
-			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-			//bossImageView.setX(boss.getXcoord());
-			//bossImageView.setY(boss.getYcoord());
-			
-		//}
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 		bossImageView.setX(boss.getXcoord());
@@ -557,6 +548,22 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		for(int i=0 ; i < bullet.length ; i++){
+			if(boss.isVisible() && bullet[i].isHit(boss)){
+				boss.minusHealth(Bullet.getBulletDamage());
+				bullet[i].setVisible(false);
+				bullet[i].setIsMoving(false);
+				bullet[i].setPosition(-999, -999);  //void the bullet
+				bulletImageView[i].setVisible(false);
+				
+				if(boss.isDead()){
+					bossImageView.setVisible(false);
+					boss.setPosition(-999,-999);
+					score+=1000;
+					//call win Game
+//					System.out.println(score);
+				}
+			}
+			
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
@@ -589,8 +596,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				infectionThreshold = 0;
 			}
 		}
-		
-		//rebornZombie
 		//reborn Zombie
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
