@@ -51,7 +51,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 50); 
-	//Boss boss;
+	static Boss boss = new Boss (100, 2, 200);
 	
 	Point2D CursorPosition;
 	
@@ -493,19 +493,23 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         
         //target movement
         
+        
         double minTargetDistance;
         double targetDistance;
-		for(int i = 0; i < target.length - 1; i++){
+		for(int i = 0; i < target.length; i++){
 			if (!target[i].isDead()){
-				minTargetDistance = 60;
-				for(int j = i; j < target.length; j++){
+				minTargetDistance = 100;
+				for(int j = 0; j < target.length; j++){
+					if (i == j){
+						break;
+					}
 					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
 						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
 					if (targetDistance <= minTargetDistance){
 						minTargetDistance = targetDistance;
 					}
 				}
-				if (minTargetDistance >= 30){
+				if (minTargetDistance >= 100){
 				target[i].move(player.getPosition());
 				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 				targetImageView[i].setX(target[i].getXcoord());
@@ -513,6 +517,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				}
 			}
 		}
+		
+		//boss movement
+		
+		if (!boss.isDead()){
+			minTargetDistance = 60;
+			boss.move(player.getPosition());
+			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			bossImageView.setX(boss.getXcoord());
+			bossImageView.setY(boss.getYcoord());
+			
+		}
+		
 		
 		
 		
@@ -522,6 +538,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //			targetImageView[i].setX(target[i].getXcoord());
 //			targetImageView[i].setY(target[i].getYcoord());
 //		}
+		
+		
 		
 		
 		
@@ -589,10 +607,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 ){
-			bossImageView.setVisible(true);
+			//bossImageView.setVisible(true);
+			//bossImageView.setX(600);
+			//bossImageView.setY(150);
+			System.out.println("Boss");
+			//boss.setVisible(player.getPosition());
+			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
+			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 			bossImageView.setX(600);
 			bossImageView.setY(150);
-			System.out.println("Boss");
+			//bossImageView.setX(boss.getXcoord());
+			//bossImageView.setY(boss.getYcoord());
+			bossImageView.setVisible(true);
 		}
 		
 		//Game Over
