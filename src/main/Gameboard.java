@@ -63,16 +63,20 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	Scene scene;
 	Timeline timeline, refreshScreen;
 	
-	private ImageView backgroundImageView, HPIconImageView, rifleIconImageView, machinegunIconImageView, bossImageView;
-	private ImageView[] bulletImageView, targetImageView, playerImageView; 
-
+	private ImageView backgroundImageView, HPIconImageView, bossImageView;
+	private ImageView[] bulletImageView, targetImageView, playerImageView, weaponIconImageView; 
+	
+	long[] weaponIconDistance;
+	
 	private AudioClip[] gunShoot, gunReload; 
 	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
     private Label HPLabel = new Label(), BulletLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty;
     
+    //movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
     
+    //Shooting variable
     boolean mousePressed = false, handgunTrigger = false;
     double angle, mouseX, mouseY;
     long lastShootTime;
@@ -92,18 +96,15 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		Image playerImageHandGun = null, playerImageRifle = null, playerImageMachineGun = null;
 		Image zombieImage = null, zombieImage1 = null, zombieImage2 = null, bulletImage = null, bossImage = null;
 		
-		Image machinegunImage = null, rifleImage = null, HPIconImage = null;
+		Image HPIconImage = null;
 		Image machinegunIconImage = null, rifleIconImage = null;
 		Image crossHairImage = null;
 		
-		ImageView dummy, dummy1;
 		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
 		gunShoot = new AudioClip[3];
 		gunReload = new AudioClip[3];
-		
-		playerImageView = new ImageView[3];
 		
 		//Loading images and setting GUI
 		try {
@@ -137,6 +138,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//Initialize the variable and set necessary property
+		playerImageView = new ImageView[3];
+		weaponIconImageView = new ImageView[2];
+		weaponIconDistance = new long[2];
+		
 		backgroundImageView = new ImageView(roadImage);
 		playerImageView[0] = new ImageView(playerImageHandGun);
 		playerImageView[1] = new ImageView(playerImageRifle);
@@ -148,16 +153,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImageView[2].setVisible(false);
 		HPIconImageView = new ImageView(HPIconImage);
 		HPIconImageView.setOpacity(0.6);
-		rifleIconImageView = new ImageView (rifleIconImage);
-		machinegunIconImageView = new ImageView (machinegunIconImage);
+		weaponIconImageView[0] = new ImageView (rifleIconImage); 
+		weaponIconImageView[1] = new ImageView (machinegunIconImage);
+		weaponIconDistance[0] = -1000;
+		weaponIconDistance[1] = -2000;
 		bossImageView = new ImageView (bossImage);
 		bossImageView.setRotate(270);
-		
-		dummy = new ImageView(machinegunImage);
-		dummy.setRotate(90);
-		dummy.setY(200);
-		dummy1 = new ImageView(rifleImage);
-		dummy1.setRotate(90);
 		
 		HPIntegerProperty = new SimpleIntegerProperty(100);
         HPLabel.textProperty().bind(HPIntegerProperty.asString());
@@ -184,7 +185,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
        
-		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, rifleIconImageView, machinegunIconImageView, bossImageView);
+		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, weaponIconImageView[0], weaponIconImageView[1], bossImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 		
 		for(ImageView i : bulletImageView){
@@ -345,8 +346,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		refreshScreen.play();
 		
 		stage.show();
-		rifleIconImageView.setVisible(false);
-		machinegunIconImageView.setVisible(false);
+		weaponIconImageView[0].setVisible(false);
+		weaponIconImageView[1].setVisible(false);
 		System.out.println("Stage being showed.");
 		startTime = System.currentTimeMillis();
 		
@@ -411,11 +412,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         if(moveUp && backgroundImageView.getTranslateY() < - 300){
         	// && backgroundImageView.getTranslateY() > - 500
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
-        	if(rifleIconImageView.isVisible()){
-        		rifleIconImageView.setY(rifleIconImageView.getY()+5);
-        	}
-        	if(machinegunIconImageView.isVisible()){
-        		machinegunIconImageView.setY(machinegunIconImageView.getY()+5);
+        	for(ImageView i : weaponIconImageView){
+        		if(i.isVisible())
+        			i.setY(i.getY()+5);
         	}
         	for(Target i : target){
         		i.changePosition(0, 5);
@@ -427,17 +426,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         if(moveDown && backgroundImageView.getTranslateY() > - 1920){
         	// && backgroundImageView.getTranslateY() < 500
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY() - 5);
-        	if(rifleIconImageView.isVisible()){
-        		rifleIconImageView.setY(rifleIconImageView.getY() - 5);
-        	}
-        	if(machinegunIconImageView.isVisible()){
-            	machinegunIconImageView.setY(machinegunIconImageView.getY() - 5);
+        	for(ImageView i : weaponIconImageView){
+        		if(i.isVisible())
+        			i.setY(i.getY()-5);
         	}
         	for(Target i : target){
-//        		if(i.getYcoord()>0)
-        			i.changePosition(0, -5);
-//        		else
-//        			i.changePosition(0, 5);
+        		i.changePosition(0, -5);
         	}
         	boss.changePosition(0, -5);
 //        	player.move(0, 5);
@@ -450,11 +444,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		player.move(-5, 0);
         		playerImageView[weaponSetting].setX(player.getXcoord());
         	}
-        	if(rifleIconImageView.isVisible()){
-        		rifleIconImageView.setX(rifleIconImageView.getX()+5);
-        	}
-        	if(machinegunIconImageView.isVisible()){
-        		machinegunIconImageView.setX(machinegunIconImageView.getX()+5);
+        	for(ImageView i : weaponIconImageView){
+        		if(i.isVisible())
+        			i.setX(i.getX()+5);
         	}
         	for(Target i : target){
         		i.changePosition(+5, 0);
@@ -474,11 +466,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
         	}
         	
-        	if(rifleIconImageView.isVisible()){
-        		rifleIconImageView.setX(rifleIconImageView.getX()-5);
-        	}
-        	if(machinegunIconImageView.isVisible()){
-        		machinegunIconImageView.setX(machinegunIconImageView.getX()-5);
+        	for(ImageView i : weaponIconImageView){
+        		if(i.isVisible())
+        			i.setX(i.getX()-5);
         	}
         	for(Target i : target){
         		i.changePosition(-5, 0);
@@ -553,7 +543,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		
 		for(int i=0 ; i < bullet.length ; i++){
-			if(boss.isVisible() && bullet[i].isHit(boss)){
+			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
 				System.out.println("hit bossed");
 				boss.minusHealth(Bullet.getBulletDamage());
 				bullet[i].setVisible(false);
@@ -562,6 +552,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				bulletImageView[i].setVisible(false);
 				
 				if(boss.isDead()){
+					boss.setVisible(false);
 					bossImageView.setVisible(false);
 					boss.setPosition(-999,-999);
 					score+=1000;
@@ -580,6 +571,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					bulletImageView[i].setVisible(false);
 					
 					if(target[j].isDead()){
+						target[j].setVisible(false);
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
 						score++;
@@ -623,29 +615,21 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //		}
 //		
 		//show weapon
-		if(!rifleIconImageView.isVisible() && backgroundImageView.getTranslateX() < -1000 
-				&& backgroundImageView.getTranslateY() < - 600 
-				&& backgroundImageView.getTranslateY() > - 1620){
-			newWeapon(rifleIconImageView);
-		}
-		if(!machinegunIconImageView.isVisible() && backgroundImageView.getTranslateX() < -2000
-				&& backgroundImageView.getTranslateY() < - 600 
-				&& backgroundImageView.getTranslateY() > - 1620){
-			newWeapon(machinegunIconImageView);
-		}
-//change weapon
-
-		if ((Math.pow(Math.pow(player.getXcoord() - rifleIconImageView.getX(),2.0) 
-				+ Math.pow(player.getYcoord() - rifleIconImageView.getY(),2.0), 0.5) 
-				<= (player.getRadius() + 50)) && rifleIconImageView.isVisible()){
-			pickWeapon(rifleIconImageView, 1);
-		}
-		if ((Math.pow(Math.pow(player.getXcoord() - machinegunIconImageView.getX(),2.0) 
-					+ Math.pow(player.getYcoord() - machinegunIconImageView.getY(),2.0), 0.5) 
-					<= (player.getRadius() + 50)) && machinegunIconImageView.isVisible()){
-			pickWeapon(machinegunIconImageView, 2);
-		}
 		
+		for(int i=0 ; i<weaponIconImageView.length ; i++){
+			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]  
+				&& backgroundImageView.getTranslateY() < - 600 
+				&& backgroundImageView.getTranslateY() > - 1620){
+					newWeapon(weaponIconImageView[i]);
+			}
+			if((Math.pow(Math.pow(player.getXcoord() - weaponIconImageView[i].getX(),2.0) 
+					+ Math.pow(player.getYcoord() - weaponIconImageView[i].getY(),2.0), 0.5) 
+					<= (player.getRadius() + 50)) && weaponIconImageView[i].isVisible()){
+				//change weapon
+				pickWeapon(weaponIconImageView[i], i+1);
+			}
+		}
+				
 		//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 
 				&& backgroundImageView.getTranslateY() < - 600 
