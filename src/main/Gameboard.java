@@ -524,14 +524,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//boss movement
 		
-		if (!boss.isDead()){
-			minTargetDistance = 100;
-			boss.move(player.getPosition());
-			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-			bossImageView.setX(boss.getXcoord());
-			bossImageView.setY(boss.getYcoord());
+		//if (!boss.isDead()){
+			//minTargetDistance = 100;
+			//boss.move(player.getPosition());
+			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			//bossImageView.setX(boss.getXcoord());
+			//bossImageView.setY(boss.getYcoord());
 			
-		}
+		//}
+		boss.move(player.getPosition());
+		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+		bossImageView.setX(boss.getXcoord());
+		bossImageView.setY(boss.getYcoord());
 		
 		
 		
@@ -627,7 +631,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setVisible(true);
 			bossImageView.setX(600);
 			bossImageView.setY(150);
-			bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+			//bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 			System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		}
 		
