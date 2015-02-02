@@ -1,6 +1,7 @@
 package main;
 
 public class Boss extends Target{
+	private static int maxHealth;
 	
 	public Boss(){
 	}
@@ -9,7 +10,7 @@ public class Boss extends Target{
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
-		//maxHealth = health;
+		maxHealth = health;
 	}
 	
 	public void summonZombie(Target[] zombie) {
