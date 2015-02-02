@@ -120,6 +120,24 @@ public class Target extends Character{
 		this.setVisible(true);
 	}
 	
+	public void setVisible(Point2D playerPosition, int range){
+		double randomEdge = Math.random();
+		double randomCoord = Math.random() - 0.5;
+		if (randomEdge >= 0 && randomEdge < 0.25){
+			this.setPosition((int)(playerPosition.getX() + randomCoord * range), (int)(playerPosition.getY() - (range / 2))); 
+		}
+		else if (randomEdge >= 0.25 && randomEdge < 0.5){
+			this.setPosition((int)(playerPosition.getX() + (range / 2)), (int)(playerPosition.getY() + randomCoord * range)); 
+		}
+		else if (randomEdge >= 0.5 && randomEdge < 0.75){
+			this.setPosition((int)(playerPosition.getX() + randomCoord * range), (int)(playerPosition.getY() + (range / 2))); 
+		}
+		else {
+			this.setPosition((int)(playerPosition.getX() - (range / 2)), (int)(playerPosition.getY() + randomCoord * range)); 
+		}
+		this.setVisible(true);
+	}
+	
 	static public void rebornZombie (Target[] zombies, Point2D playerPosition){
 		double random = Math.random(); 
 		int numberOfDeadZombies = 0;

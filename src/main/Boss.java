@@ -1,8 +1,10 @@
 package main;
 
+import javafx.geometry.Point2D;
+
 public class Boss extends Target{
 	
-	private int maxHeath;
+	private int maxHealth;
 
 	public Boss(){
 	}
@@ -11,12 +13,17 @@ public class Boss extends Target{
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
-		this.maxHeath = health;
+		this.maxHealth = health;
 		//maxHealth = health;
 	}
 	
-	public void summonZombie(Target[] zombie) {
-		for (int i = 0; i < zombie.length; i++) zombie[i].setVisible(true);
+	static public void summonZombie (Target[] zombies, Point2D playerPosition, int range){
+		for (int i = 0; i < zombies.length; i++){
+			if (zombies[i].isDead()){ 
+				zombies[i].setHealth(100);
+				zombies[i].setVisible(playerPosition, range);
+			}
+		}
 	}
 	
 }

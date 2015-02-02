@@ -192,7 +192,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
        
-		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, HPIconImageView, weaponIconImageView[0], weaponIconImageView[1], bossImageView);
+		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, ScoreLabel, HPIconImageView, weaponIconImageView[0], weaponIconImageView[1], bossImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 		
 		for(ImageView i : bulletImageView){
@@ -606,6 +606,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					targetImageView[i].setY(target[i].getYcoord());
 				}
 			}
+		}
+		
+		//summon zombie
+		if(boss.getHealth() % 50 == 0){
+			boss.summonZombie(target, getPlayerPosition(), 200);
 		}
 		
 //		for(int i=0;i<target.length;i++){
