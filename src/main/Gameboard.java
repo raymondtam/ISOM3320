@@ -1,6 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -263,29 +264,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 
 		pane.getChildren().add(bossImageView);
 		
-//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//        stage.setX(primaryScreenBounds.getMinX());
-//        stage.setY(primaryScreenBounds.getMinY());
-//        stage.setWidth(primaryScreenBounds.getWidth());
-//        stage.setHeight(primaryScreenBounds.getHeight());
-          
         //Set Positioning
 		scene = new Scene(pane);
-        
-        player.setPosition(screenWidth/2, screenHeight/2); 
-//        		primaryScreenBounds.getHeight()/2);
-        
-		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateX[weaponSetting]);
-		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
-		
-		HPLabel.setTranslateX(70);
-		HPLabel.setTranslateY(530);
-		ScoreLabel.setTranslateX(300);
-		ScoreLabel.setTranslateY(530);
-		HPIconImageView.setX(5);
-		HPIconImageView.setY(500);
-		BulletLabel.setTranslateY(530);
-		BulletLabel.setTranslateX(835);
 		
 		//movement buffer
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -382,6 +362,36 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         });
         
+        HPLabel.setTranslateX(70);
+		HPLabel.setTranslateY(530);
+		ScoreLabel.setTranslateX(300);
+		ScoreLabel.setTranslateY(530);
+		HPIconImageView.setX(5);
+		HPIconImageView.setY(500);
+		BulletLabel.setTranslateY(530);
+		BulletLabel.setTranslateX(835);
+        
+        //initialize scene
+        
+        backgroundImageView.setTranslateY(- 1431);
+        
+        player.setPosition(screenWidth/2, screenHeight/2); 
+        
+		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateX[weaponSetting]);
+		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
+		
+		weaponIconImageView[0].setVisible(false);
+		weaponIconImageView[1].setVisible(false);
+        
+		for(int i=0;i<target.length;i++){
+			target[i].setVisible(player.getPosition());
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+			targetImageView[i].setVisible(true);
+		}
+		
         //set cursor Image
         scene.setCursor(new ImageCursor(crossHairImage));
         	
@@ -398,35 +408,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		refreshScreen.play();
 		
 		stage.show();
-		weaponIconImageView[0].setVisible(false);
-		weaponIconImageView[1].setVisible(false);
 		System.out.println("Stage being showed.");
 		startTime = System.currentTimeMillis();
 		zombieReborn = System.currentTimeMillis();
 		
-		backgroundImageView.setTranslateY(- 1431);
-		
 //		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
-		
-		for(int i=0;i<target.length;i++){
-			target[i].setVisible(player.getPosition());
-			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
-			targetImageView[i].setVisible(true);
-		}
-
-		
 	}
 	
-	double getFireAngle(double x, double y){
-//		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
-//	equivalent to
-//		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
-//		Point2D Vector = mouseVector.subtract(player.getPosition());
-//		double angle = xVector.angle(Vector);
-		
+	double getFireAngle(double x, double y){		
 		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
 		double angle = player.getPosition().angle(dummyVector, cursorVector);
 		//calculate the angle of player from vertical axis to cursor		
@@ -494,8 +483,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         	else{
         		if(player.getXcoord()>0){
+        			System.out.println("Moving Left!!");
         			player.move(-5, 0);
-        			playerImageView[weaponSetting].setX(player.getXcoord());
+        			playerImageView[weaponSetting].setX(player.getXcoord() - playerTranslateX[weaponSetting]);
         		}
         	}
         	for(ImageView i : weaponIconImageView){
@@ -608,6 +598,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					// System.out.println("Boss Dead");
 					if(bossShowCount==1){
 						//end		
+						Scanner input = new Scanner (System.in);
+						if(input.hasNext())
+							initialize();
 					}
 				}
 			}
@@ -651,7 +644,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount<1 ){
 			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
 				Target.rebornZombie(target, player.getPosition());
-				// System.out.println("reborned");
+				System.out.println("reborned");
 				zombieReborn=System.currentTimeMillis();
 				for(int i=0; i<target.length ; i++){
 					if(target[i].isVisible()){
@@ -762,6 +755,38 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
 	
+	private void initialize(){
+		//initialize scene
+		
+		for(ImageView i:playerImageView){
+			i.setVisible(false);
+		}
+		
+		backgroundImageView.setTranslateX(0);
+		backgroundImageView.setTranslateY(-1431);
+		
+        player.setPosition(screenWidth/2, screenHeight/2); 
+        
+        weaponSetting = 0;
+        playerImageView[weaponSetting].setVisible(true);
+		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
+		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateY[weaponSetting]);
+		
+				
+		weaponIconImageView[0].setVisible(false);
+		weaponIconImageView[1].setVisible(false);
+        
+		for(int i=0;i<target.length;i++){
+			target[i].setVisible(player.getPosition());
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+			targetImageView[i].setVisible(true);
+		}
+		
+		score = 0;
+	}
 	
 	// calculate total score
 		//public double totalScore() {
