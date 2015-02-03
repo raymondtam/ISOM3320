@@ -38,6 +38,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static double DEFAULT_RADIUS = 10;
 	final static int NUMBER_OF_ZOMBIES = 10;
 	final static int ZOMBIES_DAMAGE = 5;
+	final static int BOSS_DAMAGE = 20;
 	final static int PLAYER_MAXHEALTH = 100;
 	final static int BOSS_HEALTH = 300;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
@@ -608,7 +609,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 		}
 		
-		//Boss show and isHit
+		//Boss show and check if bullets hit Boss or Zombies
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
 				System.out.println("hit bossed");
@@ -662,12 +663,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			ScoreIntegerProperty.setValue(score);
 		}
 		
-		//Player minus health and isDead
+		//Check if Zombies hit Player and minus health correspondingly
 		for(int i = 0; i < target.length; i++){
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
 			}
-			if(infectionThreshold == 30){
+			if(infectionThreshold >= 30){
 				player.minusHealth(ZOMBIES_DAMAGE);
 				HPIntegerProperty.setValue(player.getHealth());
 				infectionThreshold = 0;
@@ -677,6 +678,23 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					if (score >= topThreeScores.length){
 						topThreeScores[i] = score;
 					}
+				}
+			}
+		}
+		
+		//Check if Boss hit Player and minus health correspondingly
+		if(bossImageView.isVisible() && player.isHit(boss)){
+			infectionThreshold += 3;
+		}
+		if(infectionThreshold >= 30){
+			player.minusHealth(BOSS_DAMAGE);
+			HPIntegerProperty.setValue(player.getHealth());
+			infectionThreshold = 0;
+		}
+		if(player.getHealth() <= 0){
+			for(int i = 0; i < topThreeScores.length; i++){
+				if (score >= topThreeScores.length){
+					topThreeScores[i] = score;
 				}
 			}
 		}
