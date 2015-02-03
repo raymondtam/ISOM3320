@@ -84,6 +84,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
     double angle, mouseX, mouseY;
     long lastShootTime;
 	
+    double playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, bossTranslateX, bossTranslateY;
+    
 	public static void main(String[] arg){
 		launch(arg);
 	}
