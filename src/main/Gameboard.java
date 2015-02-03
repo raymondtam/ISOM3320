@@ -39,6 +39,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int NUMBER_OF_ZOMBIES = 10;
 	final static int ZOMBIES_DAMAGE = 5;
 	final static int PLAYER_MAXHEALTH = 100;
+	final static int BOSS_HEALTH = 300;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	final static double screenWidth = 900;
 	final static double screenHeight = 600;
@@ -54,7 +55,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, 3, 30); 
-	static Boss boss = new Boss (300, 2, 110);
+	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
 	static int infectionThreshold = 0;
 	static int bossShowCount = 0;
 	
@@ -665,7 +666,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
 		//Summon zombie
-		if(boss.isVisible() && boss.getHealth() % 60 == 0){
+		if(boss.isVisible() && boss.getHealth() % 60 == 0 && boss.getHealth() != BOSS_HEALTH){
 			boss.summonZombie(target, player.getPosition(), 200);
 		}
 		
@@ -681,9 +682,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //		
 		//Show new weapon
 		for(int i = 0 ; i<weaponIconImageView.length ; i++){
-			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]  
-				&& backgroundImageView.getTranslateY() < - 300 
-				&& backgroundImageView.getTranslateY() > - 1920){
+			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]){
 				newWeapon(weaponIconImageView[i]);
 			}
 			if((Math.pow(Math.pow(player.getXcoord() - weaponIconImageView[i].getX(),2.0) 
@@ -729,8 +728,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	//New weapon icon appears
 	public void newWeapon(ImageView weapon) {
 		weapon.setVisible(true);
-		weapon.setX((int)(player.getXcoord() + Math.random()*400 - weapon.getImage().getWidth()/2));
-		weapon.setY((int)(Math.random()*600 - weapon.getImage().getHeight()/2));
+		weapon.setX((int)(player.getXcoord() + 300));
+		weapon.setY((int)(player.getYcoord()));
 	}
 	
 	//Picking up new weapon
