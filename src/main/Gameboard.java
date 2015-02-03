@@ -172,23 +172,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconTranslateY = new double[2];
 		weaponIconTranslateY[0] = rifleIconImage.getHeight()/2; 
 		weaponIconTranslateY[1] = machinegunIconImage.getHeight()/2;
-<<<<<<< HEAD
-		
-=======
-			
->>>>>>> origin/master
+
 		bossTranslateX = bossImage.getWidth()/2;
 		bossTranslateY = bossImage.getHeight()/2;
 		
 		bulletTranslateX =  bulletImage.getWidth()/2;
 		bulletTranslateY =	bulletImage.getHeight()/2;
 		
-<<<<<<< HEAD
 		//Initialize the variable and set necessary property
-		
-=======
-		//Initialize the variable and set necessary property		
->>>>>>> origin/master
 		backgroundImageView = new ImageView(roadImage);
 		
 		playerImageView = new ImageView[3];
