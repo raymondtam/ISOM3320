@@ -108,7 +108,6 @@ public class Target extends Character{
 		
 	}
 	
-	@Override
 	public void setVisible(Point2D playerPosition){
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
