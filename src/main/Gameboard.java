@@ -635,7 +635,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			ScoreIntegerProperty.setValue(score);
 		}
 		
-		//Minus health of player
+		//Minus health of player and player isDead
 		for(int i = 0; i < target.length; i++){
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
@@ -644,6 +644,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				player.minusHealth(ZOMBIES_DAMAGE);
 				HPIntegerProperty.setValue(player.getHealth());
 				infectionThreshold = 0;
+			}
+			if(player.getHealth() <= 0){
+				for(int j = 0; i < topThreeScores.length; j++){
+					if (score >= topThreeScores.length){
+						topThreeScores[i] = score;
+					}
+				}
 			}
 		}
 		
@@ -676,7 +683,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 		}
 		
-		//Summon zombie
+		//Summon zombieddddsdwd
 		if(boss.isVisible() && summonZombie){
 			boss.summonZombie(target, player.getPosition(), 200);
 			summonZombie = false;
