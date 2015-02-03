@@ -48,13 +48,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	String name = "Player1";
 	short weaponSetting = 0; //0default 
 	int score = 0;
-	String[] topThreeScores={"nil", "nil", "nil"};
 	
 	long reloadStartTime = 0, startTime = 0;
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, 3, 30); 
+	static int[] topThreeScores = new int[3];
 	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
 	static int infectionThreshold = 0;
 	
@@ -598,9 +598,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					boss.setVisible(false);
 					bossImageView.setVisible(false);
 					boss.setPosition(-999,-999);
-					score+=1000;
-
-					System.out.println("Boss Dead");
+					score += 1000;
+					for(int j = 0; i < topThreeScores.length; j++){
+						if (score >= topThreeScores.length){
+							topThreeScores[i] = score;
+						}
+					}
+					// System.out.println("Boss Dead");
 					if(bossShowCount==1){
 						//end		
 					}
