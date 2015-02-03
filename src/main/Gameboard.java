@@ -652,7 +652,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Summon zombie
 		if(boss.isVisible() && boss.getHealth() % 60 == 0){
-			boss.summonZombie(target, getPlayerPosition(), 200);
+			boss.summonZombie(target, player.getPosition(), 200);
 		}
 		
 //		for(int i=0;i<target.length;i++){
@@ -686,7 +686,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setX(600);
 			bossImageView.setY(150);
 			bossShowCount += 1;
-			boss.summonZombie(target, getPlayerPosition(), 200);
+			boss.summonZombie(target, player.getPosition(), 200);
 		}
 			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		
@@ -730,11 +730,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
 	
-	//Get player position
-	public static Point2D getPlayerPosition(){
-		Point2D position = player.getPosition();
-		return position;
-	}
 	
 	// calculate total score
 		//public double totalScore() {
