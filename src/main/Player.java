@@ -1,6 +1,7 @@
 package main;
 
 public class Player extends Character{
+	//Variable
 	private int numberOfUnusedBullet;
 	Bullet[] bullet = null;
 	
@@ -15,6 +16,7 @@ public class Player extends Character{
 		this.setMovingSpeed(movingSpeed);
 	}
 	
+	//Mutator and accessor
 	public int getNumberOfUnusedBullet() {
 		return numberOfUnusedBullet;
 	}
@@ -22,7 +24,8 @@ public class Player extends Character{
 	private void setNumberOfUnusedBullet(int numberOfUnusedBullet) {
 		this.numberOfUnusedBullet = numberOfUnusedBullet;
 	}
-		
+	
+	//Custom method
 	@Override
 	public boolean isHit() {
 		return true;

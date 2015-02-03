@@ -1,7 +1,7 @@
 package main;
 
 public abstract class Character extends GameObject{
-	//variable
+	//Variable
 	private int health;
 	
 	//Constructor
@@ -12,7 +12,8 @@ public abstract class Character extends GameObject{
 		super();
 		this.health = health;
 	}
-		
+	
+	//Mutator and accessor
 	public int getHealth() {
 		return health;
 	}
@@ -21,6 +22,7 @@ public abstract class Character extends GameObject{
 		this.health = health;
 	}
 	
+	//Custom method
 	public void minusHealth(int damage) {
 		health -= damage;
 	}

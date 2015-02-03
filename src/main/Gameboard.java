@@ -47,7 +47,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	//Game variable and objects
 	String name = "Player1";
-	short weaponSetting = 0; //0default 
+	short weaponSetting = 0; //0 default 
 	int score = 0;
 	
 	long reloadStartTime = 0, startTime = 0, zombieReborn = 0;
@@ -58,7 +58,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static int[] topThreeScores = new int[3];
 	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
 	static int infectionThreshold = 0;
-	
+	static double timeElapsed = 0;
+	static int minutesToDisplay, secondsToDisplay;
 	static int bossShowCount = 0;
 	boolean summonZombie = false;
 	
@@ -79,8 +80,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	private AudioClip[] gunShoot, gunReload; 
 	
 	//Screen Graphics
-    private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label();
-    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty;
+    private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
+    		MinuteLabel = new Label(), SecondLabel = new Label(), ColonLabel = new Label();
+    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty, MinutesIntegerProperty, SecondsIntegerProperty;
     
     //Movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
@@ -99,9 +101,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	@Override
 	public void start(Stage stage){
-				
-		//player = new Player(); 
-		
 		pane = new Pane();
 		Image roadImage = null;
 
@@ -141,14 +140,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			gunReload[0] = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
-
-
-			System.out.println("Image being imported.");
+			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
+		
 		playerTranslateX = new double[3];
 		playerTranslateX[0] = playerImageHandGun.getWidth()/2;
 		playerTranslateX[1] = playerImageRifle.getWidth()/2;
@@ -176,17 +173,15 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconTranslateY = new double[2];
 		weaponIconTranslateY[0] = rifleIconImage.getHeight()/2; 
 		weaponIconTranslateY[1] = machinegunIconImage.getHeight()/2;
-		
-		
-		
+
 		bossTranslateX = bossImage.getWidth()/2;
 		bossTranslateY = bossImage.getHeight()/2;
 		
 		bulletTranslateX =  bulletImage.getWidth()/2;
 		bulletTranslateY =	bulletImage.getHeight()/2;
 		
+
 		//Initialize the variable and set necessary property
-				
 		backgroundImageView = new ImageView(roadImage);
 		
 		playerImageView = new ImageView[3];
@@ -227,11 +222,28 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         ScoreLabel.setFont(DEFAULT_FONT);
         ScoreLabel.setOpacity(0.8);
         
+        MinutesIntegerProperty = new SimpleIntegerProperty(0);
+        MinuteLabel.textProperty().bind(MinutesIntegerProperty.asString());
+        MinuteLabel.setTextFill(Color.YELLOW);
+        MinuteLabel.setFont(DEFAULT_FONT);
+        MinuteLabel.setOpacity(0.8);
+        
+        SecondsIntegerProperty = new SimpleIntegerProperty(0);
+        SecondLabel.textProperty().bind(SecondsIntegerProperty.asString());
+        SecondLabel.setTextFill(Color.YELLOW);
+        SecondLabel.setFont(DEFAULT_FONT);
+        SecondLabel.setOpacity(0.8);
+        
         BulletIntegerProperty = new SimpleIntegerProperty(DEFAULT_MAGAZINE_SIZE);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
         BulletLabel.setFont(DEFAULT_FONT);
         BulletLabel.setOpacity(0.75);
+        
+        ColonLabel.setText(":");
+        ColonLabel.setTextFill(Color.YELLOW);
+        ColonLabel.setFont(DEFAULT_FONT);
+        ColonLabel.setOpacity(0.8);
         
         bulletImageView = new ImageView[MAX_MAGAZINE_SIZE];
         for(int i=0 ; i<bulletImageView.length ; i++ ){
@@ -244,8 +256,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	targetImageView[i+4] = new ImageView(zombieImage1);
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
-       
-		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, ScoreLabel, HPIconImageView);
+        
+		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, ScoreLabel, 
+				MinuteLabel, SecondLabel, ColonLabel, HPIconImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 		
 		for(ImageView i : bulletImageView){
@@ -264,10 +277,42 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 
 		pane.getChildren().add(bossImageView);
 		
+
         //Set Positioning
 		scene = new Scene(pane);
+
+//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
+//        stage.setX(primaryScreenBounds.getMinX());
+//        stage.setY(primaryScreenBounds.getMinY());
+//        stage.setWidth(primaryScreenBounds.getWidth());
+//        stage.setHeight(primaryScreenBounds.getHeight());
+          
+		scene = new Scene(pane);
+        
+		//Set Positioning
+        player.setPosition(screenWidth/2, screenHeight/2); 
+//        		primaryScreenBounds.getHeight()/2);
+        
+		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateX[weaponSetting]);
+		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
 		
-		//movement buffer
+		HPLabel.setTranslateX(70);
+		HPLabel.setTranslateY(530);
+		ScoreLabel.setTranslateX(300);
+		ScoreLabel.setTranslateY(530);
+		HPIconImageView.setX(5);
+		HPIconImageView.setY(500);
+		BulletLabel.setTranslateY(530);
+		BulletLabel.setTranslateX(835);
+		MinuteLabel.setTranslateX(400);
+		MinuteLabel.setTranslateY(20);
+		SecondLabel.setTranslateX(450);
+		SecondLabel.setTranslateY(20);
+		ColonLabel.setTranslateX(430);
+		ColonLabel.setTranslateY(17);
+		
+		//Movement buffer
+
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
@@ -330,7 +375,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         			playerImageView[weaponSetting].setRotate(angle);
         		else
         			playerImageView[weaponSetting].setRotate(-1*angle);
-        		
         	}
         });
         
@@ -393,6 +437,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
         //set cursor Image
+
         scene.setCursor(new ImageCursor(crossHairImage));
         	
 		stage.setScene(scene);
@@ -554,7 +599,16 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //				}
 //			}
 //		}
-		
+        
+        //Time Showing
+        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        minutesToDisplay = (int)(timeElapsed / 60);
+        secondsToDisplay = ((int)(timeElapsed)) % 60;
+        MinutesIntegerProperty.setValue(minutesToDisplay);
+        SecondsIntegerProperty.setValue(secondsToDisplay);
+        
+		// ScoreIntegerProperty.setValue(score);
+        
 		//Boss movement
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
@@ -596,7 +650,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						}
 					}
 					// System.out.println("Boss Dead");
-					if(bossShowCount==1){
+					if(bossShowCount == 1){
 						//end		
 						Scanner input = new Scanner (System.in);
 						if(input.hasNext())
@@ -619,7 +673,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						target[j].setVisible(false);
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
-						score+=10;
+						score += 10;
 						 System.out.println("Zombie " + j + " Dead");
 					}
 					break;
@@ -628,7 +682,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			ScoreIntegerProperty.setValue(score);
 		}
 		
-		//Minus health of player
+		//Player minus health and isDead
 		for(int i = 0; i < target.length; i++){
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
@@ -637,6 +691,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				player.minusHealth(ZOMBIES_DAMAGE);
 				HPIntegerProperty.setValue(player.getHealth());
 				infectionThreshold = 0;
+			}
+			if(player.getHealth() <= 0){
+				for(int j = 0; i < topThreeScores.length; j++){
+					if (score >= topThreeScores.length){
+						topThreeScores[i] = score;
+					}
+				}
 			}
 		}
 		
@@ -676,6 +737,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			System.out.println("Summon Zombie!!!");
 		}
 		
+		//Show zombie
 		for(int i=0 ; i<target.length ; i++){
 			if(target[i].isVisible())
 				targetImageView[i].setVisible(true);
@@ -732,14 +794,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		//}
 	}
 	
-	//New weapon icon appears
+	//Show and set new weapon icon
 	public void newWeapon(ImageView weapon) {
 		weapon.setVisible(true);
 		weapon.setX((int)(player.getXcoord() + 300));
 		weapon.setY((int)(player.getYcoord()));
 	}
 	
-	//Picking up new weapon
+	//Pick up new weapon
 	public void pickWeapon (ImageView weapon, int index) {
 //		weapon.setVisible(false);
 		weapon.setX(-999);
@@ -755,6 +817,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
 	
+<<<<<<< HEAD
 	private void initialize(){
 		//initialize scene
 		
@@ -788,6 +851,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		score = 0;
 	}
 	
+=======
+>>>>>>> origin/master
 	// calculate total score
 		//public double totalScore() {
 			//To Do, e.g.
