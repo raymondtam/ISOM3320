@@ -13,7 +13,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.media.AudioClip;
 import javafx.scene.ImageCursor;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -57,22 +56,23 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static int infectionThreshold = 0;
 	static int bossShowCount = 0;
 	
-	boolean bossRage = true;
-	
-	Point2D CursorPosition;
-	
 	//Graphics and animation variable
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
 	
+	// Main graphics component
 	private ImageView backgroundImageView, HPIconImageView, bossImageView;
-	private ImageView[] bulletImageView, targetImageView, playerImageView, weaponIconImageView; 
+	private ImageView[] bulletImageView, targetImageView, playerImageView;	
 	
-	long[] weaponIconDistance;
+	//Pick up Weapon 
+	private ImageView[] weaponIconImageView; 
+	private long[] weaponIconDistance;
 	
+	//Sound effect
 	private AudioClip[] gunShoot, gunReload; 
-	//handGunShoot, handGunReload, machineGunShoot, machineGunReload;
+	
+	//Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty;
     
@@ -513,7 +513,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //					if (i == j){
 //						break;
 //					}
-//					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
+//					targetDistance = Math.pow(Math.pow(target[idwdwsdwasd].getXcoord() - target[j].getXcoord(), 2.0) 
 //						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
 //					if (targetDistance <= minTargetDistance){
 //						minTargetDistance = targetDistance;
@@ -531,8 +531,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Boss movement
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-		bossImageView.setX(boss.getXcoord());
-		bossImageView.setY(boss.getYcoord());
+		bossImageView.setX(boss.getXcoord()-130);
+		bossImageView.setY(boss.getYcoord()-170);
 		
 		//Target movement
 		for(int i = 0; i < target.length; i++){
@@ -545,7 +545,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Boss show and isHit
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
-				// System.out.println("hit bossed");
+				System.out.println("hit bossed");
 				boss.minusHealth(Bullet.getBulletDamage());
 				bullet[i].setVisible(false);
 				bullet[i].setIsMoving(false);
@@ -560,16 +560,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 
 					System.out.println("Boss Dead");
 					if(bossShowCount==1){
-						
+						//end		
 					}
-						//end
 				}
 			}
+			
 			//Target show and isDead
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
-					// System.out.println("Zombie " + j + " is hit ");
+					 System.out.println("Zombie " + j + " is hit ");
 					bullet[i].setVisible(false);
 					bullet[i].setIsMoving(false);
 					bullet[i].setPosition(-999, -999);  //void the bullet
@@ -580,7 +580,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
 						score+=10;
-						// System.out.println("Zombie " + j + " Dead");
+						 System.out.println("Zombie " + j + " Dead");
 					}
 					break;
 				}
@@ -629,7 +629,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Summon zombie
 		if(boss.isVisible() && boss.getHealth() % 60 == 0){
 			boss.summonZombie(target, getPlayerPosition(), 200);
-			bossRage = false;
 		}
 		
 //		for(int i=0;i<target.length;i++){
