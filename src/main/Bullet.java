@@ -14,7 +14,6 @@ public class Bullet extends GameObject {
     	Bullet.bulletDamage = 0;
     	Bullet.magazineSize = 0;
     }
-  
     Bullet (int bulletDamage, int magazineSize, double radius, int movingSpeed) {
     	Bullet.bulletDamage = bulletDamage;
     	Bullet.magazineSize = magazineSize;
@@ -58,6 +57,7 @@ public class Bullet extends GameObject {
     public void setFireAngle (double fireAngle) {
     	this.fireAngle = fireAngle;
     }
+   
     //Method
 	@Override
 	public boolean isHit() {
@@ -65,7 +65,7 @@ public class Bullet extends GameObject {
 	}
 	public boolean isHit(Target targetShot) {
 			if (Math.pow(Math.pow(targetShot.getXcoord() - this.getXcoord(),2.0) 
-					+ Math.pow(targetShot.getYcoord() - this.getYcoord(),2.0), 0.5) 
+					+ Math.pow(targetShot.getYcoord() - this.getYcoord(),2.0), 0.5) //Distance between centres < sum of radius 
 					<= (targetShot.getRadius() + this.getRadius())){
 				return true;
 			}
@@ -79,7 +79,6 @@ public class Bullet extends GameObject {
 		}
 	
 	public static Bullet[] getBulletArray(int size, int damage, int magazineSize, double radius, int speed) {
-	
 		Bullet[] bulletArray = new Bullet [size];
 		for (int i = 0; i < bulletArray.length; i++){
 			bulletArray[i] = new Bullet (damage, magazineSize, radius, speed);

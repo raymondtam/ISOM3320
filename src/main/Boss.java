@@ -3,7 +3,6 @@ package main;
 import javafx.geometry.Point2D;
 
 public class Boss extends Target{
-	
 	private int maxHealth;
 
 	//Constructor
