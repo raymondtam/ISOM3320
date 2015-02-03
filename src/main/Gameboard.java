@@ -46,7 +46,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	//Game variable and objects
 	String name = "Player1";
-	short weaponSetting = 0; //0default 
+	short weaponSetting = 0; //0 default 
 	int score = 0;
 	
 	long reloadStartTime = 0, startTime = 0, zombieReborn = 0;
@@ -57,6 +57,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static int[] topThreeScores = new int[3];
 	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
 	static int infectionThreshold = 0;
+	static double timeElapsed = 0;
 	
 	static int bossShowCount = 0;
 	boolean summonZombie = false;
@@ -78,8 +79,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	private AudioClip[] gunShoot, gunReload; 
 	
 	//Screen Graphics
-    private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label();
-    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty;
+    private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
+    		MinuteLabel = new Label(), SecondLabel = new Label(), ColonLabel = new Label();
+    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty, MinuteIntegerProperty, SecondIntegerProperty;
     
     //Movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
@@ -140,14 +142,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			gunReload[0] = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
-
-
-			System.out.println("Image being imported.");
+			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-			
+		
 		playerTranslateX = new double[3];
 		playerTranslateX[0] = playerImageHandGun.getWidth()/2;
 		playerTranslateX[1] = playerImageRifle.getWidth()/2;
@@ -226,6 +226,18 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         ScoreLabel.setFont(DEFAULT_FONT);
         ScoreLabel.setOpacity(0.8);
         
+        MinuteIntegerProperty = new SimpleIntegerProperty(1);
+        MinuteLabel.textProperty().bind(MinuteIntegerProperty.asString());
+        MinuteLabel.setTextFill(Color.YELLOW);
+        MinuteLabel.setFont(DEFAULT_FONT);
+        MinuteLabel.setOpacity(0.8);
+        
+        SecondIntegerProperty = new SimpleIntegerProperty(2);
+        SecondLabel.textProperty().bind(SecondIntegerProperty.asString());
+        SecondLabel.setTextFill(Color.YELLOW);
+        SecondLabel.setFont(DEFAULT_FONT);
+        SecondLabel.setOpacity(0.8);
+        
         BulletIntegerProperty = new SimpleIntegerProperty(DEFAULT_MAGAZINE_SIZE);
         BulletLabel.textProperty().bind(BulletIntegerProperty.asString());
         BulletLabel.setTextFill(Color.YELLOW);
@@ -244,7 +256,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
        
-		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, ScoreLabel, HPIconImageView);
+		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, ScoreLabel, 
+				MinuteLabel, SecondLabel, ColonLabel, HPIconImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
 		
 		for(ImageView i : bulletImageView){
@@ -286,6 +299,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		HPIconImageView.setY(500);
 		BulletLabel.setTranslateY(530);
 		BulletLabel.setTranslateX(835);
+		MinuteLabel.setTranslateX(400);
+		MinuteLabel.setTranslateY(20);
+		SecondLabel.setTranslateX(450);
+		SecondLabel.setTranslateY(20);
+		ColonLabel.setTranslateX(425);
+		ColonLabel.setTranslateY(20);
 		
 		//movement buffer
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -564,7 +583,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //				}
 //			}
 //		}
-		
+        
+        //Time Showing
+        timeElapsed = System.currentTimeMillis() - startTime;
+        
 		//Boss movement
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
