@@ -100,9 +100,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	@Override
 	public void start(Stage stage){
-				
-		//player = new Player(); 
-		
 		pane = new Pane();
 		Image roadImage = null;
 
@@ -175,15 +172,23 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconTranslateY = new double[2];
 		weaponIconTranslateY[0] = rifleIconImage.getHeight()/2; 
 		weaponIconTranslateY[1] = machinegunIconImage.getHeight()/2;
+<<<<<<< HEAD
 		
+=======
+			
+>>>>>>> origin/master
 		bossTranslateX = bossImage.getWidth()/2;
 		bossTranslateY = bossImage.getHeight()/2;
 		
 		bulletTranslateX =  bulletImage.getWidth()/2;
 		bulletTranslateY =	bulletImage.getHeight()/2;
 		
+<<<<<<< HEAD
 		//Initialize the variable and set necessary property
 		
+=======
+		//Initialize the variable and set necessary property		
+>>>>>>> origin/master
 		backgroundImageView = new ImageView(roadImage);
 		
 		playerImageView = new ImageView[3];
@@ -285,9 +290,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //        stage.setWidth(primaryScreenBounds.getWidth());
 //        stage.setHeight(primaryScreenBounds.getHeight());
           
-        //Set Positioning
 		scene = new Scene(pane);
         
+		//Set Positioning
         player.setPosition(screenWidth/2, screenHeight/2); 
 //        		primaryScreenBounds.getHeight()/2);
         
@@ -309,7 +314,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		ColonLabel.setTranslateX(430);
 		ColonLabel.setTranslateY(17);
 		
-		//movement buffer
+		//Movement buffer
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
@@ -372,7 +377,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         			playerImageView[weaponSetting].setRotate(angle);
         		else
         			playerImageView[weaponSetting].setRotate(-1*angle);
-        		
         	}
         });
         
@@ -404,7 +408,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         });
         
-        //set cursor Image
+        //Set cursor Image
         scene.setCursor(new ImageCursor(crossHairImage));
         	
 		stage.setScene(scene);
@@ -778,14 +782,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		//}
 	}
 	
-	//New weapon icon appears
+	//Show and set new weapon icon
 	public void newWeapon(ImageView weapon) {
 		weapon.setVisible(true);
 		weapon.setX((int)(player.getXcoord() + 300));
 		weapon.setY((int)(player.getYcoord()));
 	}
 	
-	//Picking up new weapon
+	//Pick up new weapon
 	public void pickWeapon (ImageView weapon, int index) {
 //		weapon.setVisible(false);
 		weapon.setX(-999);
@@ -800,7 +804,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
-	
 	
 	// calculate total score
 		//public double totalScore() {
