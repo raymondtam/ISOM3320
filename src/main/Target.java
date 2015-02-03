@@ -184,9 +184,8 @@ public class Target extends Character{
 		if (boundaryLimit >= - 581){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 				if (zombies[j].isDead()){ 
-					zombies[j].setVisibleAtBottom(playerPosition);
 					zombies[j].setHealth(maxHealth);
-					zombies[j].setVisible(playerPosition);
+					zombies[j].setVisibleAtBottom(playerPosition);
 					i++;
 				}
 			}
@@ -194,9 +193,8 @@ public class Target extends Character{
 		else if (boundaryLimit <= - 1721){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 				if (zombies[j].isDead()){ 
-					zombies[j].setVisibleAtTop(playerPosition);
 					zombies[j].setHealth(maxHealth);
-					zombies[j].setVisible(playerPosition);
+					zombies[j].setVisibleAtTop(playerPosition);
 					i++;
 				}
 			}
