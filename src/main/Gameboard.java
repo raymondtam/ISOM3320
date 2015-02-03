@@ -600,7 +600,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		//Generate zombie, reborn
-		if(System.currentTimeMillis() - startTime > 20000){
+		if((System.currentTimeMillis() - startTime > 20000) && !boss.isVisible()){
 			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
 				Target.rebornZombie(target, player.getPosition());
 				// System.out.println("reborned");
