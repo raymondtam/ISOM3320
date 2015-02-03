@@ -3,9 +3,10 @@ package main;
 import javafx.geometry.Point2D;
 
 public class Boss extends Target{
-	
+	//Variable
 	private int maxHealth;
-
+	
+	//Constructor
 	public Boss(){
 	}
 	
@@ -17,6 +18,7 @@ public class Boss extends Target{
 		//maxHealth = health;
 	}
 	
+	//Custom method
 	static public void summonZombie (Target[] zombies, Point2D playerPosition, int range){
 		for (int i = 0; i < zombies.length; i++){
 			if (zombies[i].isDead()){ 

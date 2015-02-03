@@ -4,10 +4,12 @@ package main;
 import javafx.geometry.Point2D;
 
 public class Target extends Character{
+	//Variable
 	private int attackDamage;
 	private boolean isMoving;
 	private static int maxHealth; 
 	
+	//Constructor
 	public Target(){
 		this(3, 3, 15);
 	}
@@ -19,6 +21,25 @@ public class Target extends Character{
 		maxHealth = health;
 	}
 	
+	//Mutator and accessor
+	public int getAttackDamage(){
+		return this.attackDamage;
+	}
+	
+	public void setAttackDamage(int attackDamage){
+		this.attackDamage = attackDamage;
+	}
+	
+    public boolean getIsMoving () {
+    	return isMoving;
+    }
+    
+    public void setIsMoving (boolean isMoving) {
+    	this.isMoving = isMoving;
+    }
+    
+	//Custom method
+	@Override
 	public boolean isHit() {
 		return true;
 	}
@@ -45,23 +66,7 @@ public class Target extends Character{
 		}
 		return TargetArray;
 	}
-    
-    public boolean getIsMoving () {
-    	return isMoving;
-    }
-    
-    public void setIsMoving (boolean isMoving) {
-    	this.isMoving = isMoving;
-    }
-    
-	public int getAttackDamage(){
-		return this.attackDamage;
-	}
-	
-	public void setAttackDamage(int attackDamage){
-		this.attackDamage = attackDamage;
-	}
-    
+        
 	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
 		Point2D yVector;
@@ -77,6 +82,7 @@ public class Target extends Character{
 		return angleOfChase;
 	}
 	
+	@Override
 	public void move(double xIncrement, double yIncrement){
 		 this.changePosition(xIncrement, yIncrement);
 	}
@@ -101,7 +107,8 @@ public class Target extends Character{
 		// this.move(xIncrement, yIncrement);
 		
 	}
-		
+	
+	@Override
 	public void setVisible(Point2D playerPosition){
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
@@ -201,11 +208,11 @@ public class Target extends Character{
 		}
 	}
 	
-	// with level
 	public void rebornZombie (Target[] zombies, int level){
 		double random = Math.random(); 
 	}
-
+	
+	@Override
 	public String toString(){
 		return "This Target is at" + this.getPosition().toString() + "with radius: " + this.getRadius()
 				+ "and is " + ((this.isVisible())?"Visible":"Invisible") + " with movingspeed " + this.getMovingSpeed() +
