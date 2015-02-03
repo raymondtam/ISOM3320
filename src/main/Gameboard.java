@@ -49,7 +49,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	short weaponSetting = 0; //0default 
 	int score = 0;
 	
-	long reloadStartTime = 0, startTime = 0;
+	long reloadStartTime = 0, startTime = 0, zombieReborn = 0;
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
@@ -402,6 +402,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconImageView[1].setVisible(false);
 		System.out.println("Stage being showed.");
 		startTime = System.currentTimeMillis();
+		zombieReborn = System.currentTimeMillis();
 		
 		backgroundImageView.setTranslateY(- 1431);
 		
@@ -647,11 +648,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
 		//Generate zombie, reborn
-		if(System.currentTimeMillis() - startTime > 20000 && bossShowCount<1 ){
+		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount<1 ){
 			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
 				Target.rebornZombie(target, player.getPosition());
 				// System.out.println("reborned");
-				startTime=System.currentTimeMillis();
+				zombieReborn=System.currentTimeMillis();
 				for(int i=0; i<target.length ; i++){
 					if(target[i].isVisible()){
 						targetImageView[i].setVisible(true);
@@ -664,7 +665,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			else {
 				for(int i=0; i<target.length ; i++){
 					target[i].rebornZombieNearBoundary(target, player.getPosition(), (int)(backgroundImageView.getTranslateY()));
-					startTime=System.currentTimeMillis();
+					zombieReborn=System.currentTimeMillis();
 					if(target[i].isVisible()){
 						targetImageView[i].setVisible(true);
 						targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
