@@ -531,21 +531,21 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Boss movement
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-		bossImageView.setX(boss.getXcoord());
+		bossImageView.setX(boss.getXcoord()); //TODO
 		bossImageView.setY(boss.getYcoord());
 		
 		//Target movement
 		for(int i = 0; i < target.length; i++){
 			target[i].move(player.getPosition());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord());
+			targetImageView[i].setX(target[i].getXcoord()); //TODO
 			targetImageView[i].setY(target[i].getYcoord());
 		}
 		
 		//Boss show and isHit
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
-				// System.out.println("hit bossed");
+				System.out.println("hit bossed");
 				boss.minusHealth(Bullet.getBulletDamage());
 				bullet[i].setVisible(false);
 				bullet[i].setIsMoving(false);
@@ -580,7 +580,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
 						score+=10;
-						// System.out.println("Zombie " + j + " Dead");
+						System.out.println("Zombie " + j + " Dead");
 					}
 					break;
 				}
@@ -664,8 +664,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			bossImageView.setY(150);
 			bossShowCount += 1;
 			boss.summonZombie(target, getPlayerPosition(), 200);
+			System.out.println("Boss:  X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
+			System.out.println("Image: X: "+bossImageView.getX()+" Y: "+ bossImageView.getY());
 		}
-			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		
 		//Game Over
 		//if (player.isDead()) {
