@@ -57,6 +57,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	static int infectionThreshold = 0;
 	static int bossShowCount = 0;
 	
+	boolean bossRage = true;
+	
 	Point2D CursorPosition;
 	
 	//graphics and animation variable
@@ -557,6 +559,10 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					boss.setPosition(-999,-999);
 					score+=1000;
 					System.out.println("Boss Dead");
+					if(bossShowCount==1){
+						
+					}
+						//end
 				}
 			}
 			
@@ -610,8 +616,9 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//summon zombie
-		if(boss.isVisible() && boss.getHealth() % 51 == 0){
+		if(boss.isVisible() && bossRage && boss.getHealth() % 51 == 0){
 			boss.summonZombie(target, getPlayerPosition(), 200);
+			bossRage = false;
 		}
 		
 //		for(int i=0;i<target.length;i++){
