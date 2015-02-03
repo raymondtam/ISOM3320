@@ -590,7 +590,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				infectionThreshold = 0;
 			}
 		}
-		
 		//Generate zombie
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
@@ -619,8 +618,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Show new weapon
 		for(int i=0 ; i<weaponIconImageView.length ; i++){
 			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]  
-				&& backgroundImageView.getTranslateY() < - 600 
-				&& backgroundImageView.getTranslateY() > - 1620){
+				&& backgroundImageView.getTranslateY() < - 300 
+				&& backgroundImageView.getTranslateY() > - 1920){
 				newWeapon(weaponIconImageView[i]);
 			}
 			if((Math.pow(Math.pow(player.getXcoord() - weaponIconImageView[i].getX(),2.0) 
@@ -633,8 +632,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				
 		//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 
-				&& backgroundImageView.getTranslateY() < - 600 
-				&& backgroundImageView.getTranslateY() > - 1620 && bossShowCount < 1){
+				&& backgroundImageView.getTranslateY() < - 300 
+				&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
 			System.out.println("Boss");
 			boss.setVisible(true);
 			boss.setPosition(600, 150);
