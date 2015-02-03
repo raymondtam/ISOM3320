@@ -817,7 +817,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
 	
-<<<<<<< HEAD
+
 	private void initialize(){
 		//initialize scene
 		
@@ -850,9 +850,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		score = 0;
 	}
-	
-=======
->>>>>>> origin/master
+
 	// calculate total score
 		//public double totalScore() {
 			//To Do, e.g.
