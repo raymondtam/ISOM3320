@@ -694,7 +694,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 				
 		//Show Boss
-		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -3000 
+		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -5000 
 				&& backgroundImageView.getTranslateY() < - 300 
 				&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
 			// System.out.println("Boss");
