@@ -29,10 +29,10 @@ import javafx.stage.Stage;
 
 public class Gameboard extends Application implements EventHandler<ActionEvent> {
 	//852 * 7680
-	//constant
+	//Constant
 	final int NO_OF_BULLET_TYPE = 3; 
-	final static int[] BULLET_DAMAGE = {2, 3, 5};
-	final static int[] MAGAZINE_SIZE = {15, 40, 100};
+	final static int[] BULLET_DAMAGE = {3, 4, 5};
+	final static int[] MAGAZINE_SIZE = {15, 30, 100};
 	final static int MAX_MAGAZINE_SIZE = 100;
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
@@ -42,7 +42,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	final static int PLAYER_MAXHEALTH = 100;
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	
-	//game variable and objects
+	//Game variable and objects
 	String name = "Player1";
 	short weaponSetting = 0; //0default 
 	int score = 0;
@@ -52,14 +52,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
-	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 10, 3, 80); 
-	static Boss boss = new Boss (500, 2, 130);
+	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, 3, 30); 
+	static Boss boss = new Boss (300, 2, 110);
 	static int infectionThreshold = 0;
 	static int bossShowCount = 0;
 	
 	Point2D CursorPosition;
 	
-	//graphics and animation variable
+	//Graphics and animation variable
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
@@ -74,7 +74,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty;
     
-    //movement variable
+    //Movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
     
     //Shooting variable
@@ -215,7 +215,6 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //        stage.setHeight(primaryScreenBounds.getHeight());
           
         //Set Positioning
-        
 		scene = new Scene(pane);
         
         player.setPosition(450, 275); 
@@ -302,9 +301,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         scene.setOnMouseClicked(new EventHandler<MouseEvent>(){
         	@Override
 			public void handle(MouseEvent mouse) {
-
+        		//TODO
 			}
-        	
         });
         
         scene.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -388,7 +386,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //	equivalent to
 //		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
 //		Point2D Vector = mouseVector.subtract(player.getPosition());
-		//double angle = xVector.angle(Vector);
+//		double angle = xVector.angle(Vector);
 		
 		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
 		double angle = player.getPosition().angle(dummyVector, cursorVector);
@@ -477,7 +475,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
         		for(Target i : target){
             		i.changePosition(-5, 0);
-            	}
+        		}
         	}
         	
         	for(ImageView i : weaponIconImageView){
@@ -490,20 +488,18 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //        playerImageView.setX(player.getXcoord());
 //        playerImageView.setY(player.getYcoord());
         
-        //bullet movement
+        //Bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
         	if(bullet[i].getIsMoving()){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
-        		bullet[i].move(bullet[i].getXVelocity()*20, bullet[i].getYVelocity()*20);
+        		bullet[i].move(bullet[i].getXVelocity()*40, bullet[i].getYVelocity()*40);
         		bulletImageView[i].setX(bullet[i].getXcoord());
         		bulletImageView[i].setY(bullet[i].getYcoord());
         	}
         }
         
         //target movement
-        
-        
 //        double minTargetDistance;
 //        double targetDistance;
 //		for(int i = 0; i < target.length; i++){
@@ -528,13 +524,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //			}
 //		}
 		
-		
-		//boss movement
+		//Boss movement
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 		bossImageView.setX(boss.getXcoord());
 		bossImageView.setY(boss.getYcoord());
 		
+		//Target movement
 		for(int i = 0; i < target.length; i++){
 			target[i].move(player.getPosition());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
@@ -542,6 +538,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			targetImageView[i].setY(target[i].getYcoord());
 		}
 		
+		//Boss show and isDead
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
 				System.out.println("hit bossed");
@@ -559,7 +556,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 					System.out.println("Boss Dead");
 				}
 			}
-			
+			//Target show and isDead
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
@@ -576,14 +573,13 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 						score+=10;
 						System.out.println("Zombie " + j + " Dead");
 					}
-					
 					break;
 				}
 			}
 			ScoreIntegerProperty.setValue(score);
 		}
 		
-		// minusHealth of player
+		//Minus health of player
 		for(int i = 0; i < target.length; i++){
 			if(player.isHit(target[i])){
 				infectionThreshold += 1;
@@ -594,7 +590,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				infectionThreshold = 0;
 			}
 		}
-		//reborn Zombie
+		
+		//Generate zombie
 		if(System.currentTimeMillis()-startTime>20000){
 			Target.rebornZombie(target, player.getPosition());
 			System.out.println("reborned");
@@ -609,8 +606,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			}
 		}
 		
-		//summon zombie
-		if(boss.isVisible() && boss.getHealth() % 51 == 0){
+		//Summon zombie
+		if(boss.isVisible() && boss.getHealth() % 60 == 0){
 			boss.summonZombie(target, getPlayerPosition(), 200);
 		}
 		
@@ -619,17 +616,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 //			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
 //		}
 //		
-		//show weapon
-		
+		//Show new weapon
 		for(int i=0 ; i<weaponIconImageView.length ; i++){
 			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]  
 				&& backgroundImageView.getTranslateY() < - 600 
 				&& backgroundImageView.getTranslateY() > - 1620){
-					newWeapon(weaponIconImageView[i]);
+				newWeapon(weaponIconImageView[i]);
 			}
 			if((Math.pow(Math.pow(player.getXcoord() - weaponIconImageView[i].getX(),2.0) 
-					+ Math.pow(player.getYcoord() - weaponIconImageView[i].getY(),2.0), 0.5) 
-					<= (player.getRadius() + 50)) && weaponIconImageView[i].isVisible()){
+				+ Math.pow(player.getYcoord() - weaponIconImageView[i].getY(),2.0), 0.5) 
+				<= (player.getRadius() + 50)) && weaponIconImageView[i].isVisible()){
 				//change weapon
 				pickWeapon(weaponIconImageView[i], i+1);
 			}
@@ -667,11 +663,14 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//}
 	}
 	
+	//New weapon icon appears
 	public void newWeapon(ImageView weapon) {
-			weapon.setVisible(true);
-			weapon.setX((int)(player.getXcoord() + Math.random()*400));
-			weapon.setY((int)(Math.random()*600));
+		weapon.setVisible(true);
+		weapon.setX((int)(player.getXcoord() + Math.random()*400));
+		weapon.setY((int)(Math.random()*600));
 	}
+	
+	//Picking up new weapon
 	public void pickWeapon (ImageView weapon, int index) {
 //		weapon.setVisible(false);
 		weapon.setX(-999);
@@ -686,7 +685,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
-
+	
+	//Get player position
 	public static Point2D getPlayerPosition(){
 		Point2D position = player.getPosition();
 		return position;
@@ -697,8 +697,4 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 			//To Do, e.g.
 			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
 		//}
-	
-	
 }
-
-
