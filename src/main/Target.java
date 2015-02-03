@@ -7,7 +7,7 @@ public class Target extends Character{
 	//Variable
 	private int attackDamage;
 	private boolean isMoving;
-	private int maxHealth; 
+	private static int maxHealth; 
 	
 	//Constructor
 	public Target(){
@@ -16,9 +16,9 @@ public class Target extends Character{
 	
 	public Target(int health, int movingSpeed, int radius){
 		this.setHealth(health);
-		this.setMaxHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
+		maxHealth = health;
 	}
 	
 	//Mutator and accessor
@@ -28,14 +28,6 @@ public class Target extends Character{
 	
 	public void setAttackDamage(int attackDamage){
 		this.attackDamage = attackDamage;
-	}
-	
-	public int getMaxHealth(){
-		return this.maxHealth;
-	}
-	
-	public void setMaxHealth(int maxHealth){
-		this.maxHealth = maxHealth;
 	}
 	
     public boolean getIsMoving () {
@@ -167,6 +159,7 @@ public class Target extends Character{
 		System.out.println("Call zombies near top boundary with zombies coming from below");
 	}
 	
+	
 	static public void rebornZombie (Target[] zombies, Point2D playerPosition){
 		double random = Math.random(); 
 		int numberOfDeadZombies = 0;
@@ -177,7 +170,7 @@ public class Target extends Character{
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 			if (zombies[j].isDead()){ 
-				zombies[j].setHealth(zombies[j].getMaxHealth());
+				zombies[j].setHealth(maxHealth);
 				zombies[j].setVisible(playerPosition);
 				i++;
 			}
@@ -197,7 +190,7 @@ public class Target extends Character{
 		if (boundaryLimit >= - 581){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 				if (zombies[j].isDead()){ 
-					zombies[j].setHealth(zombies[j].getMaxHealth());
+					zombies[j].setHealth(maxHealth);
 					zombies[j].setVisibleAtBottom(playerPosition);
 					i++;
 				}
@@ -206,7 +199,7 @@ public class Target extends Character{
 		else if (boundaryLimit <= - 1721){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 				if (zombies[j].isDead()){ 
-					zombies[j].setHealth(zombies[j].getMaxHealth());
+					zombies[j].setHealth(maxHealth);
 					zombies[j].setVisibleAtTop(playerPosition);
 					i++;
 				}
