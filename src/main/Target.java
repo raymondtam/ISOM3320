@@ -138,6 +138,22 @@ public class Target extends Character{
 		this.setVisible(true);
 	}
 	
+	
+	public void setVisibleAtTop(Point2D playerPosition){
+		double randomCoord = Math.random() - 0.5;
+		this.setPosition((int)(playerPosition.getX() - randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
+		this.setVisible(true);
+		System.out.println("Call zombies near lower boundary with zombies coming from top");
+	}
+	
+	public void setVisibleAtBottom(Point2D playerPosition){
+		double randomCoord = Math.random() - 0.5;
+		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
+		this.setVisible(true);
+		System.out.println("Call zombies near top boundary with zombies coming from below");
+	}
+	
+	
 	static public void rebornZombie (Target[] zombies, Point2D playerPosition){
 		double random = Math.random(); 
 		int numberOfDeadZombies = 0;
@@ -151,6 +167,38 @@ public class Target extends Character{
 				zombies[j].setHealth(maxHealth);
 				zombies[j].setVisible(playerPosition);
 				i++;
+			}
+		}
+	}
+	
+	static public void rebornZombieNearBoundary (Target[] zombies, Point2D playerPosition, int boundaryLimit){
+		double random = Math.random(); 
+		int upperSideLimit = - 581;
+		int lowerSideLimit = - 1721;
+		int numberOfDeadZombies = 0;
+		int numberOfZombiesToReborn = 0;
+		for (int i = 0; i < zombies.length; i++){
+			if (zombies[i].isDead()) numberOfDeadZombies++;
+		}
+		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
+		if (boundaryLimit >= - 581){
+			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
+				if (zombies[j].isDead()){ 
+					zombies[j].setVisibleAtBottom(playerPosition);
+					zombies[j].setHealth(maxHealth);
+					zombies[j].setVisible(playerPosition);
+					i++;
+				}
+			}
+		}
+		else if (boundaryLimit <= - 1721){
+			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
+				if (zombies[j].isDead()){ 
+					zombies[j].setVisibleAtTop(playerPosition);
+					zombies[j].setHealth(maxHealth);
+					zombies[j].setVisible(playerPosition);
+					i++;
+				}
 			}
 		}
 	}
