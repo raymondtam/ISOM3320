@@ -56,7 +56,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, 3, 30); 
 	static Boss boss = new Boss (300, 2, 110);
 	static int infectionThreshold = 0;
+	
 	static int bossShowCount = 0;
+	boolean summonZombie = false;
 	
 	//Graphics and animation variable
 	Pane pane;
@@ -587,6 +589,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				bullet[i].setPosition(-999, -999);  //void the bullet
 				bulletImageView[i].setVisible(false);
 				
+				if(boss.getHealth() % 60 == 0){
+					summonZombie = true;
+				}
+				
 				if(boss.isDead()){
 					boss.setVisible(false);
 					bossImageView.setVisible(false);
@@ -665,8 +671,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
 		//Summon zombie
-		if(boss.isVisible() && boss.getHealth() % 60 == 0){
+		
+		
+		
+		if(boss.isVisible() && summonZombie){
 			boss.summonZombie(target, player.getPosition(), 200);
+			summonZombie = false;
+			System.out.println("Summon Zombie!!!");
 		}
 		
 		for(int i=0 ; i<target.length ; i++){
@@ -706,6 +717,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			bossImageView.setY(150);
 			bossShowCount += 1;
 			boss.summonZombie(target, player.getPosition(), 200);
+			System.out.println("Summon Zombie!!!");
 		}
 			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		
