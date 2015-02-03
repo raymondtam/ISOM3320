@@ -58,7 +58,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
 	static int infectionThreshold = 0;
 	static double timeElapsed = 0;
-	
+	static int minutesToDisplay, secondsToDisplay;
 	static int bossShowCount = 0;
 	boolean summonZombie = false;
 	
@@ -81,7 +81,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	//Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
     		MinuteLabel = new Label(), SecondLabel = new Label(), ColonLabel = new Label();
-    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty, MinuteIntegerProperty, SecondIntegerProperty;
+    private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty, MinutesIntegerProperty, SecondsIntegerProperty;
     
     //Movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
@@ -176,8 +176,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconTranslateY[0] = rifleIconImage.getHeight()/2; 
 		weaponIconTranslateY[1] = machinegunIconImage.getHeight()/2;
 		
-		
-		
 		bossTranslateX = bossImage.getWidth()/2;
 		bossTranslateY = bossImage.getHeight()/2;
 		
@@ -185,7 +183,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		bulletTranslateY =	bulletImage.getHeight()/2;
 		
 		//Initialize the variable and set necessary property
-				
+		
 		backgroundImageView = new ImageView(roadImage);
 		
 		playerImageView = new ImageView[3];
@@ -226,14 +224,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         ScoreLabel.setFont(DEFAULT_FONT);
         ScoreLabel.setOpacity(0.8);
         
-        MinuteIntegerProperty = new SimpleIntegerProperty(1);
-        MinuteLabel.textProperty().bind(MinuteIntegerProperty.asString());
+        MinutesIntegerProperty = new SimpleIntegerProperty(0);
+        MinuteLabel.textProperty().bind(MinutesIntegerProperty.asString());
         MinuteLabel.setTextFill(Color.YELLOW);
         MinuteLabel.setFont(DEFAULT_FONT);
         MinuteLabel.setOpacity(0.8);
         
-        SecondIntegerProperty = new SimpleIntegerProperty(2);
-        SecondLabel.textProperty().bind(SecondIntegerProperty.asString());
+        SecondsIntegerProperty = new SimpleIntegerProperty(0);
+        SecondLabel.textProperty().bind(SecondsIntegerProperty.asString());
         SecondLabel.setTextFill(Color.YELLOW);
         SecondLabel.setFont(DEFAULT_FONT);
         SecondLabel.setOpacity(0.8);
@@ -243,6 +241,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         BulletLabel.setTextFill(Color.YELLOW);
         BulletLabel.setFont(DEFAULT_FONT);
         BulletLabel.setOpacity(0.75);
+        
+        ColonLabel.setText(":");
+        ColonLabel.setTextFill(Color.YELLOW);
+        ColonLabel.setFont(DEFAULT_FONT);
+        ColonLabel.setOpacity(0.8);
         
         bulletImageView = new ImageView[MAX_MAGAZINE_SIZE];
         for(int i=0 ; i<bulletImageView.length ; i++ ){
@@ -255,7 +258,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	targetImageView[i+4] = new ImageView(zombieImage1);
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
         }
-       
+        
 		pane.getChildren().addAll(backgroundImageView, HPLabel, BulletLabel, ScoreLabel, 
 				MinuteLabel, SecondLabel, ColonLabel, HPIconImageView);
 		pane.getChildren().addAll(playerImageView[0], playerImageView[1], playerImageView[2]);
@@ -303,8 +306,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		MinuteLabel.setTranslateY(20);
 		SecondLabel.setTranslateX(450);
 		SecondLabel.setTranslateY(20);
-		ColonLabel.setTranslateX(425);
-		ColonLabel.setTranslateY(20);
+		ColonLabel.setTranslateX(430);
+		ColonLabel.setTranslateY(17);
 		
 		//movement buffer
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
@@ -585,7 +588,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //		}
         
         //Time Showing
-        timeElapsed = System.currentTimeMillis() - startTime;
+        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        minutesToDisplay = (int)(timeElapsed / 60);
+        secondsToDisplay = ((int)(timeElapsed)) % 60;
+        MinutesIntegerProperty.setValue(minutesToDisplay);
+        SecondsIntegerProperty.setValue(secondsToDisplay);
+        
+		// ScoreIntegerProperty.setValue(score);
         
 		//Boss movement
 		boss.move(player.getPosition());
@@ -628,7 +637,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						}
 					}
 					// System.out.println("Boss Dead");
-					if(bossShowCount==1){
+					if(bossShowCount == 1){
 						//end		
 					}
 				}
@@ -648,7 +657,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						target[j].setVisible(false);
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
-						score+=10;
+						score += 10;
 						 System.out.println("Zombie " + j + " Dead");
 					}
 					break;

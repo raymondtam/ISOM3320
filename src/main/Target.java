@@ -141,14 +141,14 @@ public class Target extends Character{
 	
 	public void setVisibleAtTop(Point2D playerPosition){
 		double randomCoord = Math.random() - 0.5;
-		this.setPosition((int)(playerPosition.getX() - randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
+		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
 		this.setVisible(true);
 		System.out.println("Call zombies near lower boundary with zombies coming from top");
 	}
 	
 	public void setVisibleAtBottom(Point2D playerPosition){
 		double randomCoord = Math.random() - 0.5;
-		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
+		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() + (600 / 2))); 
 		this.setVisible(true);
 		System.out.println("Call zombies near top boundary with zombies coming from below");
 	}
