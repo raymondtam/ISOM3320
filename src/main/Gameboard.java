@@ -26,7 +26,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
-public class Gameboard extends Application implements EventHandler<ActionEvent> {
+final public class Gameboard extends Application implements EventHandler<ActionEvent> {
 	//852 * 7680
 	//Constant
 	final int NO_OF_BULLET_TYPE = 3; 
@@ -86,7 +86,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
     double angle, mouseX, mouseY;
     long lastShootTime;
 	
-    double[] playerTranslateX, playerTranslateY,targetTranslateX, targetTranslateY;
+    double[] playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, weaponIconTranslateX, weaponIconTranslateY;
     double bossTranslateX, bossTranslateY, bulletTranslateX, bulletTranslateY;
     
 	public static void main(String[] arg){
@@ -164,6 +164,16 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		targetTranslateY[0] = zombieImage.getHeight()/2;
 		targetTranslateY[1] = zombieImage.getHeight()/2;
 		targetTranslateY[2] = zombieImage.getHeight()/2;
+		
+		weaponIconTranslateX = new double[2];
+		targetTranslateX[0] = machinegunIconImage.getWidth()/2;
+		targetTranslateX[1] = rifleIconImage.getWidth()/2;
+		
+		weaponIconTranslateY = new double[2];
+		weaponIconTranslateY[0] = rifleIconImage.getHeight()/2; 
+		weaponIconTranslateY[1] = machinegunIconImage.getHeight()/2;
+		
+		
 		
 		bossTranslateX = bossImage.getWidth()/2;
 		bossTranslateY = bossImage.getHeight()/2;
@@ -521,8 +531,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
         		bullet[i].move(bullet[i].getXVelocity()*40, bullet[i].getYVelocity()*40);
-        		bulletImageView[i].setX(bullet[i].getXcoord());
-        		bulletImageView[i].setY(bullet[i].getYcoord());
+        		bulletImageView[i].setX(bullet[i].getXcoord()-bulletTranslateX);
+        		bulletImageView[i].setY(bullet[i].getYcoord()-bulletTranslateY);
         	}
         }
         
@@ -559,10 +569,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Target movement
 		for(int i = 0; i < target.length; i++){
-			target[i].move(player.getPosition());
-			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+			if(target[i].isVisible()){
+				target[i].move(player.getPosition());
+				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+				targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+				targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+			}
 		}
 		
 		//Boss show and isHit
@@ -613,7 +625,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		
 		//Minus health of player
 		for(int i = 0; i < target.length; i++){
-			if(player.isHit(target[i])){
+			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
 			}
 			if(infectionThreshold == 30){
@@ -624,7 +636,7 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		}
 		
 		//Generate zombie, reborn
-		if(System.currentTimeMillis() - startTime > 20000){
+		if(System.currentTimeMillis() - startTime > 20000 && bossShowCount<1 ){
 			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
 				Target.rebornZombie(target, player.getPosition());
 				// System.out.println("reborned");
@@ -642,10 +654,12 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 				for(int i=0; i<target.length ; i++){
 					target[i].rebornZombieNearBoundary(target, player.getPosition(), (int)(backgroundImageView.getTranslateY()));
 					startTime=System.currentTimeMillis();
-					targetImageView[i].setVisible(true);
-					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+					if(target[i].isVisible()){
+						targetImageView[i].setVisible(true);
+						targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+						targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+						targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+					}
 				}
 			}
 		}
@@ -653,6 +667,11 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		//Summon zombie
 		if(boss.isVisible() && boss.getHealth() % 60 == 0){
 			boss.summonZombie(target, player.getPosition(), 200);
+		}
+		
+		for(int i=0 ; i<target.length ; i++){
+			if(target[i].isVisible())
+				targetImageView[i].setVisible(true);
 		}
 		
 //		for(int i=0;i<target.length;i++){
@@ -710,8 +729,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 	//New weapon icon appears
 	public void newWeapon(ImageView weapon) {
 		weapon.setVisible(true);
-		weapon.setX((int)(player.getXcoord() + Math.random()*400));
-		weapon.setY((int)(Math.random()*600));
+		weapon.setX((int)(player.getXcoord() + Math.random()*400 - weapon.getImage().getWidth()/2));
+		weapon.setY((int)(Math.random()*600 - weapon.getImage().getHeight()/2));
 	}
 	
 	//Picking up new weapon
@@ -724,8 +743,8 @@ public class Gameboard extends Application implements EventHandler<ActionEvent> 
 		playerImageView[weaponSetting].setVisible(false); // original
 		weaponSetting = (short)index;
 		playerImageView[weaponSetting].setVisible(true);
-		playerImageView[weaponSetting].setX(player.getXcoord());
-		playerImageView[weaponSetting].setY(player.getYcoord());
+		playerImageView[weaponSetting].setX(player.getXcoord() - playerTranslateX[weaponSetting]);
+		playerImageView[weaponSetting].setY(player.getYcoord() - playerTranslateY[weaponSetting]);
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
