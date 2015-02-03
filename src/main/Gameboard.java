@@ -205,8 +205,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconImageView[1] = new ImageView (machinegunIconImage);
 		
 		weaponIconDistance = new long[2];
-		weaponIconDistance[0] = -1000;
-		weaponIconDistance[1] = -2000;
+		weaponIconDistance[0] = -2000;
+		weaponIconDistance[1] = -4000;
 		
 		bossImageView = new ImageView (bossImage);
 		bossImageView.setRotate(270);
