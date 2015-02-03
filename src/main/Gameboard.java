@@ -25,6 +25,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javax.swing.*;
 
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
@@ -777,6 +778,28 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		
+		
+		//End Game
+		if (player.isDead()){
+			//Label label1 = new Label("Game Over! Your total score is " + totalScore(score) + ". Please enter your name:");
+			//TextField textField = new TextField ();
+			//HBox hb = new HBox();
+			//hb.getChildren().addAll(label1, textField);
+			//hb.setSpacing(10)
+			long endTime = System.currentTimeMillis();
+			long gameDuration = endTime - startTime;
+			String string= JOptionPane.showInputDialog(
+					null, "Game Over! Your total Score is " + totalScore(score) + ". Please enter your name: " , "Game Over",
+					JOptionPane.QUESTION_MESSAGE);
+			//To Do restart;
+		}
+		else if (boss.isDead()){
+			long endTime = System.currentTimeMillis();
+			long gameDuration = endTime - startTime;
+			String string= JOptionPane.showInputDialog(
+					null, "Congratulation! Your total Score is " + totalScore(score) + ". Please enter your name: " , "Congratulation",
+					JOptionPane.QUESTION_MESSAGE);
+		}
 		//Game Over
 		//if (player.isDead()) {
 		//Change background to black, maybe
@@ -852,8 +875,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	}
 
 	// calculate total score
-		//public double totalScore() {
-			//To Do, e.g.
+		public double totalScore(double score) {
+			return score += player.getHealth()*10;
 			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
-		//}
+		}
 }
