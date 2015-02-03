@@ -70,20 +70,15 @@ public class Bullet extends GameObject {
     public void setFireAngle (double fireAngle) {
     	this.fireAngle = fireAngle;
     }
-<<<<<<< HEAD
-    
+
     //Custom Method
-=======
-   
-    //Method
->>>>>>> origin/master
+
 	@Override
 	public boolean isHit() {
 		return true;
 	}
 	
 	public boolean isHit(Target targetShot) {
-<<<<<<< HEAD
 		if (Math.pow(Math.pow(targetShot.getXcoord() - this.getXcoord(),2.0) 
 			+ Math.pow(targetShot.getYcoord() - this.getYcoord(),2.0), 0.5) 
 			<= (targetShot.getRadius() + this.getRadius())){
@@ -91,15 +86,6 @@ public class Bullet extends GameObject {
 		}
 		else {
 			return false;}
-=======
-			if (Math.pow(Math.pow(targetShot.getXcoord() - this.getXcoord(),2.0) 
-					+ Math.pow(targetShot.getYcoord() - this.getYcoord(),2.0), 0.5) //Distance between centres < sum of radius 
-					<= (targetShot.getRadius() + this.getRadius())){
-				return true;
-			}
-			else {
-		return false;}
->>>>>>> origin/master
 	}
 	
 	@Override
