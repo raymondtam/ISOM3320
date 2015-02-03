@@ -7,7 +7,7 @@ public class Target extends Character{
 	//Variable
 	private int attackDamage;
 	private boolean isMoving;
-	private static int maxHealth; 
+	private int maxHealth; 
 	
 	//Constructor
 	public Target(){
@@ -30,6 +30,13 @@ public class Target extends Character{
 		this.attackDamage = attackDamage;
 	}
 	
+	public int getMaxHealth(){
+		return this.maxHealth;
+	}
+	
+	public void setMaxHealth(int health){
+		this.setMaxHealth(health);
+	}
     public boolean getIsMoving () {
     	return isMoving;
     }
@@ -170,7 +177,7 @@ public class Target extends Character{
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 			if (zombies[j].isDead()){ 
-				zombies[j].setHealth(maxHealth);
+				zombies[j].setHealth(zombies[j].getMaxHealth());
 				zombies[j].setVisible(playerPosition);
 				i++;
 			}
@@ -190,7 +197,7 @@ public class Target extends Character{
 		if (boundaryLimit >= - 581){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 				if (zombies[j].isDead()){ 
-					zombies[j].setHealth(maxHealth);
+					zombies[j].setHealth(zombies[j].getMaxHealth());
 					zombies[j].setVisibleAtBottom(playerPosition);
 					i++;
 				}
@@ -199,7 +206,7 @@ public class Target extends Character{
 		else if (boundaryLimit <= - 1721){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 				if (zombies[j].isDead()){ 
-					zombies[j].setHealth(maxHealth);
+					zombies[j].setHealth(zombies[j].getMaxHealth());
 					zombies[j].setVisibleAtTop(playerPosition);
 					i++;
 				}
