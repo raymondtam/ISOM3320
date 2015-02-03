@@ -1,7 +1,7 @@
 package main;
 
 public class Bullet extends GameObject {
-    //Attribute
+    //Variable
 	private static int bulletDamage;
     private static int magazineSize;
     private boolean isMoving;
@@ -9,7 +9,7 @@ public class Bullet extends GameObject {
     private double yVelocity;
     private double fireAngle;
   
-    //Constructors
+    //Constructor
     Bullet () {
     	Bullet.bulletDamage = 0;
     	Bullet.magazineSize = 0;
@@ -21,7 +21,8 @@ public class Bullet extends GameObject {
     	this.setRadius(radius);
     	this.setMovingSpeed(movingSpeed);
     }
-  
+    
+    //Mutator and accessor
     public static int getBulletDamage () {
     	return bulletDamage;
     }

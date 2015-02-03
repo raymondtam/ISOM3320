@@ -3,7 +3,7 @@ package main;
 import javafx.geometry.Point2D;
 
 abstract class GameObject {
-	//variable
+	//Variable
 	private Point2D position;
 	private double radius;
 	private boolean	visible;
@@ -21,8 +21,7 @@ abstract class GameObject {
 		this.movingSpeed = movingSpeed;
 	}
 	
-	//mutator and accessor
-	
+	//Mutator and accessor
 	public double getXcoord(){
 		return position.getX();
 	}
@@ -45,14 +44,12 @@ abstract class GameObject {
 	
 	public void setPosition(double xcoord, double ycoord){
 		position = new Point2D(xcoord, ycoord);
-		//TO-DO: set graph property
 	}
 	
 	public void changePosition(double xIncrement, double yIncrement){
 		Point2D vector = new Point2D(xIncrement, yIncrement);
 		position = position.add(vector);
 	}
-	
 	
 	public double getRadius(){
 		return radius;
@@ -68,7 +65,6 @@ abstract class GameObject {
 	
 	public void setVisible(boolean visible){
 		this.visible = visible;
-		//TO-DO: set graph property
 	}
 	
 	public int getMovingSpeed(){
@@ -80,20 +76,13 @@ abstract class GameObject {
 	} 
 	
 	//Custom method
-	
-
-	
-	
 	@Override
 	public String toString(){
 		return "The Gameobject is at" + position.toString() + "with radius: " + radius 
 				+ "and is " + ((visible)?"Visible":"Invisible") + " with movingspeed " + movingSpeed+"\n" ;
 	}
 		
-	//to-do
-	
 	abstract public boolean isHit();
 	
 	abstract public void move(double xIncrement, double yIncrement);
-	
 }
