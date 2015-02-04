@@ -692,46 +692,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
 			}
-			if(infectionThreshold >= 30){
-				player.minusHealth(ZOMBIES_DAMAGE);
-				zombieSound[2].play(500);
-				HPIntegerProperty.setValue(player.getHealth());
-				infectionThreshold = 0;
-			}
-			if(player.getHealth() <= 0){
-				for(int j = 0; i < topThreeScores.length; j++){
-					score = score - (int)(timeElapsed * 5 / 1000);
-					if (score >= topThreeScores.length){
-						topThreeScores[i] = score;
-					}
-				}
-			}
+			infected(30, ZOMBIES_DAMAGE);
 		}
 		
 		//Check if Boss hit Player and minus health correspondingly
 		if(bossImageView.isVisible() && player.isHit(boss)){
 			infectionThreshold += 3;
-		}
-		if(infectionThreshold >= 30){
-			player.minusHealth(BOSS_DAMAGE);
-			HPIntegerProperty.setValue(player.getHealth());
-			infectionThreshold = 0;
-			System.out.println("Health: "+player.getHealth());
-		}
-		if(player.getHealth() <= 0){
-			score = score - (int)(timeElapsed * 5 / 1000);
-			for(int i = 0; i < topThreeScores.length; i++){
-				if (score >= topThreeScores.length){
-					topThreeScores[i] = score;
-				}
-			}
-			//End Game
-			long gameDuration = System.currentTimeMillis() - startTime;
-			String string= JOptionPane.showInputDialog(
-			     null, "Game Over! \n Your total Score is " + score + ". Please enter your name: " , "Game Over",
-			     JOptionPane.QUESTION_MESSAGE);
-			   //To Do restart;
-			
+			infected(30, BOSS_DAMAGE);
 		}
 		
 		//Generate zombie, reborn
@@ -855,7 +822,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
         player.setPosition(screenWidth/2, screenHeight/2); 
         player.setHealth(100);
-		
+        
+		System.out.println(player.getHealth());
         weaponSetting = 0;
         playerImageView[weaponSetting].setVisible(true);
 		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
@@ -865,6 +833,15 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weaponIconImageView[0].setVisible(false);
 		weaponIconImageView[1].setVisible(false);
         
+		for(Bullet i:bullet){
+			i.setBulletDamage(DEFAULT_BULLET_DAMAGE);;
+			i.setMagazineSize(DEFAULT_MAGAZINE_SIZE);
+		}
+		
+		player.setNumberOfUnusedBullet(DEFAULT_MAGAZINE_SIZE);		
+		BulletIntegerProperty.setValue(player.getNumberOfUnusedBullet());
+		HPIntegerProperty.setValue(player.getHealth());
+		
 		for(int i=0;i<target.length;i++){
 			target[i].setVisible(player.getPosition());
 			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
@@ -875,6 +852,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
 		boss.setHealth(BOSS_HEALTH);
+		
 		
 		score = 0;
 		startTime = System.currentTimeMillis();
@@ -890,8 +868,31 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		moveDown = false;
 
 	    mousePressed = false;
-	    handgunTrigger = false;
-	    
-	    
+	    handgunTrigger = false;	    
+	}
+	
+	void infected(int infection, int damage){
+		if(infectionThreshold >= infection){
+			zombieSound[2].play(500);
+			player.minusHealth(damage);
+			HPIntegerProperty.setValue(player.getHealth());
+			infectionThreshold = 0;
+			System.out.println("Health: "+player.getHealth());
+		}
+		if(player.getHealth() <= 0){
+			score = score - (int)(timeElapsed * 5 / 1000);
+			for(int i = 0; i < topThreeScores.length; i++){
+				if (score >= topThreeScores.length){
+					topThreeScores[i] = score;
+				}
+			}
+			//End Game
+			long gameDuration = System.currentTimeMillis() - startTime;
+			String string= JOptionPane.showInputDialog(
+			     null, "Game Over! \n Your total Score is " + score + ". Please enter your name: " , "Game Over",
+			     JOptionPane.QUESTION_MESSAGE);
+			   //To Do restart;
+			
+		}
 	}
 }

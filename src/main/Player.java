@@ -21,7 +21,7 @@ public class Player extends Character{
 		return numberOfUnusedBullet;
 	}
 	
-	private void setNumberOfUnusedBullet(int numberOfUnusedBullet) {
+	public void setNumberOfUnusedBullet(int numberOfUnusedBullet) {
 		this.numberOfUnusedBullet = numberOfUnusedBullet;
 	}
 	
