@@ -172,6 +172,7 @@ public class Target extends Character{
 		double random = Math.random(); 
 		int numberOfDeadZombies = 0;
 		int numberOfZombiesToReborn = 0;
+		System.out.println("Reborn Zombies");
 		for (int i = 0; i < zombies.length; i++){
 			if (zombies[i].isDead()) numberOfDeadZombies++;
 		}
@@ -179,6 +180,7 @@ public class Target extends Character{
 		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
 			if (zombies[j].isDead()){ 
 				zombies[j].setHealth(zombies[j].getMaxHealth());
+				System.out.println("The health of zombie" + j + "is " + zombies[j].getHealth());
 				zombies[j].setVisible(playerPosition);
 				i++;
 			}
@@ -197,7 +199,7 @@ public class Target extends Character{
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		if (boundaryLimit >= - 581){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
-				if (zombies[j].isDead()){ 
+				if (zombies[j].isDead()){
 					zombies[j].setHealth(zombies[j].getMaxHealth());
 					zombies[j].setVisibleAtBottom(playerPosition);
 					i++;
@@ -206,7 +208,7 @@ public class Target extends Character{
 		}
 		else if (boundaryLimit <= - 1721){
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
-				if (zombies[j].isDead()){ 
+				if (zombies[j].isDead()){
 					zombies[j].setHealth(zombies[j].getMaxHealth());
 					zombies[j].setVisibleAtTop(playerPosition);
 					i++;
