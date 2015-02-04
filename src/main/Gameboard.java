@@ -306,10 +306,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		ColonLabel.setTranslateX(430);
 		ColonLabel.setTranslateY(17);
 		
+		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
+		refreshScreen.setCycleCount(Timeline.INDEFINITE);
+		
 		//Movement buffer
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
+            	System.out.println(keycode);
                 switch(keycode){
 	            	case W:
 	            		moveUp = true;
@@ -329,6 +333,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 		        			gunReload[weaponSetting].play(100);
 						}
+						break;
+					case SPACE:
+						refreshScreen.play();
 						break;
             	}
                	key.consume();
@@ -399,7 +406,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         			playerImageView[weaponSetting].setRotate(-1*angle);
         	}
         });
-        
+		
         //Set cursor Image
         scene.setCursor(new ImageCursor(crossHairImage));
         	
@@ -410,10 +417,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		stage.setResizable(false);
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
-
-		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
-		refreshScreen.setCycleCount(Timeline.INDEFINITE);
-		refreshScreen.play();
 		
 		stage.show();
 		weaponIconImageView[0].setVisible(false);
@@ -642,8 +645,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						//end				      
 						long gameDuration = System.currentTimeMillis() - startTime;
 							String name= JOptionPane.showInputDialog(
-							 null, "Congratulation! \n Your used " + minutesToDisplay + " : " + secondsToDisplay +" \n Your total Score is " + score + ". \n Please enter your name: " , "Congratulation",
+							 null, "Congratulation! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
+							 +" seconds \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
 							  JOptionPane.QUESTION_MESSAGE);
+						refreshScreen.stop();
 						initialize();
 					}
 				}
@@ -874,9 +879,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			//End Game
 			long gameDuration = System.currentTimeMillis() - startTime;
 			String string= JOptionPane.showInputDialog(
-			     null, "Game Over! \n Your total Score is " + score + ". Please enter your name: " , "Game Over",
+			     null, "Game Over! \n Your calculated total Score is " + score + ". Please enter your name: " , "Game Over",
 			     JOptionPane.QUESTION_MESSAGE);
-			   //To Do restart;
+			refreshScreen.stop();
 			initialize();
 		}
 	}
