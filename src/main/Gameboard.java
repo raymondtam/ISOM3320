@@ -902,25 +902,32 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	
 	void getRank(String name) {
-		if (score > topThreeScores[2]) {
+		if (score > topThreeScores[2] || ( score == topThreeScores[2] && timeElapsed < topThreeTime[2])) {
+			int[] newScores = new int[3];
+			String[] newName = new String[3];
+			long[] newTime = new long[3];
+			
 			topThreeScores[2] = score;
+			topThreeTime[2] = timeElapsed;
+			
 			int[] temp = Arrays.copyOf(topThreeScores, 3);
 			Arrays.sort(temp);
-			for(int i=0;i<temp.length;i++){
-				
+			
+			for(int i=0 ; i<temp.length ; i++){
+				int index = Arrays.binarySearch(temp, topThreeScores[i]);
+				newScores[index] = topThreeScores[i];
+				newName[index] = topThree[i];
+				newTime[index] = topThreeTime[i];
 			}
-			topThree[2] = name;
-			topThreeTime[2] = timeElapsed;
+			
+			topThreeScores = newScores;
+			topThree = newName;
+			topThreeTime = newTime;
+			
 		}
-		if(score == topThreeScores[2]) {
-			if(timeElapsed < topThreeTime[2]){
-				topThreeScores[2] = score;
-				topThree[2] = name;
-				topThreeTime[2] = timeElapsed;
-			}
-			java.util.Arrays.sort(topThreeScores);	
-		}
+
 	}
+	
 	//void getRank(String name){
 		//for(int i=0 ; i < topThreeScores.length ; i++){
 			//int temp = 0;
