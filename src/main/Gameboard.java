@@ -574,7 +574,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		bossImageView.setX(boss.getXcoord()-bossTranslateX);
 		bossImageView.setY(boss.getYcoord()-bossTranslateY);
 		
-		//Target movement
 //		for(int i = 0; i < target.length; i++){
 //			if(target[i].isVisible()){
 //				target[i].move(player.getPosition());
@@ -584,6 +583,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //			}
 //		}
 		
+		//Target movement
 		double minTargetDistance;
 		double targetDistance;
 		for(int i = 0; i < target.length; i++){
@@ -680,7 +680,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 			if(player.getHealth() <= 0){
 				for(int j = 0; i < topThreeScores.length; j++){
-					score = score - (int)(timeElapsed * 20);
+					score = score - (int)(timeElapsed * 5 / 1000);
 					if (score >= topThreeScores.length){
 						topThreeScores[i] = score;
 					}
@@ -698,7 +698,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			infectionThreshold = 0;
 		}
 		if(player.getHealth() <= 0){
-			score = score - (int)(timeElapsed * 20);
+			score = score - (int)(timeElapsed * 5 / 1000);
 			for(int i = 0; i < topThreeScores.length; i++){
 				if (score >= topThreeScores.length){
 					topThreeScores[i] = score;

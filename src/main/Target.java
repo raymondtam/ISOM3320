@@ -119,18 +119,19 @@ public class Target extends Character{
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
 		if (randomEdge >= 0 && randomEdge < 0.25){
-			this.setPosition((int)(playerPosition.getX() + randomCoord * 1100), (int)(playerPosition.getY() - (750 / 2))); 
+			this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (750 / 2))); 
 		}
 		else if (randomEdge >= 0.25 && randomEdge < 0.5){
-			this.setPosition((int)(playerPosition.getX() + (1100 / 2)), (int)(playerPosition.getY() + randomCoord * 750)); 
+			this.setPosition((int)(playerPosition.getX() + 500 ), (int)(playerPosition.getY() + randomCoord * 600)); 
 		}
 		else if (randomEdge >= 0.5 && randomEdge < 0.75){
-			this.setPosition((int)(playerPosition.getX() + randomCoord * 1100), (int)(playerPosition.getY() + (750 / 2))); 
+			this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() + (750 / 2))); 
 		}
 		else {
-			this.setPosition((int)(playerPosition.getX() - (1100 / 2)), (int)(playerPosition.getY() + randomCoord * 750)); 
+			this.setPosition((int)(playerPosition.getX() - 500 ), (int)(playerPosition.getY() + randomCoord * 600)); 
 		}
 		this.setVisible(true);
+		System.out.println("Call zombies!!!");
 	}
 	
 	public void setVisible(Point2D playerPosition, int range){
