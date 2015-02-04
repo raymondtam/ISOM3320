@@ -793,7 +793,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		   long endTime = System.currentTimeMillis();
 		   long gameDuration = endTime - startTime;
 		   String string= JOptionPane.showInputDialog(
-		     null, "Game Over! Your total Score is " + totalScore(score) + ". Please enter your name: " , "Game Over",
+		     null, "Game Over! Your total Score is " + score + ". Please enter your name: " , "Game Over",
 		     JOptionPane.QUESTION_MESSAGE);
 		   //To Do restart;
 		  }
@@ -801,7 +801,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		   long endTime = System.currentTimeMillis();
 		   long gameDuration = endTime - startTime;
 		   String string= JOptionPane.showInputDialog(
-		     null, "Congratulation! Your total Score is " + totalScore(score) + ". Please enter your name: " , "Congratulation",
+		     null, "Congratulation! Your total Score is " + score + ". Please enter your name: " , "Congratulation",
 		     JOptionPane.QUESTION_MESSAGE);
 		  }
 		
