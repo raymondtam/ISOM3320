@@ -1,6 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -24,6 +25,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
 import javax.swing.*;
 
 
@@ -413,7 +415,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
 
-		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33d), this));
+		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
 		refreshScreen.setCycleCount(Timeline.INDEFINITE);
 		refreshScreen.play();
 		
@@ -642,6 +644,16 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					// System.out.println("Boss Dead");
 					if(bossShowCount == 1){
 						//end		
+//					      //end  
+//					      Scanner input = new Scanner (System.in);
+//					      if(input.hasNext())
+//					       initialize();
+//					      
+						long gameDuration = System.currentTimeMillis() - startTime;
+							String name= JOptionPane.showInputDialog(
+							 null, "Congratulation! \n Your used " + minutesToDisplay + " : " + secondsToDisplay +" \n Your total Score is " + score + ". \n Please enter your name: " , "Congratulation",
+							  JOptionPane.QUESTION_MESSAGE);
+						initialize();
 					}
 				}
 			}
@@ -709,9 +721,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		//Generate zombie, reborn
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
+			System.out.println("Zombie Reborn");
 			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
 				Target.rebornZombie(target, player.getPosition());
-				// System.out.println("reborned");
 				zombieReborn=System.currentTimeMillis();
 				for(int i=0; i<target.length ; i++){
 					if(target[i].isVisible()){
@@ -797,13 +809,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		     JOptionPane.QUESTION_MESSAGE);
 		   //To Do restart;
 		  }
-		  else if (boss.isDead()){
-		   long endTime = System.currentTimeMillis();
-		   long gameDuration = endTime - startTime;
-		   String string= JOptionPane.showInputDialog(
-		     null, "Congratulation! Your total Score is " + score + ". Please enter your name: " , "Congratulation",
-		     JOptionPane.QUESTION_MESSAGE);
-		  }
+		  
 		
 	}
 	
@@ -835,4 +841,56 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			//To Do, e.g.
 			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
 		//}
+	
+	private void initialize(){
+		//initialize scene
+		
+		for(ImageView i:playerImageView){
+			i.setVisible(false);
+		}
+		
+		backgroundImageView.setTranslateX(0);
+		backgroundImageView.setTranslateY(-1431);
+		
+        player.setPosition(screenWidth/2, screenHeight/2); 
+        player.setHealth(100);
+		
+        weaponSetting = 0;
+        playerImageView[weaponSetting].setVisible(true);
+		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
+		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateY[weaponSetting]);
+		
+				
+		weaponIconImageView[0].setVisible(false);
+		weaponIconImageView[1].setVisible(false);
+        
+		for(int i=0;i<target.length;i++){
+			target[i].setVisible(player.getPosition());
+			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
+			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+			targetImageView[i].setVisible(true);
+		}
+		
+		boss.setHealth(BOSS_HEALTH);
+		
+		score = 0;
+		startTime = System.currentTimeMillis();
+		infectionThreshold = 0;
+		timeElapsed = 0;
+		bossShowCount = 0;
+		
+		summonZombie = false;
+		 
+		moveLeft = false; 
+		moveRight = false;
+		moveUp = false;
+		moveDown = false;
+
+	    mousePressed = false;
+	    handgunTrigger = false;
+	    
+	    
+	}
 }
