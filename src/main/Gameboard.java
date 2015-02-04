@@ -54,10 +54,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
-	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, 3, 30); 
+	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, ZOMBIES_DAMAGE, 3, 30); 
 	static String[] topThree = new String[3];
 	static int[] topThreeScores = new int[3];
-	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
+	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
 	static int infectionThreshold = 0;
 	static double timeElapsed = 0;
 	static int minutesToDisplay, secondsToDisplay;
@@ -556,7 +556,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	if(bullet[i].getIsMoving()){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
-        		bullet[i].move(bullet[i].getXVelocity()*40, bullet[i].getYVelocity()*40);
+        		bullet[i].move(bullet[i].getXVelocity()*bullet[i].getMovingSpeed(), bullet[i].getYVelocity()*bullet[i].getMovingSpeed());
         		bulletImageView[i].setX(bullet[i].getXcoord()-bulletTranslateX);
         		bulletImageView[i].setY(bullet[i].getYcoord()-bulletTranslateY);
         	}

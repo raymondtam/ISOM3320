@@ -11,10 +11,10 @@ public class Target extends Character{
 	
 	//Constructor
 	public Target(){
-		this(3, 3, 15);
+		this(3, 5, 3, 15);
 	}
 	
-	public Target(int health, int movingSpeed, int radius){
+	public Target(int health, int attackDamage, int movingSpeed, int radius){
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
@@ -66,10 +66,10 @@ public class Target extends Character{
 		return false;
 	}
 
-	public static Target[] getTargetArray(int numberOfZombies, int health, int movingSpeed, int radius) {
+	public static Target[] getTargetArray(int numberOfZombies, int health, int attackDamage, int movingSpeed, int radius) {
 		Target[] TargetArray = new Target [numberOfZombies];
 		for (int i = 0; i < TargetArray.length; i++){
-			TargetArray[i] = new Target(health, movingSpeed, radius);
+			TargetArray[i] = new Target(health, attackDamage, movingSpeed, radius);
 		}
 		return TargetArray;
 	}
