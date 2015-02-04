@@ -119,16 +119,16 @@ public class Target extends Character{
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
 		if (randomEdge >= 0 && randomEdge < 0.25){
-			this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
+			this.setPosition((int)(playerPosition.getX() + randomCoord * 1100), (int)(playerPosition.getY() - (750 / 2))); 
 		}
 		else if (randomEdge >= 0.25 && randomEdge < 0.5){
-			this.setPosition((int)(playerPosition.getX() + (900 / 2)), (int)(playerPosition.getY() + randomCoord * 600)); 
+			this.setPosition((int)(playerPosition.getX() + (1100 / 2)), (int)(playerPosition.getY() + randomCoord * 750)); 
 		}
 		else if (randomEdge >= 0.5 && randomEdge < 0.75){
-			this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() + (600 / 2))); 
+			this.setPosition((int)(playerPosition.getX() + randomCoord * 1100), (int)(playerPosition.getY() + (750 / 2))); 
 		}
 		else {
-			this.setPosition((int)(playerPosition.getX() - (900 / 2)), (int)(playerPosition.getY() + randomCoord * 600)); 
+			this.setPosition((int)(playerPosition.getX() - (1100 / 2)), (int)(playerPosition.getY() + randomCoord * 750)); 
 		}
 		this.setVisible(true);
 	}
@@ -154,14 +154,14 @@ public class Target extends Character{
 	
 	public void setVisibleAtTop(Point2D playerPosition){
 		double randomCoord = Math.random() - 0.5;
-		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (600 / 2))); 
+		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (750 / 2))); 
 		this.setVisible(true);
 		System.out.println("Call zombies near lower boundary with zombies coming from top");
 	}
 	
 	public void setVisibleAtBottom(Point2D playerPosition){
 		double randomCoord = Math.random() - 0.5;
-		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() + (600 / 2))); 
+		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() + (750 / 2))); 
 		this.setVisible(true);
 		System.out.println("Call zombies near top boundary with zombies coming from below");
 	}

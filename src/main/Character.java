@@ -24,7 +24,12 @@ public abstract class Character extends GameObject{
 	
 	//Custom method
 	public void minusHealth(int damage) {
-		health -= damage;
+		if (this.getHealth() >= damage){
+			this.setHealth(this.getHealth() - damage);
+		}
+		else {
+			this.setHealth(0);
+		}
 	}
 	
 	public boolean isDead() {

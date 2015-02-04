@@ -628,6 +628,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					bossImageView.setVisible(false);
 					boss.setPosition(-999,-999);
 					score += 1000;
+					score = score - (int)(timeElapsed * 20);
 					for(int j = 0; i < topThreeScores.length; j++){
 						if (score >= topThreeScores.length){
 							topThreeScores[i] = score;
@@ -675,6 +676,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 			if(player.getHealth() <= 0){
 				for(int j = 0; i < topThreeScores.length; j++){
+					score = score - (int)(timeElapsed * 20);
 					if (score >= topThreeScores.length){
 						topThreeScores[i] = score;
 					}
@@ -692,6 +694,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			infectionThreshold = 0;
 		}
 		if(player.getHealth() <= 0){
+			score = score - (int)(timeElapsed * 20);
 			for(int i = 0; i < topThreeScores.length; i++){
 				if (score >= topThreeScores.length){
 					topThreeScores[i] = score;
@@ -700,7 +703,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
 		//Generate zombie, reborn
-		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount<1 ){
+		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
 			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
 				Target.rebornZombie(target, player.getPosition());
 				// System.out.println("reborned");
