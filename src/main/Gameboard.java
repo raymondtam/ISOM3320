@@ -34,12 +34,19 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int MAX_MAGAZINE_SIZE = 100;
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
-	final static double DEFAULT_RADIUS = 10;
+	final static double BULLET_DEFAULT_RADIUS = 10;
+//	final static double PLAYER_DEFAULT_RADIUS = 10;
+	final static int TARGET_DEFAULT_RADIUS = 30;
 	final static int NUMBER_OF_ZOMBIES = 10;
 	final static int ZOMBIES_DAMAGE = 5;
 	final static int BOSS_DAMAGE = 20;
 	final static int PLAYER_MAXHEALTH = 100;
+	final static int TARGET_HEALTH = 12;
 	final static int BOSS_HEALTH = 300;
+	final static int BULLET_MOVEMENT_SPEED = 20;
+	final static int PLAYER_MOVEMENT_SPEED = 5;
+	final static int TARGET_MOVEMENT_SPEED = 3;
+	
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	final static double screenWidth = 900;
 	final static double screenHeight = 600;
@@ -51,9 +58,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	long reloadStartTime = 0, startTime = 0, zombieReborn = 0;
 	
-	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
-	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
-	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, ZOMBIES_DAMAGE, 3, 30); 
+	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, BULLET_DEFAULT_RADIUS, BULLET_MOVEMENT_SPEED);
+	static Player player = new Player(bullet, PLAYER_MOVEMENT_SPEED, PLAYER_MAXHEALTH);
+	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, TARGET_HEALTH, ZOMBIES_DAMAGE, TARGET_MOVEMENT_SPEED, TARGET_DEFAULT_RADIUS); 
 	static String[] topThree = new String[3];
 	static int[] topThreeScores = new int[3];
 	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
@@ -313,7 +320,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
-            	System.out.println(keycode);
                 switch(keycode){
 	            	case W:
 	            		moveUp = true;
@@ -643,12 +649,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					// System.out.println("Boss Dead");
 					if(bossShowCount == 1){
 						//end				      
+						refreshScreen.stop();
 						long gameDuration = System.currentTimeMillis() - startTime;
 							String name= JOptionPane.showInputDialog(
 							 null, "Congratulation! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
 							 +" seconds \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
 							  JOptionPane.QUESTION_MESSAGE);
-						refreshScreen.stop();
+						getRank(name);
 						initialize();
 					}
 				}
@@ -877,16 +884,17 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				}
 			}
 			//End Game
+			refreshScreen.stop();
 			long gameDuration = System.currentTimeMillis() - startTime;
 			String name= JOptionPane.showInputDialog(
 			     null, "Game Over! \n Your calculated total Score is " + score + ". Please enter your name: " , "Game Over",
 			     JOptionPane.QUESTION_MESSAGE);
 			getRank(name);
-			refreshScreen.stop();
 			initialize();
 		}
 	}
-	
+//	JOptionPane.showMessageDialog(null,
+//			"You beat "+);
 	
 	
 	void getRank(String name) {
