@@ -119,7 +119,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		gunShoot = new AudioClip[3];
 		gunReload = new AudioClip[3];
-		zombieSound = new AudioClip[3];
+		zombieSound = new AudioClip[4];
 		
 		//Loading images and setting GUI
 		try {
@@ -146,7 +146,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
 			zombieSound[0] = new AudioClip(Paths.get("src\\OpeningMusic.mp3").toUri().toString());
 			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
-			zombieSound[2] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
+			zombieSound[2] = new AudioClip(Paths.get("src\\ZombieBite.mp3").toUri().toString());
+			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
+
 			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -692,6 +694,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 			if(infectionThreshold >= 30){
 				player.minusHealth(ZOMBIES_DAMAGE);
+				zombieSound[2].play(500);
 				HPIntegerProperty.setValue(player.getHealth());
 				infectionThreshold = 0;
 			}
@@ -797,6 +800,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				&& backgroundImageView.getTranslateY() < - 300 
 				&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
 			// System.out.println("Boss");
+			zombieSound[3].play(1000);
 			boss.setVisible(true);
 			boss.setPosition(600, 150);
 			bossImageView.setVisible(true);
