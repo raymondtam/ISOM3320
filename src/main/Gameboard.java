@@ -559,31 +559,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         }
         
-        //target movement
-//        double minTargetDistance;
-//        double targetDistance;
-//		for(int i = 0; i < target.length; i++){
-//			if (!target[i].isDead()){
-//				minTargetDistance = 100;
-//				for(int j = 0; j < target.length; j++){
-//					if (i == j){
-//						break;
-//					}
-//					targetDistance = Math.pow(Math.pow(target[idwdwsdwasd].getXcoord() - target[j].getXcoord(), 2.0) 
-//						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
-//					if (targetDistance <= minTargetDistance){
-//						minTargetDistance = targetDistance;
-//					}
-//				}
-//				if (minTargetDistance >= 100){
-//				target[i].move(player.getPosition());
-//				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-//				targetImageView[i].setX(target[i].getXcoord());
-//				targetImageView[i].setY(target[i].getYcoord());
-//				}
-//			}
-//		}
-        
         //Time Showing
         timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         minutesToDisplay = (int)(timeElapsed / 60);
@@ -600,12 +575,41 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		bossImageView.setY(boss.getYcoord()-bossTranslateY);
 		
 		//Target movement
+//		for(int i = 0; i < target.length; i++){
+//			if(target[i].isVisible()){
+//				target[i].move(player.getPosition());
+//				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+//				targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+//				targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+//			}
+//		}
+		
+		double minTargetDistance;
+		double targetDistance;
 		for(int i = 0; i < target.length; i++){
-			if(target[i].isVisible()){
-				target[i].move(player.getPosition());
-				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-				targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-				targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+			if (!target[i].isDead()){
+				minTargetDistance = 100;
+				for(int j = 0; j < target.length; j++){
+					if (i == j){
+						break;
+					}
+					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
+						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
+					if (targetDistance <= minTargetDistance){
+						minTargetDistance = targetDistance;
+					}
+				}
+				if (minTargetDistance >= 100){
+					target[i].move(player.getPosition());
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+				}
+				else {
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+				}
 			}
 		}
 		
