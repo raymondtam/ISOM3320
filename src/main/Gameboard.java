@@ -552,7 +552,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	if(bullet[i].getIsMoving()){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
         		bulletImageView[i].setVisible(true);
-        		bullet[i].move(bullet[i].getXVelocity()*40, bullet[i].getYVelocity()*40);
+        		bullet[i].move(bullet[i].getXVelocity()*bullet[i].getMovingSpeed(), bullet[i].getYVelocity()*bullet[i].getMovingSpeed());
         		bulletImageView[i].setX(bullet[i].getXcoord()-bulletTranslateX);
         		bulletImageView[i].setY(bullet[i].getYcoord()-bulletTranslateY);
         	}
