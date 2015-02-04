@@ -80,7 +80,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	private long[] weaponIconDistance;
 	
 	//Sound effect
-	private AudioClip[] gunShoot, gunReload; 
+	private AudioClip[] gunShoot, gunReload, zombieSound; 
 	
 	//Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
@@ -119,6 +119,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		gunShoot = new AudioClip[3];
 		gunReload = new AudioClip[3];
+		zombieSound = new AudioClip[3];
 		
 		//Loading images and setting GUI
 		try {
@@ -143,6 +144,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			gunReload[0] = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
+			zombieSound[0] = new AudioClip(Paths.get("src\\OpeningMusic.mp3").toUri().toString());
+			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
+			zombieSound[2] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
+			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
 			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -591,7 +596,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		double targetDistance;
 		for(int i = 0; i < target.length; i++){
 			if (!target[i].isDead()){
-				minTargetDistance = 100;
+				minTargetDistance = 50;
 				for(int j = 0; j < target.length; j++){
 					if (i == j){
 						break;
@@ -602,7 +607,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						minTargetDistance = targetDistance;
 					}
 				}
-				if (minTargetDistance >= 100){
+				if (minTargetDistance >= 50){
 					target[i].move(player.getPosition());
 					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
@@ -635,7 +640,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					bossImageView.setVisible(false);
 					boss.setPosition(-999,-999);
 					score += 1000;
-					score = score - (int)(timeElapsed * 20);
+					score = score - (int)(timeElapsed * 5 / 1000);
 					for(int j = 0; i < topThreeScores.length; j++){
 						if (score >= topThreeScores.length){
 							topThreeScores[i] = score;
@@ -722,7 +727,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		//Generate zombie, reborn
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
 			System.out.println("Zombie Reborn");
-			if (backgroundImageView.getTranslateY() > - 581 && backgroundImageView.getTranslateY() < -1721){
+			zombieSound[1].play(500);
+			if (backgroundImageView.getTranslateY() < - 581 && backgroundImageView.getTranslateY() > -1721){
 				Target.rebornZombie(target, player.getPosition());
 				zombieReborn=System.currentTimeMillis();
 				for(int i=0; i<target.length ; i++){
