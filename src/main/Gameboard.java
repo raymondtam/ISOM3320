@@ -589,7 +589,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		double targetDistance;
 		for(int i = 0; i < target.length; i++){
 			if (!target[i].isDead()){
-				minTargetDistance = 100;
+				minTargetDistance = 50;
 				for(int j = 0; j < target.length; j++){
 					if (i == j){
 						break;
@@ -600,7 +600,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						minTargetDistance = targetDistance;
 					}
 				}
-				if (minTargetDistance >= 100){
+				if (minTargetDistance >= 50){
 					target[i].move(player.getPosition());
 					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
