@@ -641,7 +641,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					bossImageView.setVisible(false);
 					boss.setPosition(-999,-999);
 					score += 1000;
-					score = score - (int)(timeElapsed * 5 / 1000);
+					score = score - (int)(timeElapsed) + player.getHealth()*10;
 					for(int j = 0; i < topThreeScores.length; j++){
 						if (score >= topThreeScores.length){
 							topThreeScores[i] = score;
@@ -880,7 +880,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			System.out.println("Health: "+player.getHealth());
 		}
 		if(player.getHealth() <= 0){
-			score = score - (int)(timeElapsed * 5 / 1000);
+			score = (int)(timeElapsed) + player.getHealth()*10;
 			for(int i = 0; i < topThreeScores.length; i++){
 				if (score >= topThreeScores.length){
 					topThreeScores[i] = score;
