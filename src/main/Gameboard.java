@@ -1,7 +1,10 @@
 package main;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
+
 import javax.swing.JOptionPane;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -63,9 +66,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, TARGET_HEALTH, ZOMBIES_DAMAGE, TARGET_MOVEMENT_SPEED, TARGET_DEFAULT_RADIUS); 
 	static String[] topThree = new String[3];
 	static int[] topThreeScores = new int[3];
+	static long[] topThreeTime = new long[3];
 	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
 	static int infectionThreshold = 0;
-	static double timeElapsed = 0;
+	static long timeElapsed = 0;
 	static int minutesToDisplay, secondsToDisplay;
 	static int bossShowCount = 0;
 	boolean summonZombie = false;
@@ -898,8 +902,22 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	
 	void getRank(String name) {
-		if (score >= topThreeScores[2]) {
+		if (score > topThreeScores[2]) {
 			topThreeScores[2] = score;
+			int[] temp = Arrays.copyOf(topThreeScores, 3);
+			Arrays.sort(temp);
+			for(int i=0;i<temp.length;i++){
+				
+			}
+			topThree[2] = name;
+			topThreeTime[2] = timeElapsed;
+		}
+		if(score == topThreeScores[2]) {
+			if(timeElapsed < topThreeTime[2]){
+				topThreeScores[2] = score;
+				topThree[2] = name;
+				topThreeTime[2] = timeElapsed;
+			}
 			java.util.Arrays.sort(topThreeScores);	
 		}
 	}
