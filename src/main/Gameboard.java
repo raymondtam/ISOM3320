@@ -1,8 +1,7 @@
 package main;
 
 import java.nio.file.Paths;
-import java.util.Scanner;
-
+import javax.swing.JOptionPane;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -25,8 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import javax.swing.*;
 
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
@@ -285,18 +282,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 
 		pane.getChildren().add(bossImageView);
-		
-//		Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//        stage.setX(primaryScreenBounds.getMinX());
-//        stage.setY(primaryScreenBounds.getMinY());
-//        stage.setWidth(primaryScreenBounds.getWidth());
-//        stage.setHeight(primaryScreenBounds.getHeight());
           
 		scene = new Scene(pane);
         
 		//Set Positioning
         player.setPosition(screenWidth/2, screenHeight/2); 
-//        		primaryScreenBounds.getHeight()/2);
         
 		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateX[weaponSetting]);
 		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
@@ -649,12 +639,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					}
 					// System.out.println("Boss Dead");
 					if(bossShowCount == 1){
-						//end		
-//					      //end  
-//					      Scanner input = new Scanner (System.in);
-//					      if(input.hasNext())
-//					       initialize();
-//					      
+						//end				      
 						long gameDuration = System.currentTimeMillis() - startTime;
 							String name= JOptionPane.showInputDialog(
 							 null, "Congratulation! \n Your used " + minutesToDisplay + " : " + secondsToDisplay +" \n Your total Score is " + score + ". \n Please enter your name: " , "Congratulation",
@@ -879,7 +864,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			infectionThreshold = 0;
 			System.out.println("Health: "+player.getHealth());
 		}
-		if(player.getHealth() <= 0){
+		if(player.isDead()){
 			score = (int)(timeElapsed) + player.getHealth()*10;
 			for(int i = 0; i < topThreeScores.length; i++){
 				if (score >= topThreeScores.length){
@@ -892,7 +877,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			     null, "Game Over! \n Your total Score is " + score + ". Please enter your name: " , "Game Over",
 			     JOptionPane.QUESTION_MESSAGE);
 			   //To Do restart;
-			
+			initialize();
 		}
 	}
 }
