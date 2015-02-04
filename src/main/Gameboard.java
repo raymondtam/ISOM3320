@@ -25,7 +25,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
 	//852 * 7680
 	//Constant
@@ -889,16 +888,23 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	}
 	
 	
-	void getRank(String name){
-		for(int i=0 ; i < topThreeScores.length ; i++){
-			int temp = 0;
-			String tempName;
-			if(score > topThreeScores[i]){
-				temp = topThreeScores[i];
-				tempName = topThree[i];
-				topThreeScores[i] = score;
-				topThree[i] = name;
-			}
+	
+	void getRank(String name) {
+		if (score >= topThreeScores[2]) {
+			topThreeScores[2] = score;
+			java.util.Arrays.sort(topThreeScores);	
 		}
 	}
+	//void getRank(String name){
+		//for(int i=0 ; i < topThreeScores.length ; i++){
+			//int temp = 0;
+			//String tempName;
+			//if(score > topThreeScores[i]){
+				//temp = topThreeScores[i];
+				//tempName = topThree[i];
+				//topThreeScores[i] = score;
+				//topThree[i] = name;
+			//}
+		//}
+	//}
 }
