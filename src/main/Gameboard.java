@@ -55,6 +55,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, DEFAULT_RADIUS, 20);
 	static Player player = new Player(bullet, 5, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, 12, 3, 30); 
+	static String[] topThree = new String[3];
 	static int[] topThreeScores = new int[3];
 	static Boss boss = new Boss (BOSS_HEALTH, 2, 110);
 	static int infectionThreshold = 0;
@@ -878,11 +879,26 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 			//End Game
 			long gameDuration = System.currentTimeMillis() - startTime;
-			String string= JOptionPane.showInputDialog(
+			String name= JOptionPane.showInputDialog(
 			     null, "Game Over! \n Your calculated total Score is " + score + ". Please enter your name: " , "Game Over",
 			     JOptionPane.QUESTION_MESSAGE);
+			getRank(name);
 			refreshScreen.stop();
 			initialize();
+		}
+	}
+	
+	
+	void getRank(String name){
+		for(int i=0 ; i < topThreeScores.length ; i++){
+			int temp = 0;
+			String tempName;
+			if(score > topThreeScores[i]){
+				temp = topThreeScores[i];
+				tempName = topThree[i];
+				topThreeScores[i] = score;
+				topThree[i] = name;
+			}
 		}
 	}
 }
