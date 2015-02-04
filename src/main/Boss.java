@@ -9,7 +9,7 @@ public class Boss extends Target{
 	//Constructor
 	public Boss(){
 	}
-	public Boss(int health, int movingSpeed, int radius) {
+	public Boss(int health, int attackDamage, int movingSpeed, int radius) {
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
