@@ -24,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javax.swing.*;
 
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
@@ -782,21 +783,28 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		
-		//Game Over
-		//if (player.isDead()) {
-		//Change background to black, maybe
-		//Systme.out.println (Game over and total score is ....);
-		//Ask to input name
-		//show top 3 score and show a button for restart
-		//}
+		//End Game
+		  if (player.isDead()){
+		   //Label label1 = new Label("Game Over! Your total score is " + totalScore(score) + ". Please enter your name:");
+		   //TextField textField = new TextField ();
+		   //HBox hb = new HBox();
+		   //hb.getChildren().addAll(label1, textField);
+		   //hb.setSpacing(10)
+		   long endTime = System.currentTimeMillis();
+		   long gameDuration = endTime - startTime;
+		   String string= JOptionPane.showInputDialog(
+		     null, "Game Over! Your total Score is " + totalScore(score) + ". Please enter your name: " , "Game Over",
+		     JOptionPane.QUESTION_MESSAGE);
+		   //To Do restart;
+		  }
+		  else if (boss.isDead()){
+		   long endTime = System.currentTimeMillis();
+		   long gameDuration = endTime - startTime;
+		   String string= JOptionPane.showInputDialog(
+		     null, "Congratulation! Your total Score is " + totalScore(score) + ". Please enter your name: " , "Congratulation",
+		     JOptionPane.QUESTION_MESSAGE);
+		  }
 		
-		//Win Game
-		//if (Boss.isDead()){
-		//Change background to black, maybe
-		//Systme.out.println (Congratulation and total score is ....);
-		//Ask to input name
-		//show top 3 score and show a button for restart
-		//}
 	}
 	
 	//Show and set new weapon icon
