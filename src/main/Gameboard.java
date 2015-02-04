@@ -147,7 +147,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[0] = new AudioClip(Paths.get("src\\OpeningMusic.mp3").toUri().toString());
 			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
 			zombieSound[2] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
-			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
 			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -714,6 +713,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			player.minusHealth(BOSS_DAMAGE);
 			HPIntegerProperty.setValue(player.getHealth());
 			infectionThreshold = 0;
+			System.out.println("Health: "+player.getHealth());
 		}
 		if(player.getHealth() <= 0){
 			score = score - (int)(timeElapsed * 5 / 1000);
@@ -722,6 +722,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					topThreeScores[i] = score;
 				}
 			}
+			//End Game
+			long gameDuration = System.currentTimeMillis() - startTime;
+			String string= JOptionPane.showInputDialog(
+			     null, "Game Over! \n Your total Score is " + score + ". Please enter your name: " , "Game Over",
+			     JOptionPane.QUESTION_MESSAGE);
+			   //To Do restart;
+			
 		}
 		
 		//Generate zombie, reborn
@@ -800,22 +807,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			System.out.println("Summon Zombie!!!");
 		}
 			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
-		
-		//End Game
-		  if (player.isDead()){
-		   //Label label1 = new Label("Game Over! Your total score is " + totalScore(score) + ". Please enter your name:");
-		   //TextField textField = new TextField ();
-		   //HBox hb = new HBox();
-		   //hb.getChildren().addAll(label1, textField);
-		   //hb.setSpacing(10)
-		   long endTime = System.currentTimeMillis();
-		   long gameDuration = endTime - startTime;
-		   String string= JOptionPane.showInputDialog(
-		     null, "Game Over! Your total Score is " + score + ". Please enter your name: " , "Game Over",
-		     JOptionPane.QUESTION_MESSAGE);
-		   //To Do restart;
-		  }
-		  
 		
 	}
 	
