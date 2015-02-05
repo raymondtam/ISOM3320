@@ -632,16 +632,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					boss.setPosition(-999,-999);
 					score += 1000;
 					score = score - (int)(timeElapsed) + player.getHealth()*10;
-					for(int j = 0; i < topThreeScores.length; j++){
-						if (score >= topThreeScores.length){
-							topThreeScores[i] = score;
-						}
-					}
 					// System.out.println("Boss Dead");
-					if(bossShowCount == 1){
-						//end				      
-						endGame();
-					}
+					endGame();
 				}
 			}
 			
@@ -796,7 +788,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		backgroundImageView.setTranslateY(-1431);
 		
         player.setPosition(screenWidth/2, screenHeight/2); 
-        player.setHealth(100);
+        player.setHealth(PLAYER_MAXHEALTH);
         
 		System.out.println(player.getHealth());
         weaponSetting = 0;
@@ -825,6 +817,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		for(int i=0;i<target.length;i++){
 			target[i].setVisible(player.getPosition());
+			target[i].setHealth(TARGET_HEALTH);
 			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
@@ -864,11 +857,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		if(player.isDead()){
 			score = (int)(timeElapsed) + player.getHealth()*10;
-			for(int i = 0; i < topThreeScores.length; i++){
-				if (score >= topThreeScores.length){
-					topThreeScores[i] = score;
-				}
-			}
 			//End Game
 			endGame();
 		}
@@ -885,8 +873,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					JOptionPane.QUESTION_MESSAGE);
 		else
 			name= JOptionPane.showInputDialog(
-					null, "Congratulation! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
-					+" seconds \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
+					null, "Well Done! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
+					+" seconds to defeat the Boss \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
 					JOptionPane.QUESTION_MESSAGE);
 		if(getRank(name))
 			JOptionPane.showMessageDialog(null, "Congratulations!! \n The New Ranking is \n"+showRank());
