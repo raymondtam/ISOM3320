@@ -88,7 +88,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	private long[] weaponIconDistance;
 	
 	//Sound effect
-	private AudioClip[] gunShoot, gunReload, zombieSound; 
+	private AudioClip[] gunShoot, gunReload, zombieSound;
 	
 	//Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
@@ -152,7 +152,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			gunReload[0] = new AudioClip(Paths.get("src\\HandGunReload.mp3").toUri().toString());
 			gunReload[1] = new AudioClip(Paths.get("src\\RifleReload.mp3").toUri().toString());
 			gunReload[2] = new AudioClip(Paths.get("src\\MachineGunReload.mp3").toUri().toString());
-			zombieSound[0] = new AudioClip(Paths.get("src\\OpeningMusic.mp3").toUri().toString());
+			zombieSound[0] = new AudioClip(Paths.get("src\\BGM.mp3").toUri().toString());
 			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
 			zombieSound[2] = new AudioClip(Paths.get("src\\ZombieBite.mp3").toUri().toString());
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
@@ -346,6 +346,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						break;
 					case SPACE:
 						refreshScreen.play();
+						startTime = System.currentTimeMillis();
 						break;
             	}
                	key.consume();
@@ -417,7 +418,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         });
 		
-        //Set cursor Image
         scene.setCursor(new ImageCursor(crossHairImage));
         	
 		stage.setScene(scene);
@@ -429,10 +429,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		stage.setFullScreen(false);
 		
 		stage.show();
+		zombieSound[0].play();
 		weaponIconImageView[0].setVisible(false);
 		weaponIconImageView[1].setVisible(false);
 		System.out.println("Stage being showed.");
-		startTime = System.currentTimeMillis();
 		zombieReborn = System.currentTimeMillis();
 		
 		backgroundImageView.setTranslateY(- 1431);
@@ -674,7 +674,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			infected(30, BOSS_DAMAGE);
 		}
 		
-		//Generate zombie, reborn
+//Generate zombie, reborn
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
 			System.out.println("Zombie Reborn");
 			zombieSound[1].play(500);
@@ -742,20 +742,21 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //Summon zombie
 		if(boss.isVisible() && summonZombie){
 			boss.summonZombie(target, player.getPosition(), 200);
+			zombieSound[3].play(1000);
 			summonZombie = false;
 			System.out.println("Summon Zombie!!!");
 		}
 		
 }		
 	
-	//Show and set new weapon icon
+//Show and set new weapon icon
 	public void newWeapon(ImageView weapon) {
 		weapon.setVisible(true);
 		weapon.setX((int)(player.getXcoord() + 300));
 		weapon.setY((int)(player.getYcoord()));
 	}
 	
-	//Pick up new weapon
+//Pick up new weapon
 	public void pickWeapon (ImageView weapon, int index) {
 //		weapon.setVisible(false);
 		weapon.setX(-999);
@@ -779,6 +780,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	private void initialize(){
 		//initialize scene
+		
+		zombieSound[0].play();
+		
+        MinutesIntegerProperty.setValue(0);
+        SecondsIntegerProperty.setValue(0);
 		
 		for(ImageView i:playerImageView){
 			i.setVisible(false);
@@ -880,6 +886,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			JOptionPane.showMessageDialog(null, "Congratulations!! \n The New Ranking is \n"+showRank());
 		else
 			JOptionPane.showMessageDialog(null, "Sorry You didn't break the record\n"+showRank());
+		zombieSound[0].stop();
 		initialize();
 	}
 	
