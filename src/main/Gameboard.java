@@ -581,22 +581,32 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //		}
 		
 //Target movement
-		double minTargetDistance;
-		double targetDistance;
+		double minTargetToTargetDistance = 900;
+		double minDistance;
+		double targetToTargetDistance;
+		double targetToPlayerDistance;
 		for(int i = 0; i < target.length; i++){
 			if (!target[i].isDead()){
-				minTargetDistance = 50;
+				minDistance = 30;
+				targetToPlayerDistance = Math.pow(Math.pow(target[i].getXcoord() - player.getXcoord(), 2.0) 
+						+ Math.pow(target[i].getYcoord() - player.getYcoord(), 2.0), 0.5);
 				for(int j = 0; j < target.length; j++){
 					if (i == j){
 						break;
 					}
-					targetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
+					targetToTargetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
 						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
-					if (targetDistance <= minTargetDistance){
-						minTargetDistance = targetDistance;
+					if (targetToTargetDistance <= minTargetToTargetDistance){
+						minTargetToTargetDistance = targetToTargetDistance;
 					}
 				}
-				if (minTargetDistance >= 50){
+				if (targetToPlayerDistance <= minTargetToTargetDistance){
+					minDistance = targetToPlayerDistance;
+				}
+				else {
+					minDistance = minTargetToTargetDistance;
+				}
+				if (minDistance >= 30){
 					target[i].move(player.getPosition());
 					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
