@@ -65,7 +65,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Player player = new Player(bullet, PLAYER_MOVEMENT_SPEED, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, TARGET_HEALTH, ZOMBIES_DAMAGE, TARGET_MOVEMENT_SPEED, TARGET_DEFAULT_RADIUS); 
 	static String[] topThree = new String[3];
-	static int[] topThreeScores = new int[3];
+	static int[] topThreeScores = {0, 0, 0};
 	static long[] topThreeTime = new long[3];
 	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
 	static int infectionThreshold = 0;
@@ -452,12 +452,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	}
 	
 	double getFireAngle(double x, double y){
-//		Point2D Vector = player.getPosition().multiply(-1).add(x, y);   // cursor vector subtract player vector
-//	equivalent to
-//		Point2D mouseVector = new Point2D(mouse.getX(), mouse.getY());
-//		Point2D Vector = mouseVector.subtract(player.getPosition());
-//		double angle = xVector.angle(Vector);
-		
 		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
 		double angle = player.getPosition().angle(dummyVector, cursorVector);
 		//calculate the angle of player from vertical axis to cursor		
@@ -467,9 +461,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	@Override
 	public void handle(ActionEvent e) {
 		
-		// System.out.println(backgroundImageView.getTranslateY());
+//Updating Time
+        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
+        minutesToDisplay = (int)(timeElapsed / 60);
+        secondsToDisplay = ((int)(timeElapsed)) % 60;
+        MinutesIntegerProperty.setValue(minutesToDisplay);
+        SecondsIntegerProperty.setValue(secondsToDisplay);
 		
-		//Shooting
+//Shooting
 		if(mousePressed && ( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > 33*5) || ( handgunTrigger && System.currentTimeMillis() - lastShootTime > 33*10))){
 			handgunTrigger = false;
 			double angle = getFireAngle(mouseX, mouseY);
@@ -487,7 +486,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 		}
 
-		//Player movement with relative translation of graphics
+//Player movement with relative translation of graphics
         if(moveUp && backgroundImageView.getTranslateY() < - 300){
         	// && backgroundImageView.getTranslateY() > - 500
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
@@ -499,7 +498,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         		i.changePosition(0, 5);
         	}
         	boss.changePosition(0, 5);
-//        	player.move(0, -5);
+        	//player.move(0, -5);
         }
         
         if(moveDown && backgroundImageView.getTranslateY() > - 1920){
@@ -513,7 +512,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         		i.changePosition(0, -5);
         	}
         	boss.changePosition(0, -5);
-//        	player.move(0, 5);
+        	//player.move(0, 5);
         }
         
         if(moveLeft){
@@ -534,8 +533,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         			i.setX(i.getX()+5);
         	}
         	boss.changePosition(+5, 0);
-        	//System.out.println(backgroundImageView.getTranslateX());
-//        	player.move(-5, 0);
+        	//player.move(-5, 0);
         }
         
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
@@ -557,10 +555,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	boss.changePosition(-5, 0);
         	//player.move(5,0);
         }
-//        playerImageView.setX(player.getXcoord());
-//        playerImageView.setY(player.getYcoord());
         
-        //Bullet movement
+//Bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
         	if(bullet[i].getIsMoving()){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
@@ -570,22 +566,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         		bulletImageView[i].setY(bullet[i].getYcoord()-bulletTranslateY);
         	}
         }
-        
-        //Time Showing
-        timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
-        minutesToDisplay = (int)(timeElapsed / 60);
-        secondsToDisplay = ((int)(timeElapsed)) % 60;
-        MinutesIntegerProperty.setValue(minutesToDisplay);
-        SecondsIntegerProperty.setValue(secondsToDisplay);
-        
-		// ScoreIntegerProperty.setValue(score);
-        
-		//Boss movement
-		boss.move(player.getPosition());
-		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
-		bossImageView.setX(boss.getXcoord()-bossTranslateX);
-		bossImageView.setY(boss.getYcoord()-bossTranslateY);
-		
+        		
 //		for(int i = 0; i < target.length; i++){
 //			if(target[i].isVisible()){
 //				target[i].move(player.getPosition());
@@ -595,7 +576,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //			}
 //		}
 		
-		//Target movement
+//Target movement
 		double minTargetDistance;
 		double targetDistance;
 		for(int i = 0; i < target.length; i++){
@@ -624,6 +605,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				}
 			}
 		}
+		
+//Boss movement
+		boss.move(player.getPosition());
+		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
+		bossImageView.setX(boss.getXcoord()-bossTranslateX);
+		bossImageView.setY(boss.getYcoord()-bossTranslateY);
 		
 		//Boss show and check if bullets hit Boss or Zombies
 		for(int i=0 ; i < bullet.length ; i++){
@@ -659,13 +646,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 							 null, "Congratulation! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
 							 +" seconds \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
 							  JOptionPane.QUESTION_MESSAGE);
-						getRank(name);
+						if(getRank(name))
+							JOptionPane.showMessageDialog(null, showRank());
 						initialize();
 					}
 				}
 			}
 			
-			//Target show and isDead
+//Check ishit and isdead
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
@@ -688,7 +676,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			ScoreIntegerProperty.setValue(score);
 		}
 		
-		//Check if Zombies hit Player and minus health correspondingly
+//Check if Zombies hit Player and minus health correspondingly
 		for(int i = 0; i < target.length; i++){
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
@@ -696,7 +684,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			infected(30, ZOMBIES_DAMAGE);
 		}
 		
-		//Check if Boss hit Player and minus health correspondingly
+//Check if Boss hit Player and minus health correspondingly
 		if(bossImageView.isVisible() && player.isHit(boss)){
 			infectionThreshold += 3;
 			infected(30, BOSS_DAMAGE);
@@ -731,42 +719,17 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				}
 			}
 		}
-		
-		//Summon zombie
-		if(boss.isVisible() && summonZombie){
-			boss.summonZombie(target, player.getPosition(), 200);
-			summonZombie = false;
-			System.out.println("Summon Zombie!!!");
-		}
-		
-		//Show zombie
+				
+//Show zombie
 		for(int i=0 ; i<target.length ; i++){
 			if(target[i].isVisible())
 				targetImageView[i].setVisible(true);
 		}
 		
-//		for(int i=0;i<target.length;i++){
-//			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-//			System.out.println("IX: "+targetImageView[i].getX()+" IY: "+ targetImageView[i].getY());
-//		}
-//		
-		//Show new weapon
-		for(int i = 0 ; i<weaponIconImageView.length ; i++){
-			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]){
-				newWeapon(weaponIconImageView[i]);
-			}
-			if((Math.pow(Math.pow(player.getXcoord() - weaponIconImageView[i].getX(),2.0) 
-				+ Math.pow(player.getYcoord() - weaponIconImageView[i].getY(),2.0), 0.5) 
-				<= (player.getRadius() + 50)) && weaponIconImageView[i].isVisible()){
-				//change weapon
-				pickWeapon(weaponIconImageView[i], i+1);
-			}
-		}
-				
-		//Show Boss
+//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -5000 
-				&& backgroundImageView.getTranslateY() < - 300 
-				&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
+			&& backgroundImageView.getTranslateY() < - 300 
+			&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
 			// System.out.println("Boss");
 			zombieSound[3].play(1000);
 			boss.setVisible(true);
@@ -778,9 +741,28 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			boss.summonZombie(target, player.getPosition(), 200);
 			System.out.println("Summon Zombie!!!");
 		}
-			// System.out.println("X: "+boss.getXcoord()+" Y: "+ boss.getYcoord());
 		
-	}
+//Show new weapon
+		for(int i = 0 ; i<weaponIconImageView.length ; i++){
+			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]){
+				newWeapon(weaponIconImageView[i]);
+			}
+			if((Math.pow(Math.pow(player.getXcoord() - weaponIconImageView[i].getX(),2.0) 
+				+ Math.pow(player.getYcoord() - weaponIconImageView[i].getY(),2.0), 0.5) 
+				<= (player.getRadius() + 50)) && weaponIconImageView[i].isVisible()){
+				//change weapon
+				pickWeapon(weaponIconImageView[i], i+1);
+			}
+		}
+		
+//Summon zombie
+		if(boss.isVisible() && summonZombie){
+			boss.summonZombie(target, player.getPosition(), 200);
+			summonZombie = false;
+			System.out.println("Summon Zombie!!!");
+		}
+		
+}		
 	
 	//Show and set new weapon icon
 	public void newWeapon(ImageView weapon) {
@@ -859,7 +841,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		
 		boss.setHealth(BOSS_HEALTH);
-		
+		boss.setPosition(-999, -999);
+		boss.setVisible(false);
+		bossImageView.setVisible(false);
 		
 		score = 0;
 		startTime = System.currentTimeMillis();
@@ -899,7 +883,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			String name= JOptionPane.showInputDialog(
 			     null, "Game Over! \n Your calculated total Score is " + score + ". Please enter your name: " , "Game Over",
 			     JOptionPane.QUESTION_MESSAGE);
-			getRank(name);
+			if(getRank(name))
+				JOptionPane.showMessageDialog(null, showRank());
 			initialize();
 		}
 	}
@@ -907,7 +892,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //			"You beat "+);
 	
 	
-	void getRank(String name) {
+	boolean getRank(String name) {
 		if (score > topThreeScores[2] || ( score == topThreeScores[2] && timeElapsed < topThreeTime[2])) {
 			int[] newScores = new int[3];
 			String[] newName = new String[3];
@@ -929,9 +914,17 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			topThreeScores = newScores;
 			topThree = newName;
 			topThreeTime = newTime;
-			
+			return true;
 		}
-
+		return false;
+	}
+	
+	String showRank(){
+		String rank=new String();
+		for(int i=0 ; i < topThreeScores.length ; i++){
+			rank.concat("Rank "+i+" : "+topThreeScores[i]+"\t"+topThree[i]+"\t"+topThreeTime[i]+"\n");
+		}
+		return rank;
 	}
 	
 	//void getRank(String name){
