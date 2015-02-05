@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package main;
 
 import javafx.geometry.Point2D;
