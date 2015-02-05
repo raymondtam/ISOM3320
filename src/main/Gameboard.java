@@ -829,7 +829,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         playerImageView[weaponSetting].setVisible(true);
 		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
 		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateY[weaponSetting]);
-		
 				
 		weaponIconImageView[0].setVisible(false);
 		weaponIconImageView[1].setVisible(false);
@@ -837,6 +836,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		for(Bullet i:bullet){
 			i.setBulletDamage(DEFAULT_BULLET_DAMAGE);;
 			i.setMagazineSize(DEFAULT_MAGAZINE_SIZE);
+			i.setIsMoving(false);
+			i.setVisible(false);
+			i.setPosition(-999, -999);
+		}
+		
+		for(ImageView i:bulletImageView){
+			i.setVisible(false);
 		}
 		
 		player.setNumberOfUnusedBullet(DEFAULT_MAGAZINE_SIZE);		
