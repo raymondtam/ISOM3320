@@ -64,9 +64,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, BULLET_DEFAULT_RADIUS, BULLET_MOVEMENT_SPEED);
 	static Player player = new Player(bullet, PLAYER_MOVEMENT_SPEED, PLAYER_MAXHEALTH);
 	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, TARGET_HEALTH, ZOMBIES_DAMAGE, TARGET_MOVEMENT_SPEED, TARGET_DEFAULT_RADIUS); 
-	static String[] topThree = new String[3];
+	static String[] topThree = {"","",""};
 	static int[] topThreeScores = {0, 0, 0};
-	static long[] topThreeTime = new long[3];
+	static long[] topThreeTime = {0, 0, 0};
 	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
 	static int infectionThreshold = 0;
 	static long timeElapsed = 0;
@@ -893,12 +893,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	
 	boolean getRank(String name) {
+		System.out.println(score + " " + topThreeScores[2]);
 		if (score > topThreeScores[2] || ( score == topThreeScores[2] && timeElapsed < topThreeTime[2])) {
-			int[] newScores = new int[3];
-			String[] newName = new String[3];
-			long[] newTime = new long[3];
-			
+			int[] newScores = {0, 0, 0};
+			String[] newName = {" "," "," "};
+			long[] newTime = {0, 0, 0};
+
 			topThreeScores[2] = score;
+			topThree[2] = name;
 			topThreeTime[2] = timeElapsed;
 			
 			int[] temp = Arrays.copyOf(topThreeScores, 3);
@@ -906,9 +908,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			
 			for(int i=0 ; i<temp.length ; i++){
 				int index = Arrays.binarySearch(temp, topThreeScores[i]);
-				newScores[index] = topThreeScores[i];
-				newName[index] = topThree[i];
-				newTime[index] = topThreeTime[i];
+				newScores[2-index] = topThreeScores[i];
+				newName[2-index] = topThree[i];
+				newTime[2-index] = topThreeTime[i];
 			}
 			
 			topThreeScores = newScores;
@@ -920,23 +922,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	}
 	
 	String showRank(){
-		String rank=new String();
+		String rank = new String("The New Rank is \n");
 		for(int i=0 ; i < topThreeScores.length ; i++){
-			rank.concat("Rank "+i+" : "+topThreeScores[i]+"\t"+topThree[i]+"\t"+topThreeTime[i]+"\n");
+			rank = rank.concat("Rank "+i+" : "+topThreeScores[i]+"\t"+topThree[i]+"\t"+topThreeTime[i]+"\n");
+			System.out.println("Rank "+i+" : "+topThreeScores[i]+"\t"+topThree[i]+"\t"+topThreeTime[i]+"\n");
 		}
 		return rank;
 	}
 	
-	//void getRank(String name){
-		//for(int i=0 ; i < topThreeScores.length ; i++){
-			//int temp = 0;
-			//String tempName;
-			//if(score > topThreeScores[i]){
-				//temp = topThreeScores[i];
-				//tempName = topThree[i];
-				//topThreeScores[i] = score;
-				//topThree[i] = name;
-			//}
-		//}
-	//}
 }
