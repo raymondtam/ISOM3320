@@ -640,15 +640,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					// System.out.println("Boss Dead");
 					if(bossShowCount == 1){
 						//end				      
-						refreshScreen.stop();
-						long gameDuration = System.currentTimeMillis() - startTime;
-							String name= JOptionPane.showInputDialog(
-							 null, "Congratulation! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
-							 +" seconds \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
-							  JOptionPane.QUESTION_MESSAGE);
-						if(getRank(name))
-							JOptionPane.showMessageDialog(null, showRank());
-						initialize();
+						endGame();
 					}
 				}
 			}
@@ -878,18 +870,30 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				}
 			}
 			//End Game
-			refreshScreen.stop();
-			long gameDuration = System.currentTimeMillis() - startTime;
-			String name= JOptionPane.showInputDialog(
-			     null, "Game Over! \n Your calculated total Score is " + score + ". Please enter your name: " , "Game Over",
-			     JOptionPane.QUESTION_MESSAGE);
-			if(getRank(name))
-				JOptionPane.showMessageDialog(null, showRank());
-			initialize();
+			endGame();
 		}
 	}
 //	JOptionPane.showMessageDialog(null,
 //			"You beat "+);
+	
+	void endGame(){
+		refreshScreen.stop();
+		String name;
+		if(player.isDead())
+			name = JOptionPane.showInputDialog(
+					null, "Game Over! \n Your calculated total Score is " + score + ". Please enter your name: " , "Game Over",
+					JOptionPane.QUESTION_MESSAGE);
+		else
+			name= JOptionPane.showInputDialog(
+					null, "Congratulation! \n Your used " + minutesToDisplay + " minutes " + secondsToDisplay
+					+" seconds \n Your calculated total Score is " + score + ". \n Please enter your name: " , "Congratulation",
+					JOptionPane.QUESTION_MESSAGE);
+		if(getRank(name))
+			JOptionPane.showMessageDialog(null, "Congratulations!! \n The New Ranking is \n"+showRank());
+		else
+			JOptionPane.showMessageDialog(null, "Sorry You didn't break the record\n"+showRank());
+		initialize();
+	}
 	
 	
 	boolean getRank(String name) {
@@ -922,10 +926,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	}
 	
 	String showRank(){
-		String rank = new String("The New Rank is \n");
+		String rank = "";
 		for(int i=0 ; i < topThreeScores.length ; i++){
-			rank = rank.concat("Rank "+i+" : "+topThreeScores[i]+"\t"+topThree[i]+"\t"+topThreeTime[i]+"\n");
-			System.out.println("Rank "+i+" : "+topThreeScores[i]+"\t"+topThree[i]+"\t"+topThreeTime[i]+"\n");
+			rank = rank.concat("Rank "+ (i+1) +" : "+topThreeScores[i]+"  "+topThree[i]+"  "+topThreeTime[i]+"\n");
+			System.out.println("Rank "+i+" : "+topThreeScores[i]+"  "+topThree[i]+"  "+topThreeTime[i]+"\n");
 		}
 		return rank;
 	}
