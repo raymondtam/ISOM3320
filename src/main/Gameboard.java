@@ -103,8 +103,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
     double angle, mouseX, mouseY;
     long lastShootTime;
 	
-    double[] playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, weaponIconTranslateX, weaponIconTranslateY;
-    double bossTranslateX, bossTranslateY, bulletTranslateX, bulletTranslateY;
+    double[] playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, 
+    	weaponIconTranslateX, weaponIconTranslateY;
+    double bossTranslateX, bossTranslateY, bulletTranslateX, bulletTranslateY, cursorTranslateX, cursorTranslateY;
     
 	public static void main(String[] arg){
 		launch(arg);
@@ -196,6 +197,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		bulletTranslateX =  bulletImage.getWidth()/2;
 		bulletTranslateY =	bulletImage.getHeight()/2;
+		
+		cursorTranslateX = crossHairImage.getWidth()/2;
+		cursorTranslateY = crossHairImage.getWidth()/2;
 		
 		//Initialize the variable and set necessary property
 
@@ -418,7 +422,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         });
 		
-        scene.setCursor(new ImageCursor(crossHairImage));
+        scene.setCursor(new ImageCursor(crossHairImage, cursorTranslateX, cursorTranslateY));
         	
 		stage.setScene(scene);
 		stage.setHeight(screenHeight);
@@ -843,7 +847,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		bossShowCount = 0;
 		
 		summonZombie = false;
-		 
+		
 		moveLeft = false; 
 		moveRight = false;
 		moveUp = false;
