@@ -5,8 +5,6 @@
  * 
  * The fire method sets out how bullets behave on the scene.
  */
-package main;
-
 public class Player extends Character{
 	private int numberOfUnusedBullet;
 	Bullet[] bullet = null;

@@ -11,8 +11,6 @@
  * boundary, the zombies can be regenerated and set visible on the other side of the boundary.
  * 
  */
-package main;
-
 import javafx.geometry.Point2D;
 
 public class Target extends Character{

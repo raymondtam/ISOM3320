@@ -5,8 +5,6 @@
  * object is visible or not and the moving speed.
  * It defines two abstract method -- "isHit" and "move" for the game objects to inherit. 
  */
-package main;
-
 import javafx.geometry.Point2D;
 
 abstract class GameObject {

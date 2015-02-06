@@ -3,8 +3,6 @@
  * 
  * It contains an additional method of generating targets around player.
  */
-package main;
-
 import javafx.geometry.Point2D;
 
 public class Boss extends Target{

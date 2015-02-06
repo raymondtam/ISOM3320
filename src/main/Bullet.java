@@ -17,8 +17,6 @@
  * Third, the getBulletArray function allows the Gameboard to create an array of bullet objects
  * with specified size and attributes.
  */
-package main;
-
 public class Bullet extends GameObject {
 	private static int bulletDamage;
     private static int magazineSize;
