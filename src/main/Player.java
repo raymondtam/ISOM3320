@@ -68,7 +68,7 @@ public class Player extends Character{
 			bullet[index].setVisible(true);
 			bullet[index].setPosition(xPlayer,yPlayer);
 			bullet[index].setIsMoving(true);
-			bullet[index].setXVelocity(normalizedX); //speed set by ratio of distance in x to total distance
+			bullet[index].setXVelocity(normalizedX); //speed set by ratio of distance in x-direction to total distance
 			bullet[index].setYVelocity(normalizedY);
 			bullet[index].setFireAngle(vectorAngle);
 			return true;

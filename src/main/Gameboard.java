@@ -1,3 +1,21 @@
+/**
+ * The Gameboard class defines how user interacts with the game and
+ * it owns player, bullet, target and boss objects.
+ * 
+ * Attributes of the objects owned are controlled here (e.g. movingSpeed
+ * of player and targets). 
+ * 
+ * Multimedia is set. The graphical interface is set with image elements using JavaFX. 
+ * And audios are incorporated.
+ * 
+ * Timeline is set for the animation of the game. Every position is updated first and 
+ * then the every corresponding collision (e.g. bullet hitting targets) is checked 
+ * and trigger the resulting action (e.g. reduces target health)
+ * 
+ * End game logics are defined. Top three scores are stored and shown
+ * 
+ */
+
 package main;
 
 import java.nio.file.Paths;
@@ -28,7 +46,7 @@ import javafx.stage.Stage;
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
 
-	final int NO_OF_BULLET_TYPE = 3; 
+	final static int NO_OF_BULLET_TYPE = 3; 
 	final static int[] BULLET_DAMAGE = {3, 4, 5};
 	final static int[] MAGAZINE_SIZE = {15, 30, 100};
 	final static int MAX_MAGAZINE_SIZE = 100;
@@ -59,12 +77,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static double screenWidth = 900;
 	final static double screenHeight = 600;
 	
-	//Game variable and objects
-	String name = "Player1";
-	short weaponSetting = 0; //0 default 
-	int score = 0;
+	static short weaponSetting = 0;
+	static int score = 0;
 	
-	long reloadStartTime = 0, startTime = 0, zombieReborn = 0;
+	static long reloadStartTime = 0, startTime = 0, zombieReborn = 0;
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, BULLET_DEFAULT_RADIUS, BULLET_MOVEMENT_SPEED);
 	static Player player = new Player(bullet, PLAYER_MOVEMENT_SPEED, PLAYER_MAXHEALTH);
@@ -79,45 +95,35 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static int bossShowCount = 0;
 	boolean summonZombie = false;
 	
-	//Graphics and animation variable
 	Pane pane;
 	Scene scene;
 	Timeline timeline, refreshScreen;
 	
-	// Main graphics component
 	private ImageView backgroundImageView, HPIconImageView, bossImageView;
 	private ImageView[] bulletImageView, targetImageView, playerImageView;	
 	
-	//Pick up Weapon 
 	private ImageView[] weaponIconImageView; 
 	private long[] weaponIconDistance;
 	
-	//Sound effect
 	private AudioClip[] gunShoot, gunReload, zombieSound;
 	private AudioClip footSteps;
 	
-	//Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
     		MinuteLabel = new Label(), SecondLabel = new Label(), ColonLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty, MinutesIntegerProperty, SecondsIntegerProperty;
     
-    //Movement variable
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
     
-    //Shooting variable
     boolean mousePressed = false, handgunTrigger = false;
     double mouseX, mouseY;
     long lastShootTime;
 	
-    //Graphics Tanslation
     double[] playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, 
     	weaponIconTranslateX, weaponIconTranslateY;
     double bossTranslateX, bossTranslateY, bulletTranslateX, bulletTranslateY, cursorTranslateX, cursorTranslateY;
     
-    //Play/Pause flag
     boolean play=false;
     
-    //Distance for considering overlapping
 	double minTargetToTargetDistance = 900;
 	double minDistance;
 	double targetToTargetDistance;
@@ -146,7 +152,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		gunReload = new AudioClip[3];
 		zombieSound = new AudioClip[4];
 		
-		//Loading images and setting GUI, throws exception if any of the image or audio files can not be found
 		try {
 			roadImage =  new Image("FullBackground.png");
 			playerImageHandGun = new Image(Paths.get("src\\pistol.png").toUri().toString());
@@ -174,8 +179,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[2] = new AudioClip(Paths.get("src\\ZombieBite.mp3").toUri().toString());
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
 			footSteps = new AudioClip(Paths.get("src\\FootSteps.mp3").toUri().toString());
-			
-			 System.out.println("Image being imported.");
 		} catch (Exception e) {
 			System.exit(1);
 			e.printStackTrace();
@@ -218,8 +221,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		cursorTranslateX = crossHairImage.getWidth()/2;
 		cursorTranslateY = crossHairImage.getWidth()/2;
 		
-		//Initialize the variable and set necessary property
-
 		backgroundImageView = new ImageView(roadImage);
 		
 		playerImageView = new ImageView[3];
@@ -317,7 +318,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         
 		scene = new Scene(pane);
         
-		//Set Positioning		
 		HPLabel.setTranslateX(70);
 		HPLabel.setTranslateY(530);
 		ScoreLabel.setTranslateX(300);
@@ -384,26 +384,25 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
-            	if (footSteps.isPlaying() & (!moveUp || !moveDown || !moveRight || !moveLeft)){
-            		footSteps.stop();
-            	}
             	switch(keycode){
 	            	case W:
 	            		moveUp = false;
+	            		stopFootSteps();
 	            		break;
 	            	case A:
 	            		moveLeft = false;
+	            		stopFootSteps();
 	            		break;
 	            	case S:
 	            		moveDown = false;
+	            		stopFootSteps();
 	            		break;
 	            	case D:
 	            		moveRight = false;
+	            		stopFootSteps();
 	            		break;
             	}
             	key.consume();
-//             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
-//             	System.out.println(key.toString());
             }
         });
         
@@ -726,16 +725,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 }		
 	
-//Show and set new weapon icon
 	public void newWeapon(ImageView weapon) {
 		weapon.setVisible(true);
 		weapon.setX((int)(player.getXcoord() + 300));
 		weapon.setY((int)(player.getYcoord()));
 	}
 	
-//Pick up new weapon
 	public void pickWeapon (ImageView weapon, int index) {
-//		weapon.setVisible(false);
 		weapon.setX(-999);
 		weapon.setY(-999);
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
@@ -748,13 +744,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		player.reload();
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
-	
-	// calculate total score
-		//public double totalScore() {
-			//To Do, e.g.
-			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
-		//}
-	
+
 	private void targetMovement(){
 		double minTargetToTargetDistance = 900;
     	double minDistance;
@@ -806,7 +796,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		if(player.isDead()){
 			score = (int)(timeElapsed) + player.getHealth()*10;
-			//End Game
 			endGame();
 		}
 	}
@@ -818,8 +807,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
     	}
 	}
 	
+	private void stopFootSteps(){
+		if (footSteps.isPlaying() & !(moveUp || moveDown || moveRight || moveLeft)){
+    		//stop only if not other buttons are being pressed
+    		footSteps.stop();
+    	}
+	}
+	
 	private void initialize(){
-		//initialize scene
 		
 		zombieSound[0].play(GAME_EFFECT_VOLUMN);
 		
