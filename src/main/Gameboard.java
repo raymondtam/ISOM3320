@@ -387,15 +387,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						break;
             	}
                	key.consume();
-//             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
-//             	System.out.println(key.toString());
             }
         });
         
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {  //KeyEvent.keyreleased
             	KeyCode keycode = key.getCode();
-            	if (footSteps.isPlaying() & !moveUp & !moveDown & !moveRight & !moveLeft){
+            	if (footSteps.isPlaying() & (!moveUp || !moveDown || !moveRight || !moveLeft)){
             		footSteps.stop();
             	}
             	switch(keycode){

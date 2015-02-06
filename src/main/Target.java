@@ -1,5 +1,5 @@
 /**
- * This target class defines the enemies player will encounter.
+ * This target class defines objects which are character who attack player
  * 
  */
 package main;
