@@ -48,7 +48,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int BOSS_HEALTH = 300;
 	final static int BULLET_MOVEMENT_SPEED = 20;
 	final static int PLAYER_MOVEMENT_SPEED = 5;
-	final static int TARGET_MOVEMENT_SPEED = 3;
+	final static int TARGET_MOVEMENT_SPEED = 4;
 	
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	final static double screenWidth = 900;
@@ -89,6 +89,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	//Sound effect
 	private AudioClip[] gunShoot, gunReload, zombieSound;
+	private AudioClip footSteps;
 	
 	//Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
@@ -157,6 +158,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
 			zombieSound[2] = new AudioClip(Paths.get("src\\ZombieBite.mp3").toUri().toString());
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
+			footSteps = new AudioClip(Paths.get("src\\Footsteps.mp3").toUri().toString());
 
 			// System.out.println("Image being imported.");
 		} catch (Exception e) {
@@ -493,7 +495,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //Player movement with relative translation of graphics
         if(moveUp && backgroundImageView.getTranslateY() < - 300){
         	// && backgroundImageView.getTranslateY() > - 500
-        	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY()+5);
+        	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY() + 5);
         	for(ImageView i : weaponIconImageView){
         		if(i.isVisible())
         			i.setY(i.getY()+5);
@@ -881,8 +883,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			endGame();
 		}
 	}
-//	JOptionPane.showMessageDialog(null,
-//			"You beat "+);
 	
 	void endGame(){
 		refreshScreen.stop();
