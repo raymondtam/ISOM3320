@@ -1,5 +1,7 @@
 /**
+ * This is a special class of target.
  * 
+ * It contains an additional method of generating targets around player.
  */
 package main;
 
@@ -16,13 +18,6 @@ public class Boss extends Target{
 		this.setMovingSpeed(movingSpeed);
 		this.setRadius(radius);
 		this.maxHealth = health;
-	}
-	
-	public int getMaxHealth(){
-		return this.maxHealth;
-	}
-	public void setMaxHealth(int maxHealth){
-		this.maxHealth = maxHealth;
 	}
 	
 	//recall zombies around playerposition with range specified
