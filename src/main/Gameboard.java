@@ -580,15 +580,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         }
         		
-//		for(int i = 0; i < target.length; i++){
-//			if(target[i].isVisible()){
-//				target[i].move(player.getPosition());
-//				targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-//				targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-//				targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
-//			}
-//		}
-		
 //Target movement
         targetMovement();
 		
@@ -805,6 +796,21 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 	}
 	
+	private void infected(int infection, int damage){
+		if(infectionThreshold >= infection){
+			zombieSound[2].play(GAME_EFFECT_VOLUMN);
+			player.minusHealth(damage);
+			HPIntegerProperty.setValue(player.getHealth());
+			infectionThreshold = 0;
+			System.out.println("Health: "+player.getHealth());
+		}
+		if(player.isDead()){
+			score = (int)(timeElapsed) + player.getHealth()*10;
+			//End Game
+			endGame();
+		}
+	}
+	
 	private void playFootSteps(){
 		if (!footSteps.isPlaying()){
     		footSteps.setCycleCount(100);
@@ -887,22 +893,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	    
 	    play = false;
 	}
-	
-	private void infected(int infection, int damage){
-		if(infectionThreshold >= infection){
-			zombieSound[2].play(GAME_EFFECT_VOLUMN);
-			player.minusHealth(damage);
-			HPIntegerProperty.setValue(player.getHealth());
-			infectionThreshold = 0;
-			System.out.println("Health: "+player.getHealth());
-		}
-		if(player.isDead()){
-			score = (int)(timeElapsed) + player.getHealth()*10;
-			//End Game
-			endGame();
-		}
-	}
-	
+		
 	private void endGame(){
 		refreshScreen.stop();
 		String name;
