@@ -153,21 +153,21 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		zombieSound = new AudioClip[4];
 		
 		try {
-			roadImage =  new Image("FullBackground.png");
+			roadImage =  new Image("src\\FullBackground.png");
 			playerImageHandGun = new Image(Paths.get("src\\pistol.png").toUri().toString());
-			playerImageRifle = new Image("rifle.png");
-			playerImageMachineGun = new Image("machinegun.png");
+			playerImageRifle = new Image("src\\rifle.png");
+			playerImageMachineGun = new Image("src\\machinegun.png");
 			
-			machinegunIconImage = new Image ("machinegun_icon.png");
-			rifleIconImage = new Image ("rifle_icon.png");
+			machinegunIconImage = new Image ("src\\machinegun_icon.png");
+			rifleIconImage = new Image ("src\\rifle_icon.png");
 			
-			zombieImage = new Image("zombie1.png");
-			zombieImage1 = new Image("zombie2.png");
-			zombieImage2 = new Image("zombie3.png");
-			bossImage = new Image ("boss.gif");
-			HPIconImage = new Image("HP.gif");
-			bulletImage = new Image("bullet.png");
-			crossHairImage = new Image("crosshair_pick3.png");
+			zombieImage = new Image("src\\zombie1.png");
+			zombieImage1 = new Image("src\\zombie2.png");
+			zombieImage2 = new Image("src\\zombie3.png");
+			bossImage = new Image ("src\\boss.gif");
+			HPIconImage = new Image("src\\HP.gif");
+			bulletImage = new Image("src\\bullet.png");
+			crossHairImage = new Image("src\\crosshair_pick3.png");
 			gunShoot[0] = new AudioClip(Paths.get("src\\HandGunShoot.mp3").toUri().toString());
 			gunShoot[1] = new AudioClip(Paths.get("src\\RifleShoot.mp3").toUri().toString());
 			gunShoot[2] = new AudioClip(Paths.get("src\\MachineGunShoot.mp3").toUri().toString());
@@ -180,10 +180,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
 			footSteps = new AudioClip(Paths.get("src\\FootSteps.mp3").toUri().toString());
 		} catch (Exception e) {
-			System.exit(1);
 			e.printStackTrace();
 		}
 		
+		// to set object at the center of images
 		playerTranslateX = new double[3];
 		playerTranslateX[0] = playerImageHandGun.getWidth()/2;
 		playerTranslateX[1] = playerImageRifle.getWidth()/2;
@@ -290,7 +290,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         }
         
         targetImageView = new ImageView[12];
-        for(int i=0 ; i<targetImageView.length/3 ; i++ ){
+        for(int i=0 ; i<targetImageView.length/3 ; i++ ){ //assign 3 different images to targets
         	targetImageView[i] = new ImageView(zombieImage);
         	targetImageView[i+4] = new ImageView(zombieImage1);
         	targetImageView[i+8] = new ImageView(zombieImage2);        	
@@ -427,17 +427,15 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	public void handle(MouseEvent mouse){
         		mousePressed = false;
         		handgunTrigger = false;
-//        		System.out.println("Mouse Released");
         	}
         });
-               
+        
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
         		mouseX = mouse.getX();
         		mouseY = mouse.getY();
         		double angle = getFireAngle(mouseX, mouseY);
         		playerImageView[weaponSetting].setRotate(angle);
-//        		System.out.println(angle);
         	}
         });
 		
@@ -452,11 +450,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
 		stage.show();
-		System.out.println("Stage being showed.");
 		
 		zombieSound[0].play();
 		zombieReborn = System.currentTimeMillis();
-				
 	}
 	
 	private double getFireAngle(double x, double y){
@@ -472,14 +468,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	@Override
 	public void handle(ActionEvent e) {
 		
-//Updating Time
+		//Updating Time
         timeElapsed = (System.currentTimeMillis() - startTime) / 1000;
         minutesToDisplay = (int)(timeElapsed / 60);
         secondsToDisplay = ((int)(timeElapsed)) % 60;
         MinutesIntegerProperty.setValue(minutesToDisplay);
         SecondsIntegerProperty.setValue(secondsToDisplay);
 		
-//Shooting
+        //Shooting
 		if(mousePressed && ( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > 33*5) || ( handgunTrigger && System.currentTimeMillis() - lastShootTime > 33*10))){
 			handgunTrigger = false;
 			double angle = getFireAngle(mouseX, mouseY);
@@ -488,18 +484,17 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					gunShoot[weaponSetting].play(GAME_EFFECT_VOLUMN);
 					lastShootTime = System.currentTimeMillis();
 				} 
-				else{  //failed to fire, reload
+				else{  //Fail to fire, reload
 					reloadStartTime = System.currentTimeMillis();
 					player.reload();
 					gunReload[weaponSetting].play(GAME_EFFECT_VOLUMN);
-				}		
+				}
 				BulletIntegerProperty.setValue(player.getNumberOfUnusedBullet());
 			}
 		}
 
-//Player movement with relative translation of graphics
+		//Player movement made by relative translation of graphics
         if(moveUp && backgroundImageView.getTranslateY() < - 300){
-        	// && backgroundImageView.getTranslateY() > - 500
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY() + 5);
         	for(ImageView i : weaponIconImageView){
         		if(i.isVisible())
@@ -509,21 +504,18 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         		i.changePosition(0, 5);
         	}
         	boss.changePosition(0, 5);
-        	//player.move(0, -5);
         }
         
         if(moveDown && backgroundImageView.getTranslateY() > - 1920){
-        	// && backgroundImageView.getTranslateY() < 500
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY() - 5);
         	for(ImageView i : weaponIconImageView){
         		if(i.isVisible())
-        			i.setY(i.getY()-5);
+        			i.setY(i.getY() - 5);
         	}
         	for(Target i : target){
         		i.changePosition(0, -5);
         	}
         	boss.changePosition(0, -5);
-        	//player.move(0, 5);
         }
         
         if(moveLeft){
@@ -544,10 +536,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         			playerImageView[weaponSetting].setX(player.getXcoord());
         		}
         	}
-        	//player.move(-5, 0);
         }
         
-        if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
+        if(moveRight){
         	if(backgroundImageView.getTranslateX() > -6785 && player.getXcoord()==screenWidth/2){
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
 	    		for(Target i : target)
@@ -568,7 +559,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	//player.move(5,0);
         }
         
-//Bullet movement
+        //Bullet movement
         for(int i=0; i < Bullet.getMagazineSize() ; i++){
         	if(bullet[i].getIsMoving()){
         		bulletImageView[i].setRotate(bullet[i].getFireAngle());
@@ -579,10 +570,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	}
         }
         		
-//Target movement
         targetMovement();
 		
-//Boss movement
+        //Boss movement
 		boss.move(player.getPosition());
 		bossImageView.setRotate(boss.getAngleOfChase(player.getPosition()));
 		bossImageView.setX(boss.getXcoord()-bossTranslateX);
@@ -608,12 +598,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					boss.setPosition(-999,-999);
 					score += 1000;
 					score = score - (int)(timeElapsed) + player.getHealth()*10;
-					// System.out.println("Boss Dead");
 					endGame();
 				}
 			}
 			
-//Check ishit and isdead
+			//Check ishit and isdead
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
