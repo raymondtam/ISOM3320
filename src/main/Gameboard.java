@@ -28,32 +28,37 @@ import javafx.stage.Stage;
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
 	//852 * 7680
-	//Constant
-	final int NO_OF_BULLET_TYPE = 3; 
-	final static int[] BULLET_DAMAGE = {3, 4, 5};
-	final static int[] MAGAZINE_SIZE = {15, 30, 100};
+//Constant
+	
+	final static int NO_OF_BULLET_TYPE = 3; 
+	final static int BULLET_MOVEMENT_SPEED = 20;
 	final static int MAX_MAGAZINE_SIZE = 100;
+	final static int[] BULLET_DAMAGE = {3, 4, 5};
+	final static int[] MAGAZINE_SIZE = {15, 30, 100};	
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
 	final static double BULLET_DEFAULT_RADIUS = 10;
-//	final static double PLAYER_DEFAULT_RADIUS = 10;
-	final static int TARGET_DEFAULT_RADIUS = 30;
-	final static int NUMBER_OF_ZOMBIES = 10;
-	final static int ZOMBIES_DAMAGE = 5;
-	final static int BOSS_DAMAGE = 20;
+
 	final static int PLAYER_MAXHEALTH = 100;
-	final static int TARGET_HEALTH = 12;
-	final static int BOSS_HEALTH = 300;
-	final static int BULLET_MOVEMENT_SPEED = 20;
 	final static int PLAYER_MOVEMENT_SPEED = 5;
+	
+	final static int NUMBER_OF_ZOMBIES = 12;
+	final static int TARGET_HEALTH = 12;
+	final static int TARGET_DAMAGE = 5;
 	final static int TARGET_MOVEMENT_SPEED = 4;
+	final static int TARGET_DEFAULT_RADIUS = 30;
+	
+	final static int BOSS_HEALTH = 300;
+	final static int BOSS_DAMAGE = 20;
+	final static int BOSS_MOVEMENT = 2;
+	final static int BOSS_RADIUS = 110;
 	
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	final static double screenWidth = 900;
 	final static double screenHeight = 600;
+	final static short TIME_FRAME = 33;
 	
 	//Game variable and objects
-	String name = "Player1";
 	short weaponSetting = 0; //0 default 
 	int score = 0;
 	
@@ -61,27 +66,29 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	static Bullet[] bullet = Bullet.getBulletArray(MAX_MAGAZINE_SIZE, DEFAULT_BULLET_DAMAGE, DEFAULT_MAGAZINE_SIZE, BULLET_DEFAULT_RADIUS, BULLET_MOVEMENT_SPEED);
 	static Player player = new Player(bullet, PLAYER_MOVEMENT_SPEED, PLAYER_MAXHEALTH);
-	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, TARGET_HEALTH, ZOMBIES_DAMAGE, TARGET_MOVEMENT_SPEED, TARGET_DEFAULT_RADIUS); 
-	static String[] topThree = {"","",""};
-	static int[] topThreeScores = {0, 0, 0};
-	static long[] topThreeTime = {0, 0, 0};
-	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
+	static Target[] target = Target.getTargetArray(NUMBER_OF_ZOMBIES, TARGET_HEALTH, TARGET_DAMAGE, TARGET_MOVEMENT_SPEED, TARGET_DEFAULT_RADIUS);
+	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, BOSS_MOVEMENT, BOSS_RADIUS);
+
 	static int infectionThreshold = 0;
-	static long timeElapsed = 0;
-	static int minutesToDisplay, secondsToDisplay;
 	static int bossShowCount = 0;
 	boolean summonZombie = false;
 	
+	static long timeElapsed = 0;
+	static int minutesToDisplay, secondsToDisplay;
+	static String[] topThree = {"","",""};
+	static int[] topThreeScores = {0, 0, 0};
+	static long[] topThreeTime = {0, 0, 0};
+
 	//Graphics and animation variable
 	Pane pane;
 	Scene scene;
-	Timeline timeline, refreshScreen;
+	Timeline refreshScreen;
 	
 	// Main graphics component
 	private ImageView backgroundImageView, HPIconImageView, bossImageView;
 	private ImageView[] bulletImageView, targetImageView, playerImageView;	
 	
-	//Pick up Weapon 
+	//Variable for Picking up Weapon 
 	private ImageView[] weaponIconImageView; 
 	private long[] weaponIconDistance;
 	
@@ -89,20 +96,20 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	private AudioClip[] gunShoot, gunReload, zombieSound;
 	private AudioClip footSteps;
 	
-	//Screen Graphics
+	//Variable for Screen Graphics
     private Label HPLabel = new Label(), BulletLabel = new Label(), ScoreLabel = new Label(),
     		MinuteLabel = new Label(), SecondLabel = new Label(), ColonLabel = new Label();
     private IntegerProperty HPIntegerProperty, BulletIntegerProperty, ScoreIntegerProperty, MinutesIntegerProperty, SecondsIntegerProperty;
     
-    //Movement variable
+    //Variable for Movement
     boolean moveLeft = false, moveRight = false, moveUp = false, moveDown = false;
     
-    //Shooting variable
+    //Variable for Shooting variable
     boolean mousePressed = false, handgunTrigger = false;
     double angle, mouseX, mouseY;
     long lastShootTime;
 	
-    //Graphics Tanslation
+    //Variable for Graphics Translation
     double[] playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, 
     	weaponIconTranslateX, weaponIconTranslateY;
     double bossTranslateX, bossTranslateY, bulletTranslateX, bulletTranslateY, cursorTranslateX, cursorTranslateY;
@@ -126,7 +133,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		Image machinegunIconImage = null, rifleIconImage = null;
 		Image crossHairImage = null;
 		
-		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
 		gunShoot = new AudioClip[3];
@@ -320,7 +326,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		ColonLabel.setTranslateX(430);
 		ColonLabel.setTranslateY(17);
 		
-		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(33), this));
+		refreshScreen.getKeyFrames().add( new KeyFrame(new Duration(TIME_FRAME), this));
 		refreshScreen.setCycleCount(Timeline.INDEFINITE);
 		
 		//Movement buffer
@@ -351,7 +357,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						if(!play){
 							refreshScreen.play();
 							play = true;
-							if(startTime==0)
+							if(startTime ==0)
 								startTime = System.currentTimeMillis();
 						}
 						else{
@@ -446,7 +452,17 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		zombieReborn = System.currentTimeMillis();
 				
 	}
-	
+
+/**
+ * Get angle of fire from player's position to current cursor position, 
+ * which the angle is oriented from North direction (or positive y-axis).
+ * a positive angle refers to a clockwise rotation.
+ * a negative angle refers to a anti-clockwise rotation.
+ *  
+ * @param x, x-coordinate of cursor position
+ * @param y, y-coordinate of cursor position
+ * @return angle of fire
+ */
 	double getFireAngle(double x, double y){
 		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
 		double angle = player.getPosition().angle(dummyVector, cursorVector);
@@ -463,9 +479,28 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         secondsToDisplay = ((int)(timeElapsed)) % 60;
         MinutesIntegerProperty.setValue(minutesToDisplay);
         SecondsIntegerProperty.setValue(secondsToDisplay);
-		
+
+/**
+ * Control the shooting mechanism
+ * A flag is used to determined if the user is pressing the mouse
+ * and if he is, it will fire a bullet 
+ * 
+ * if the user is using handgun, the condition
+ * ( handgunTrigger && System.currentTimeMillis() - lastShootTime > TIME_FRAME*10)
+ * prevents the user from firing multiple bullets via long-pressing the mouse or rapid clicking in a short period of time 
+ * (10 time frames are skipped between shots)
+ * 
+ * if the user is using rifle or machine gun the condition 
+ * (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > TIME_FRAME*5) 
+ *  allows rapid shooting (5 time frames are skipped between shots) 
+ *  
+ *  
+ *
+ */
 //Shooting
-		if(mousePressed && ( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > 33*5) || ( handgunTrigger && System.currentTimeMillis() - lastShootTime > 33*10))){
+		if(mousePressed && 
+				( (weaponSetting > 0 &&  System.currentTimeMillis() - lastShootTime > TIME_FRAME*5) || 
+						( handgunTrigger && System.currentTimeMillis() - lastShootTime > TIME_FRAME*10))){
 			handgunTrigger = false;
 			double angle = getFireAngle(mouseX, mouseY);
 			if((System.currentTimeMillis() - reloadStartTime) > 2000){
@@ -671,7 +706,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
 			}
-			infected(30, ZOMBIES_DAMAGE);
+			infected(30, TARGET_DAMAGE);
 		}
 		
 //Check if Boss hit Player and minus health correspondingly
@@ -784,6 +819,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
 		//}
 	
+/**
+ * Initialize all the related variables before starting a new game.
+ * Such as startTime, default weapon, all the objects' initial attributes as well as the corresponding image representation 
+ * 
+ */
 	private void initialize(){
 		//initialize scene
 		
@@ -860,7 +900,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	    
 	    play = false;
 	}
-	
+
+/**
+ * every zombie hit infects the player, and if it reaches a critical infectionThreshold, 
+ * it will deal damage to player.
+ *   * 
+ * @param infection Critical infectionThreshold
+ * @param damage corresponding damage to the player by target/boss.
+ */
 	void infected(int infection, int damage){
 		if(infectionThreshold >= infection){
 			zombieSound[2].play(500);
@@ -875,7 +922,14 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			endGame();
 		}
 	}
-	
+
+/**
+ * Stop the timeline, BGM.
+ * Show the calculated score, prompt to ask user's name
+ * And show the new ranking and corresponding message.
+ * it also call the initialize function to prepare the program for a new game
+ * 
+ */
 	void endGame(){
 		refreshScreen.stop();
 		String name;
@@ -896,7 +950,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		initialize();
 	}
 	
-	
+/**
+ * Calculate a new ranking 
+ * 
+ * @param name  the name of the current user
+ * @return  true if the user breaks the record, false the otherwise.
+ */
 	boolean getRank(String name) {
 		System.out.println(score + " " + topThreeScores[2]);
 		if (score > topThreeScores[2] || ( score == topThreeScores[2] && timeElapsed < topThreeTime[2])) {
@@ -925,7 +984,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 		return false;
 	}
-	
+
+/**
+ * Construct and return a string variable with the most updated ranking information 
+ * 
+*/
 	String showRank(){
 		String rank = "";
 		for(int i=0 ; i < topThreeScores.length ; i++){

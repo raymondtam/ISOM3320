@@ -134,7 +134,6 @@ public class Target extends Character{
 			this.setPosition((int)(playerPosition.getX() - 500 ), (int)(playerPosition.getY() + randomCoord * 600)); 
 		}
 		this.setVisible(true);
-		System.out.println("Call zombies!!!");
 	}
 	
 	public void setVisible(Point2D playerPosition, int range){
