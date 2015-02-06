@@ -1,7 +1,8 @@
 /**
- * This is a class to create the Bullet constructor. It extends the GameObject class
- * with additional attributes of bullet damage, magazine size, whether the bullet is
- * moving or not, the velocity in both x and y directions, as well as the angle to be fired.  
+ * This bullet class defines objects which are game objects fired by player. It extends the 
+ * GameObject class with additional attributes of bullet damage, magazine size, whether the 
+ * bullet is moving or not, the velocity in both x and y directions, as well as the angle to 
+ * be fired.  
  * 
  * There are three characteristic functions in the bullet class. 
  * 
