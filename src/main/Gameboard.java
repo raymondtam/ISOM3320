@@ -112,6 +112,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
     //Play/Pause flag
     boolean play=false;
     
+    //Distance for considering overlapping
+	double minTargetToTargetDistance = 900;
+	double minDistance;
+	double targetToTargetDistance;
+	double targetToPlayerDistance;
+    
 	public static void main(String[] arg){
 		launch(arg);
 	}
@@ -581,10 +587,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //		}
 		
 //Target movement
-		double minTargetToTargetDistance = 900;
-		double minDistance;
-		double targetToTargetDistance;
-		double targetToPlayerDistance;
 		for(int i = 0; i < target.length; i++){
 			if (!target[i].isDead()){
 				minDistance = 30;
