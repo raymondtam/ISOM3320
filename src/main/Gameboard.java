@@ -36,7 +36,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
 	final static double BULLET_DEFAULT_RADIUS = 10;
-//	final static double PLAYER_DEFAULT_RADIUS = 10;
 	final static int TARGET_DEFAULT_RADIUS = 30;
 	final static int NUMBER_OF_ZOMBIES = 10;
 	final static int ZOMBIES_DAMAGE = 5;
@@ -160,8 +159,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
 			zombieSound[2] = new AudioClip(Paths.get("src\\ZombieBite.mp3").toUri().toString());
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
-			footSteps = new AudioClip(Paths.get("src\\Footsteps.mp3").toUri().toString());
-
+			footSteps = new AudioClip(Paths.get("src\\FootSteps.mp3").toUri().toString());
+			
 			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -330,21 +329,37 @@ final public class Gameboard extends Application implements EventHandler<ActionE
                 switch(keycode){
 	            	case W:
 	            		moveUp = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(0.1);
+	                	}
 	            		break;
 	            	case A:
 	            		moveLeft = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(0.1);
+	                	}
 	            		break;
 	            	case S:
 	            		moveDown = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(0.1);
+	                	}
 	            		break;
 	            	case D:
 	            		moveRight = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(0.1);
+	                	}
 	            		break;
 					case R:
 						if (player.reload()) {
 		        			reloadStartTime = System.currentTimeMillis();
 		        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-		        			gunReload[weaponSetting].play(100);
+		        			gunReload[weaponSetting].play(1);
 						}
 						break;
 					case SPACE:
@@ -369,6 +384,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {  //KeyEvent.keyreleased
             	KeyCode keycode = key.getCode();
+            	if (footSteps.isPlaying() & !moveUp & !moveDown & !moveRight & !moveLeft){
+            		footSteps.stop();
+            	}
             	switch(keycode){
 	            	case W:
 	            		moveUp = false;
@@ -381,6 +399,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	            		break;
 	            	case D:
 	            		moveRight = false;
+	            		break;
             	}
             	key.consume();
 //             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
