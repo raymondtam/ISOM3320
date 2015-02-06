@@ -52,6 +52,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int BOSS_DAMAGE = 20;
 	final static int BOSS_MOVEMENT = 2;
 	final static int BOSS_RADIUS = 110;
+
+	final static double GAME_EFFECT_VOLUMN = 1.0;
+	final static double GAME_BGM_VOLUMN = 0.7;
+	final static double FOOTSTEPS_VOLUMN = 0.1;
 	
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	final static double screenWidth = 900;
@@ -166,8 +170,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[1] = new AudioClip(Paths.get("src\\ZombieReborn.mp3").toUri().toString());
 			zombieSound[2] = new AudioClip(Paths.get("src\\ZombieBite.mp3").toUri().toString());
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
-			footSteps = new AudioClip(Paths.get("src\\Footsteps.mp3").toUri().toString());
-
+			footSteps = new AudioClip(Paths.get("src\\FootSteps.mp3").toUri().toString());
+			
 			// System.out.println("Image being imported.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -336,21 +340,37 @@ final public class Gameboard extends Application implements EventHandler<ActionE
                 switch(keycode){
 	            	case W:
 	            		moveUp = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(FOOTSTEPS_VOLUMN);
+	                	}
 	            		break;
 	            	case A:
 	            		moveLeft = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(FOOTSTEPS_VOLUMN);
+	                	}
 	            		break;
 	            	case S:
 	            		moveDown = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(FOOTSTEPS_VOLUMN);
+	                	}
 	            		break;
 	            	case D:
 	            		moveRight = true;
+	            		if (!footSteps.isPlaying()){
+	                		footSteps.setCycleCount(100);
+	                		footSteps.play(FOOTSTEPS_VOLUMN);
+	                	}
 	            		break;
 					case R:
 						if (player.reload()) {
 		        			reloadStartTime = System.currentTimeMillis();
 		        			BulletIntegerProperty.setValue(Bullet.getMagazineSize());
-		        			gunReload[weaponSetting].play(100);
+		        			gunReload[weaponSetting].play(GAME_EFFECT_VOLUMN);
 						}
 						break;
 					case SPACE:
@@ -375,6 +395,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {  //KeyEvent.keyreleased
             	KeyCode keycode = key.getCode();
+            	if (footSteps.isPlaying() & !moveUp & !moveDown & !moveRight & !moveLeft){
+            		footSteps.stop();
+            	}
             	switch(keycode){
 	            	case W:
 	            		moveUp = false;
@@ -387,6 +410,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	            		break;
 	            	case D:
 	            		moveRight = false;
+	            		break;
             	}
             	key.consume();
 //             	System.out.println("UP: " + moveUp + " Down: " + moveDown + " Left: " + moveLeft + " Right: " + moveRight);
@@ -505,13 +529,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			double angle = getFireAngle(mouseX, mouseY);
 			if((System.currentTimeMillis() - reloadStartTime) > 2000){
 				if(player.fire(mouseX, mouseY, angle)){ 
-					gunShoot[weaponSetting].play(100);
+					gunShoot[weaponSetting].play(GAME_EFFECT_VOLUMN);
 					lastShootTime = System.currentTimeMillis();
 				} 
 				else{  //failed to fire, reload
 					reloadStartTime = System.currentTimeMillis();
 					player.reload();
-					gunReload[weaponSetting].play(100);
+					gunReload[weaponSetting].play(GAME_EFFECT_VOLUMN);
 				}		
 				BulletIntegerProperty.setValue(player.getNumberOfUnusedBullet());
 			}
@@ -718,7 +742,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //Generate zombie, reborn
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
 			System.out.println("Zombie Reborn");
-			zombieSound[1].play(500);
+			zombieSound[1].play(GAME_EFFECT_VOLUMN);
 			if (backgroundImageView.getTranslateY() < - 581 && backgroundImageView.getTranslateY() > -1721){
 				Target.rebornZombie(target, player.getPosition());
 				zombieReborn=System.currentTimeMillis();
@@ -756,7 +780,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			&& backgroundImageView.getTranslateY() < - 300 
 			&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
 			// System.out.println("Boss");
-			zombieSound[3].play(1000);
+			zombieSound[3].play(GAME_EFFECT_VOLUMN);
 			boss.setVisible(true);
 			boss.setPosition(600, 150);
 			bossImageView.setVisible(true);
@@ -783,7 +807,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //Summon zombie
 		if(boss.isVisible() && summonZombie){
 			boss.summonZombie(target, player.getPosition(), 200);
-			zombieSound[3].play(1000);
+			zombieSound[3].play(GAME_EFFECT_VOLUMN);
 			summonZombie = false;
 			System.out.println("Summon Zombie!!!");
 		}
@@ -827,7 +851,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	private void initialize(){
 		//initialize scene
 		
-		zombieSound[0].play();
+		zombieSound[0].play(GAME_EFFECT_VOLUMN);
 		
         MinutesIntegerProperty.setValue(0);
         SecondsIntegerProperty.setValue(0);
@@ -910,7 +934,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
  */
 	void infected(int infection, int damage){
 		if(infectionThreshold >= infection){
-			zombieSound[2].play(500);
+			zombieSound[2].play(GAME_EFFECT_VOLUMN);
 			player.minusHealth(damage);
 			HPIntegerProperty.setValue(player.getHealth());
 			infectionThreshold = 0;
