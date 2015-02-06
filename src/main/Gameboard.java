@@ -16,8 +16,6 @@
  * 
  */
 
-package main;
-
 import java.nio.file.Paths;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
@@ -707,7 +705,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[3].play(GAME_EFFECT_VOLUMN);
 			summonZombie = false;
 		}
-		
 }		
 	
 	public void newWeapon(ImageView weapon) {
