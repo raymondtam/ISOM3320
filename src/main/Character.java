@@ -10,7 +10,6 @@
  * zero. If it does, it means that the character is dead and this will trigger other functions
  * such as GameOver for player and being destroyed for target.
  */
-package main;
 
 public abstract class Character extends GameObject{
 	private int health;
