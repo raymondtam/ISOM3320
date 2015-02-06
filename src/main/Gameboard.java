@@ -27,8 +27,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
-	//852 * 7680
-	//Constant
 	final int NO_OF_BULLET_TYPE = 3; 
 	final static int[] BULLET_DAMAGE = {3, 4, 5};
 	final static int[] MAGAZINE_SIZE = {15, 30, 100};
@@ -335,22 +333,22 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
-            	if (!footSteps.isPlaying()){
-            		footSteps.setCycleCount(100);
-            		footSteps.play(FOOTSTEPS_VOLUMN);
-            	}
                 switch(keycode){
 	            	case W:
 	            		moveUp = true;
+	            		playFootSteps();
 	            		break;
 	            	case A:
 	            		moveLeft = true;
+	            		playFootSteps();
 	            		break;
 	            	case S:
 	            		moveDown = true;
+	            		playFootSteps();
 	            		break;
 	            	case D:
-	            		moveRight = true;         	
+	            		moveRight = true;  
+	            		playFootSteps();
 	            		break;
 					case R:
 						if (player.reload()) {
@@ -587,40 +585,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 //		}
 		
 //Target movement
-		for(int i = 0; i < target.length; i++){
-			if (!target[i].isDead()){
-				minDistance = 30;
-				targetToPlayerDistance = Math.pow(Math.pow(target[i].getXcoord() - player.getXcoord(), 2.0) 
-						+ Math.pow(target[i].getYcoord() - player.getYcoord(), 2.0), 0.5);
-				for(int j = 0; j < target.length; j++){
-					if (i == j){
-						break;
-					}
-					targetToTargetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
-						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
-					if (targetToTargetDistance <= minTargetToTargetDistance){
-						minTargetToTargetDistance = targetToTargetDistance;
-					}
-				}
-				if (targetToPlayerDistance <= minTargetToTargetDistance){
-					minDistance = targetToPlayerDistance;
-				}
-				else {
-					minDistance = minTargetToTargetDistance;
-				}
-				if (minDistance >= 30){
-					target[i].move(player.getPosition());
-					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
-				}
-				else {
-					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
-				}
-			}
-		}
+        targetMovement();
 		
 //Boss movement
 		boss.move(player.getPosition());
@@ -794,6 +759,53 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
 		//}
 	
+	private void targetMovement(){
+		double minTargetToTargetDistance = 900;
+    	double minDistance;
+    	double targetToTargetDistance;
+    	double targetToPlayerDistance;
+		for(int i = 0; i < target.length; i++){
+			if (!target[i].isDead()){
+				minDistance = 30;
+				targetToPlayerDistance = Math.pow(Math.pow(target[i].getXcoord() - player.getXcoord(), 2.0) 
+						+ Math.pow(target[i].getYcoord() - player.getYcoord(), 2.0), 0.5);
+				for(int j = 0; j < target.length; j++){
+					if (i == j){
+						break;
+					}
+					targetToTargetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
+						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
+					if (targetToTargetDistance <= minTargetToTargetDistance){
+						minTargetToTargetDistance = targetToTargetDistance;
+					}
+				}
+				if (targetToPlayerDistance <= minTargetToTargetDistance){
+					minDistance = targetToPlayerDistance;
+				}
+				else {
+					minDistance = minTargetToTargetDistance;
+				}
+				if (minDistance >= 30){
+					target[i].move(player.getPosition());
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+				}
+				else {
+					targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
+					targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
+					targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
+				}
+			}
+		}
+	}
+	
+	private void playFootSteps(){
+		if (!footSteps.isPlaying()){
+    		footSteps.setCycleCount(100);
+    		footSteps.play(FOOTSTEPS_VOLUMN);
+    	}
+	}
 	private void initialize(){
 		//initialize scene
 		
