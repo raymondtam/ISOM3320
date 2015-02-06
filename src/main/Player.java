@@ -4,13 +4,12 @@
 package main;
 
 public class Player extends Character{
-	//Variable
 	private int numberOfUnusedBullet;
 	Bullet[] bullet = null;
 	
-	//Constructor
-	Player() {
+	public Player() {
 	}
+	
 	
 	public Player(Bullet[] bullet, int movingSpeed, int health) {
 		this.bullet = bullet;
@@ -19,7 +18,6 @@ public class Player extends Character{
 		this.setMovingSpeed(movingSpeed);
 	}
 	
-	//Mutator and accessor
 	public int getNumberOfUnusedBullet() {
 		return numberOfUnusedBullet;
 	}
@@ -28,7 +26,6 @@ public class Player extends Character{
 		this.numberOfUnusedBullet = numberOfUnusedBullet;
 	}
 	
-	//Custom method
 	@Override
 	public boolean isHit() {
 		return true;
@@ -64,10 +61,11 @@ public class Player extends Character{
 			double normalizedX = (xCursor - xPlayer) / distance;
 			double normalizedY = (yCursor - yPlayer) / distance;
 			numberOfUnusedBullet--;
+			//fire out one bullet from player angle by cursor
 			bullet[index].setVisible(true);
 			bullet[index].setPosition(xPlayer,yPlayer);
 			bullet[index].setIsMoving(true);
-			bullet[index].setXVelocity(normalizedX);
+			bullet[index].setXVelocity(normalizedX); //speed set by ratio of distance in x to total distance
 			bullet[index].setYVelocity(normalizedY);
 			bullet[index].setFireAngle(vectorAngle);
 			return true;
