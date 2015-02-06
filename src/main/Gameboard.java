@@ -60,7 +60,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static double screenHeight = 600;
 	
 	//Game variable and objects
-	String name = "Player1";
 	short weaponSetting = 0; //0 default 
 	int score = 0;
 	
@@ -82,7 +81,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	//Graphics and animation variable
 	Pane pane;
 	Scene scene;
-	Timeline timeline, refreshScreen;
+	Timeline refreshScreen;
 	
 	// Main graphics component
 	private ImageView backgroundImageView, HPIconImageView, bossImageView;
@@ -139,7 +138,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		Image machinegunIconImage = null, rifleIconImage = null;
 		Image crossHairImage = null;
 		
-		timeline = new Timeline();
 		refreshScreen = new Timeline();				
 		
 		gunShoot = new AudioClip[3];
@@ -589,7 +587,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		bossImageView.setX(boss.getXcoord()-bossTranslateX);
 		bossImageView.setY(boss.getYcoord()-bossTranslateY);
 		
-		//Boss show and check if bullets hit Boss or Zombies
+		//Boss show and check if the bullets hit the Boss
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
 				System.out.println("hit bossed");
@@ -749,12 +747,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		BulletIntegerProperty.setValue(Bullet.getMagazineSize());
 	}
 	
-	// calculate total score
-		//public double totalScore() {
-			//To Do, e.g.
-			// number of Target kill * 10 + Boss kill + player's HP * 10 - time required 
-		//}
-	
 	private void targetMovement(){
 		double minTargetToTargetDistance = 900;
     	double minDistance;
@@ -805,7 +797,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			System.out.println("Health: "+player.getHealth());
 		}
 		if(player.isDead()){
-			score = (int)(timeElapsed) + player.getHealth()*10;
+			score = score - (int)(timeElapsed) + player.getHealth()*10;
 			//End Game
 			endGame();
 		}
