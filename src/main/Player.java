@@ -1,5 +1,9 @@
 /**
+ * Player is a special character who fights target using class Bullets.
  * 
+ * It owns an array of Bullet objects and store the number of bullets left.
+ * 
+ * The fire method sets out how bullets behave on the scene.
  */
 package main;
 
@@ -9,7 +13,6 @@ public class Player extends Character{
 	
 	public Player() {
 	}
-	
 	
 	public Player(Bullet[] bullet, int movingSpeed, int health) {
 		this.bullet = bullet;
