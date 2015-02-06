@@ -27,9 +27,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 final public class Gameboard extends Application implements EventHandler<ActionEvent> {
-	//852 * 7680
 //Constant
-	
 	final static int NO_OF_BULLET_TYPE = 3; 
 	final static int BULLET_MOVEMENT_SPEED = 20;
 	final static int MAX_MAGAZINE_SIZE = 100;
@@ -110,7 +108,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
     
     //Variable for Shooting variable
     boolean mousePressed = false, handgunTrigger = false;
-    double angle, mouseX, mouseY;
+    double mouseX, mouseY;
     long lastShootTime;
 	
     //Variable for Graphics Translation
@@ -143,7 +141,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		gunReload = new AudioClip[3];
 		zombieSound = new AudioClip[4];
 		
-		//Loading images and setting GUI
+		//Loading images and setting GUI, throws exception if any of the image or audio files can not be found
 		try {
 			roadImage =  new Image("FullBackground.png");
 			playerImageHandGun = new Image(Paths.get("src\\pistol.png").toUri().toString());
@@ -172,9 +170,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			zombieSound[3] = new AudioClip(Paths.get("src\\BossLaugh.mp3").toUri().toString());
 			footSteps = new AudioClip(Paths.get("src\\FootSteps.mp3").toUri().toString());
 			
-			// System.out.println("Image being imported.");
+			 System.out.println("Image being imported.");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			System.exit(1);
 			e.printStackTrace();
 		}
 		
@@ -423,11 +421,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	public void handle(MouseEvent mouse){
         		mouseX = mouse.getX();
         		mouseY = mouse.getY();
-        		double angle = getFireAngle(mouseX, mouseY); 
-        		if(mouseX>player.getXcoord())
-        			playerImageView[weaponSetting].setRotate(angle);
-        		else
-        			playerImageView[weaponSetting].setRotate(-1*angle);
+        		double angle = getFireAngle(mouseX, mouseY);
+        		playerImageView[weaponSetting].setRotate(angle);
         	}
         });
         
@@ -450,12 +445,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         	public void handle(MouseEvent mouse){
         		mouseX = mouse.getX();
         		mouseY = mouse.getY();
-        		double angle = getFireAngle(mouseX, mouseY); 
+        		double angle = getFireAngle(mouseX, mouseY);
+        		playerImageView[weaponSetting].setRotate(angle);
 //        		System.out.println(angle);
-        		if(mouse.getX()>player.getXcoord())
-        			playerImageView[weaponSetting].setRotate(angle);
-        		else
-        			playerImageView[weaponSetting].setRotate(-1*angle);
         	}
         });
 		
@@ -470,9 +462,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
 		stage.show();
-		zombieSound[0].play();
 		System.out.println("Stage being showed.");
 		
+		zombieSound[0].play();
 		zombieReborn = System.currentTimeMillis();
 				
 	}
@@ -490,8 +482,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	double getFireAngle(double x, double y){
 		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
 		double angle = player.getPosition().angle(dummyVector, cursorVector);
-		//calculate the angle of player from vertical axis to cursor		
-        return angle; 
+		//calculate the angle of player from vertical axis to cursor
+		if(mouseX>player.getXcoord())
+			return angle;
+		else
+			return angle*-1;
 	}
 
 	@Override
@@ -571,11 +566,16 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         }
         
         if(moveLeft){
-        	if(backgroundImageView.getTranslateX() < 0){
-        		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
-        		for(Target i : target){
-            		i.changePosition(+5, 0);
-            	}
+        	if(backgroundImageView.getTranslateX() < 0 && player.getXcoord()==screenWidth/2 ){   //has translation
+	        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
+	        	System.out.println("background moving");
+	        	for(Target i : target)
+	            	i.changePosition(+5, 0);
+	        	for(ImageView i : weaponIconImageView){
+	        		if(i.isVisible())
+	        			i.setX(i.getX()+5);
+	        	}
+	        	boss.changePosition(+5, 0);
         	}
         	else{
         		if(player.getXcoord()>0){
@@ -583,31 +583,27 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         			playerImageView[weaponSetting].setX(player.getXcoord());
         		}
         	}
-        	for(ImageView i : weaponIconImageView){
-        		if(i.isVisible())
-        			i.setX(i.getX()+5);
-        	}
-        	boss.changePosition(+5, 0);
         	//player.move(-5, 0);
         }
         
         if(moveRight){ //backgroundImageView.getTranslateX()*-1 < MAX
-        	if(player.getXcoord()<scene.getWidth()/2){
-        		player.move(5, 0);
-    			playerImageView[weaponSetting].setX(player.getXcoord());
-        	}
-        	else{
+        	if(backgroundImageView.getTranslateX() > -6785 && player.getXcoord()==screenWidth/2){
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
-        		for(Target i : target){
-            		i.changePosition(-5, 0);
-        		}
+	    		for(Target i : target)
+	        		i.changePosition(-5, 0);
+	        	for(ImageView i : weaponIconImageView){
+	        		if(i.isVisible())
+	        			i.setX(i.getX()-5);
+	        	}
+	        	boss.changePosition(-5, 0);
+	    	}
+	    	else{
+	    		if(player.getXcoord() + playerTranslateX[weaponSetting]*2 <screenWidth){  
+	    			//playerTranslateX*2 to get the whole width of the image
+	    			player.move(5, 0);
+	    			playerImageView[weaponSetting].setX(player.getXcoord());
+	    		}
         	}
-        	
-        	for(ImageView i : weaponIconImageView){
-        		if(i.isVisible())
-        			i.setX(i.getX()-5);
-        	}
-        	boss.changePosition(-5, 0);
         	//player.move(5,0);
         }
         

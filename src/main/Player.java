@@ -63,18 +63,13 @@ public class Player extends Character{
 			double distance = Math.pow(Math.pow((xCursor - xPlayer),2.0) +Math.pow((yCursor - yPlayer), 2.0), 0.5);
 			double normalizedX = (xCursor - xPlayer) / distance;
 			double normalizedY = (yCursor - yPlayer) / distance;
-			double fireAngle;
-			if (normalizedX >= 0)
-				fireAngle = vectorAngle;
-			else
-				fireAngle = -vectorAngle;
 			numberOfUnusedBullet--;
 			bullet[index].setVisible(true);
 			bullet[index].setPosition(xPlayer,yPlayer);
 			bullet[index].setIsMoving(true);
 			bullet[index].setXVelocity(normalizedX);
 			bullet[index].setYVelocity(normalizedY);
-			bullet[index].setFireAngle(fireAngle);
+			bullet[index].setFireAngle(vectorAngle);
 			return true;
 		}
 		else
