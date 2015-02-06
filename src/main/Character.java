@@ -1,13 +1,20 @@
-/**
+/** 
+ * This is an abstract class of Character which is the superclass of Player and Target. 
+ * It extends the GameObject class with additional attribute of health. 
+ * There are two characteristic functions in the Character class.
  * 
+ * First, the "minusHealth" function describes the situation when a character is being hit.
+ * It reduces the health of the specific character with specified damage. 
+ * 
+ * Second, the "isDead" function checks whether the specific character's health has dropped to
+ * zero. If it does, it means that the character is dead and this will trigger other functions
+ * such as GameOver for player and being destroyed for target.
  */
 package main;
 
 public abstract class Character extends GameObject{
-	//Variable
 	private int health;
 	
-	//Constructor
 	Character() {
 	}
 	
@@ -16,7 +23,6 @@ public abstract class Character extends GameObject{
 		this.health = health;
 	}
 	
-	//Mutator and accessor
 	public int getHealth() {
 		return health;
 	}
