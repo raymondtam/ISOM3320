@@ -1,5 +1,9 @@
 /**
- * 
+ * This GameObject class defines the game objects to be used in the game. It is an 
+ * abstract class and the superclass to character and bullet class. It defines the 
+ * common attributes of all the game objects including position, radius, whether the
+ * object is visible or not and the moving speed.
+ * It defines two abstract method -- "isHit" and "move" for the game objects to inherit. 
  */
 package main;
 
