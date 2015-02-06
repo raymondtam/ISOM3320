@@ -1,18 +1,16 @@
 /**
+ * This target class defines the enemies player will encounter.
  * 
  */
-// tune radius, movingSpeed, health, attackDamage
 package main;
 
 import javafx.geometry.Point2D;
 
 public class Target extends Character{
-	//Variable
 	private int attackDamage;
 	private boolean isMoving;
 	private int maxHealth; 
 	
-	//Constructor
 	public Target(){
 		this(3, 5, 3, 15);
 	}
@@ -24,7 +22,6 @@ public class Target extends Character{
 		maxHealth = health;
 	}
 	
-	//Mutator and accessor
 	public int getAttackDamage(){
 		return this.attackDamage;
 	}
@@ -48,14 +45,15 @@ public class Target extends Character{
     	this.isMoving = isMoving;
     }
     
-	//Custom method
 	@Override
 	public boolean isHit() {
 		return true;
 	}
 	
 	public boolean isHit(Bullet getShot){	
-		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) + Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) <= this.getRadius()){
+		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) 
+				+ Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) <= this.getRadius()){
+			//Radius of bullet is zero
 			return true;
 		}
 		return false;
@@ -68,27 +66,27 @@ public class Target extends Character{
 		}
 		return false;
 	}
-
-	public static Target[] getTargetArray(int numberOfZombies, int health, int attackDamage, int movingSpeed, int radius) {
+	
+	//for gameboard
+	public static Target[] getTargetArray(int numberOfZombies, int health,
+			int attackDamage, int movingSpeed, int radius) {
 		Target[] TargetArray = new Target [numberOfZombies];
 		for (int i = 0; i < TargetArray.length; i++){
 			TargetArray[i] = new Target(health, attackDamage, movingSpeed, radius);
 		}
 		return TargetArray;
 	}
-        
+    
 	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
 		Point2D yVector;
-		
 		if(this.getYcoord()>0)
 			yVector = new Point2D(this.getXcoord(), 0);
 		else
 			yVector = new Point2D(this.getXcoord(), this.getYcoord()-1);
-		
 		double angleOfChase = zombiePosition.angle(yVector, playerPosition);
-		if(playerPosition.getX()<zombiePosition.getX())
-			angleOfChase*=-1;
+		if(playerPosition.getX() < zombiePosition.getX())
+			angleOfChase *= -1;
 		return angleOfChase;
 	}
 	
@@ -97,26 +95,18 @@ public class Target extends Character{
 		 this.changePosition(xIncrement, yIncrement);
 	}
 	
+	//for targets chase toward player
 	public void move(Point2D playerPosition) {
 		double xIncrement, yIncrement;
 		double distance, xDifference, yDifference;
-		// double angle = getAngleOfChase(playerPosition);
-		// double cosAngle = Math.cos(angle);
-		// double sinAngle = Math.sin(angle);
 		xDifference = playerPosition.getX() - this.getXcoord();
 		yDifference = playerPosition.getY() - this.getYcoord();
 		distance = Math.pow(Math.pow(xDifference, 2.0) + Math.pow(yDifference, 2.0), 0.5);
-		
-		//if (xDifference > 0 && yDifference > 0){
 		xIncrement = this.getMovingSpeed() * xDifference / distance;
 		yIncrement = this.getMovingSpeed() * yDifference / distance;
 		this.move(xIncrement, yIncrement);
-		//}
-		// xIncrement = this.getMovingSpeed() * sinAngle;
-		// yIncrement = this.getMovingSpeed() * cosAngle *-1;  // to compensate to revser of y axis of javafx
-		// this.move(xIncrement, yIncrement);
-		
 	}
+	
 	
 	public void setVisible(Point2D playerPosition){
 		double randomEdge = Math.random();
@@ -169,22 +159,18 @@ public class Target extends Character{
 		System.out.println("Call zombies near top boundary with zombies coming from below");
 	}
 	
-	
 	static public void rebornZombie (Target[] zombies, Point2D playerPosition){
 		double random = Math.random(); 
 		int numberOfDeadZombies = 0;
 		int numberOfZombiesToReborn = 0;
-		System.out.println("Reborn Zombies");
 		for (int i = 0; i < zombies.length; i++){
 			if (zombies[i].isDead()) numberOfDeadZombies++;
 		}
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
-		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
+		for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; i++, j++){
 			if (zombies[j].isDead()){ 
 				zombies[j].setHealth(zombies[j].getMaxHealth());
-				System.out.println("The health of zombie" + j + "is " + zombies[j].getHealth());
 				zombies[j].setVisible(playerPosition);
-				i++;
 			}
 		}
 	}
@@ -200,27 +186,21 @@ public class Target extends Character{
 		}
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		if (boundaryLimit >= - 581){
-			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
+			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; i++, j++){
 				if (zombies[j].isDead()){
 					zombies[j].setHealth(zombies[j].getMaxHealth());
 					zombies[j].setVisibleAtBottom(playerPosition);
-					i++;
 				}
 			}
 		}
 		else if (boundaryLimit <= - 1721){
-			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; j++){
+			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; i++, j++){
 				if (zombies[j].isDead()){
 					zombies[j].setHealth(zombies[j].getMaxHealth());
 					zombies[j].setVisibleAtTop(playerPosition);
-					i++;
 				}
 			}
 		}
-	}
-	
-	public void rebornZombie (Target[] zombies, int level){
-		double random = Math.random(); 
 	}
 	
 	@Override
@@ -229,6 +209,4 @@ public class Target extends Character{
 				+ "and is " + ((this.isVisible())?"Visible":"Invisible") + " with movingspeed " + this.getMovingSpeed() +
 			    " and attackDamage:" + this.getAttackDamage() + "/n";
 	}
-	
-
 }
