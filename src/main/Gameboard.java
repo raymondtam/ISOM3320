@@ -314,7 +314,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 
 		pane.getChildren().add(bossImageView);
-          
+        
 		scene = new Scene(pane);
         
 		//Set Positioning		
@@ -817,6 +817,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
     		footSteps.play(FOOTSTEPS_VOLUMN);
     	}
 	}
+	
 	private void initialize(){
 		//initialize scene
 		

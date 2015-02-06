@@ -1,5 +1,14 @@
 /**
- * This target class defines objects which are character who attack player
+ * This target class defines objects which are character who attack player.
+ * It allows the gameboard to get an array of target objects.
+ * 
+ * It defines how targets do to the player. The target objects find angles with the 
+ * player and move toward player in coordinates.
+ * 
+ * It checks the interaction with the player, and do the corresponding damages to player's health.
+ * 
+ * It contains functions to generate zombies from four edges of the stage. If the player is near
+ * boundary, the zombies can be regenerated and set visible on the other side of the boundary.
  * 
  */
 package main;

@@ -28,7 +28,7 @@ public class Boss extends Target{
 	//recall zombies around playerposition with range specified
 	static public void summonZombie (Target[] zombies, Point2D playerPosition, int range){
 		for (int i = 0; i < zombies.length; i++){
-			if (zombies[i].isDead()){ 
+			if (zombies[i].isDead()){
 				zombies[i].setHealth(30);
 				zombies[i].setVisible(playerPosition, range);
 			}
