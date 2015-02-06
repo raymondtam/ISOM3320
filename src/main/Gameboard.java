@@ -461,7 +461,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 				
 	}
 	
-	double getFireAngle(double x, double y){
+	private double getFireAngle(double x, double y){
 		Point2D dummyVector = new Point2D(player.getXcoord(),0), cursorVector = new Point2D(x,y);
 		double angle = player.getPosition().angle(dummyVector, cursorVector);
 		//calculate the angle of player from vertical axis to cursor		
@@ -871,7 +871,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	    play = false;
 	}
 	
-	void infected(int infection, int damage){
+	private void infected(int infection, int damage){
 		if(infectionThreshold >= infection){
 			zombieSound[2].play(GAME_EFFECT_VOLUMN);
 			player.minusHealth(damage);
@@ -886,7 +886,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 	}
 	
-	void endGame(){
+	private void endGame(){
 		refreshScreen.stop();
 		String name;
 		if(player.isDead())
@@ -907,7 +907,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	}
 	
 	
-	boolean getRank(String name) {
+	private boolean getRank(String name) {
 		System.out.println(score + " " + topThreeScores[2]);
 		if (score > topThreeScores[2] || ( score == topThreeScores[2] && timeElapsed < topThreeTime[2])) {
 			int[] newScores = {0, 0, 0};
@@ -936,7 +936,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		return false;
 	}
 	
-	String showRank(){
+	private String showRank(){
 		String rank = "";
 		for(int i=0 ; i < topThreeScores.length ; i++){
 			rank = rank.concat("Rank "+ (i+1) +" : "+topThreeScores[i]+"  "+topThree[i]+"  "+topThreeTime[i]+"\n");
