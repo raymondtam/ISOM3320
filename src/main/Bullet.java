@@ -11,7 +11,6 @@ public class Bullet extends GameObject {
     private double yVelocity;
     private double fireAngle;
   
-    //Constructor
     Bullet () {
     	Bullet.bulletDamage = 0;
     	Bullet.magazineSize = 0;
@@ -80,6 +79,7 @@ public class Bullet extends GameObject {
 			changePosition(xIncrement,yIncrement);
 	}
 	
+	//for gameboard
 	public static Bullet[] getBulletArray(int size, int damage, int magazineSize, double radius, int speed) {
 		Bullet[] bulletArray = new Bullet [size];
 		for (int i = 0; i < bulletArray.length; i++){
