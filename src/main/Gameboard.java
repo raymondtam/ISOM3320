@@ -12,7 +12,7 @@
  * then the every corresponding collision (e.g. bullet hitting targets) is checked 
  * and trigger the resulting action (e.g. reduces target health)
  * 
- * End game logics are defined. Top three scores are stored and shown
+ * End game logics are defined. Top three scores are stored and shown.
  * 
  */
 
