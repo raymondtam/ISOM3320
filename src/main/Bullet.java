@@ -4,7 +4,6 @@
 package main;
 
 public class Bullet extends GameObject {
-    //Variable
 	private static int bulletDamage;
     private static int magazineSize;
     private boolean isMoving;
@@ -24,65 +23,50 @@ public class Bullet extends GameObject {
     	this.setMovingSpeed(movingSpeed);
     }
     
-    //Mutator and accessor
     public static int getBulletDamage () {
     	return bulletDamage;
     }
-    
     public static void setBulletDamage (int bulletDamage) {
     	Bullet.bulletDamage = bulletDamage;
     }
-    
     public static int getMagazineSize () {
     	return magazineSize;
     }
-    
     public static void setMagazineSize (int magazineSize) {
     	Bullet.magazineSize = magazineSize;
     }
-    
     public boolean getIsMoving () {
     	return isMoving;
     }
-    
     public void setIsMoving (boolean isMoving) {
     	
     	this.isMoving = isMoving;
     }
-    
     public double getXVelocity () {
     	return xVelocity;
     }
-    
     public void setXVelocity (double xVelocity) {
     	this.xVelocity = xVelocity;
     }
-    
     public double getYVelocity () {
     	return yVelocity;
     }
-    
     public void setYVelocity (double yVelocity) {
     	this.yVelocity = yVelocity;
     }
-    
     public double getFireAngle () {
     	return fireAngle;
     }
-    
     public void setFireAngle (double fireAngle) {
     	this.fireAngle = fireAngle;
     }
-
-    //Custom Method
 
 	@Override
 	public boolean isHit() {
 		return true;
 	}
-	
 	public boolean isHit(Target targetShot) {
-		if (Math.pow(Math.pow(targetShot.getXcoord() - this.getXcoord(),2.0) 
+		if (Math.pow(Math.pow(targetShot.getXcoord() - this.getXcoord(),2.0) //Distance between two centres
 			+ Math.pow(targetShot.getYcoord() - this.getYcoord(),2.0), 0.5) 
 			<= (targetShot.getRadius() + this.getRadius())){
 			return true;

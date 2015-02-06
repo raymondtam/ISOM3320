@@ -52,8 +52,8 @@ public class Target extends Character{
 	
 	public boolean isHit(Bullet getShot){	
 		if (Math.pow(Math.pow(getShot.getXcoord() - this.getXcoord(),2.0) 
-				+ Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) <= this.getRadius()){
-			//Radius of bullet is zero
+				+ Math.pow(getShot.getYcoord() - this.getYcoord(),2.0), 0.5) //Distance between centres
+				<= this.getRadius() + getShot.getRadius()){
 			return true;
 		}
 		return false;
@@ -80,11 +80,12 @@ public class Target extends Character{
 	public double getAngleOfChase(Point2D playerPosition){
 		Point2D zombiePosition = this.getPosition();
 		Point2D yVector;
+		double angleOfChase;
 		if(this.getYcoord()>0)
 			yVector = new Point2D(this.getXcoord(), 0);
 		else
 			yVector = new Point2D(this.getXcoord(), this.getYcoord()-1);
-		double angleOfChase = zombiePosition.angle(yVector, playerPosition);
+		angleOfChase = zombiePosition.angle(yVector, playerPosition);
 		if(playerPosition.getX() < zombiePosition.getX())
 			angleOfChase *= -1; //zombie rotates anticlockwisely toward player for the condition
 		return angleOfChase;
