@@ -2,9 +2,7 @@ package main;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
-
 import javax.swing.JOptionPane;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -104,9 +102,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
     double angle, mouseX, mouseY;
     long lastShootTime;
 	
+    //Graphics Tanslation
     double[] playerTranslateX, playerTranslateY, targetTranslateX, targetTranslateY, 
     	weaponIconTranslateX, weaponIconTranslateY;
     double bossTranslateX, bossTranslateY, bulletTranslateX, bulletTranslateY, cursorTranslateX, cursorTranslateY;
+    
+    //Play/Pause flag
+    boolean play=false;
     
 	public static void main(String[] arg){
 		launch(arg);
@@ -302,12 +304,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
           
 		scene = new Scene(pane);
         
-		//Set Positioning
-        player.setPosition(screenWidth/2, screenHeight/2); 
-        
-		playerImageView[weaponSetting].setY(player.getYcoord()-playerTranslateX[weaponSetting]);
-		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
-		
+		//Set Positioning		
 		HPLabel.setTranslateX(70);
 		HPLabel.setTranslateY(530);
 		ScoreLabel.setTranslateX(300);
@@ -351,8 +348,16 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						}
 						break;
 					case SPACE:
-						refreshScreen.play();
-						startTime = System.currentTimeMillis();
+						if(!play){
+							refreshScreen.play();
+							play = true;
+							if(startTime==0)
+								startTime = System.currentTimeMillis();
+						}
+						else{
+							refreshScreen.pause();
+							play = false;
+						}
 						break;
             	}
                	key.consume();
@@ -413,10 +418,10 @@ final public class Gameboard extends Application implements EventHandler<ActionE
                
         scene.setOnMouseMoved(new EventHandler<MouseEvent>() {
         	public void handle(MouseEvent mouse){
-        		double angle = getFireAngle(mouse.getX(), mouse.getY()); 
-//        		System.out.println(angle);
         		mouseX = mouse.getX();
         		mouseY = mouse.getY();
+        		double angle = getFireAngle(mouseX, mouseY); 
+//        		System.out.println(angle);
         		if(mouse.getX()>player.getXcoord())
         			playerImageView[weaponSetting].setRotate(angle);
         		else
@@ -425,36 +430,21 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         });
 		
         scene.setCursor(new ImageCursor(crossHairImage, cursorTranslateX, cursorTranslateY));
-        	
+        
+        initialize();
+        
 		stage.setScene(scene);
 		stage.setHeight(screenHeight);
 		stage.setWidth(screenWidth);
-		//stage.sizeToScene();
 		stage.setResizable(false);
 		stage.setTitle("ISOM3320 Game");
 		stage.setFullScreen(false);
-		
 		stage.show();
 		zombieSound[0].play();
-		weaponIconImageView[0].setVisible(false);
-		weaponIconImageView[1].setVisible(false);
 		System.out.println("Stage being showed.");
+		
 		zombieReborn = System.currentTimeMillis();
-		
-		backgroundImageView.setTranslateY(- 1431);
-		
-//		System.out.println(backgroundImageView.getLayoutX()+" "+backgroundImageView.getLayoutY());
-		
-		for(int i=0;i<target.length;i++){
-			target[i].setVisible(player.getPosition());
-			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
-			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
-			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
-			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
-			targetImageView[i].setVisible(true);
-		}
-
-		
+				
 	}
 	
 	double getFireAngle(double x, double y){
@@ -867,6 +857,8 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 
 	    mousePressed = false;
 	    handgunTrigger = false;	    
+	    
+	    play = false;
 	}
 	
 	void infected(int infection, int damage){
