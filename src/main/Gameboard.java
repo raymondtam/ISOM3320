@@ -48,7 +48,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int BOSS_HEALTH = 300;
 	final static int BULLET_MOVEMENT_SPEED = 20;
 	final static int PLAYER_MOVEMENT_SPEED = 5;
-	final static int TARGET_MOVEMENT_SPEED = 4;
+	final static int TARGET_MOVEMENT_SPEED = 5;
 	
 	final Font DEFAULT_FONT = Font.font("irisupc", 50);
 	final static double screenWidth = 900;
