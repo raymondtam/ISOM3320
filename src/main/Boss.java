@@ -19,6 +19,13 @@ public class Boss extends Target{
 		this.maxHealth = health;
 	}
 	
+	public int getMaxHealth(){
+		return this.maxHealth;
+	}
+	public void setMaxHealth(int maxHealth){
+		this.maxHealth = maxHealth;
+	}
+	
 	//Custom method
 	static public void summonZombie (Target[] zombies, Point2D playerPosition, int range){
 		for (int i = 0; i < zombies.length; i++){	//make all zombies visible
