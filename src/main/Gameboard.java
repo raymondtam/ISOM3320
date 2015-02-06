@@ -87,6 +87,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static int[] topThreeScores = {0, 0, 0};
 	static long[] topThreeTime = {0, 0, 0};
 	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, BOSS_MOVEMENT_SPEED, BOSS_DEFAULT_RADIUS);
+	
 	static int infectionThreshold = 0;
 	static long timeElapsed = 0;
 	static int minutesToDisplay, secondsToDisplay;
@@ -366,7 +367,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						if(!play){
 							refreshScreen.play();
 							play = true;
-							if(startTime==0)
+							if(startTime == 0) 
 								startTime = System.currentTimeMillis();
 						}
 						else{
@@ -492,7 +493,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 
 		//Player movement made by relative translation of graphics
-        if(moveUp && backgroundImageView.getTranslateY() < - 300){
+        if(moveUp && backgroundImageView.getTranslateY() < - 300){ //avoid going beyond barricades
         	backgroundImageView.setTranslateY(backgroundImageView.getTranslateY() + 5);
         	for(ImageView i : weaponIconImageView){
         		if(i.isVisible())
@@ -519,7 +520,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         if(moveLeft){
         	if(backgroundImageView.getTranslateX() < 0 && player.getXcoord()==screenWidth/2 ){   //has translation
 	        	backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()+5);
-	        	System.out.println("background moving");
 	        	for(Target i : target)
 	            	i.changePosition(+5, 0);
 	        	for(ImageView i : weaponIconImageView){
@@ -538,6 +538,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         
         if(moveRight){
         	if(backgroundImageView.getTranslateX() > -6785 && player.getXcoord()==screenWidth/2){
+        		//avoid going beyond the whole width of image
         		backgroundImageView.setTranslateX(backgroundImageView.getTranslateX()-5);
 	    		for(Target i : target)
 	        		i.changePosition(-5, 0);
@@ -575,10 +576,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		bossImageView.setX(boss.getXcoord()-bossTranslateX);
 		bossImageView.setY(boss.getYcoord()-bossTranslateY);
 		
-		//Boss show and check if bullets hit Boss or Zombies
+		//Boss interaction
 		for(int i=0 ; i < bullet.length ; i++){
 			if(boss.isVisible() && bullet[i].isVisible() && bullet[i].isHit(boss)){
-				System.out.println("hit bossed");
 				boss.minusHealth(Bullet.getBulletDamage());
 				bullet[i].setVisible(false);
 				bullet[i].setIsMoving(false);
@@ -603,7 +603,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			for(int j=0 ; j<target.length;j++){
 				if(target[j].isVisible() && bullet[i].isVisible() && bullet[i].isHit(target[j])){
 					target[j].minusHealth(Bullet.getBulletDamage());
-					 System.out.println("Zombie " + j + " is hit ");
 					bullet[i].setVisible(false);
 					bullet[i].setIsMoving(false);
 					bullet[i].setPosition(-999, -999);  //void the bullet
@@ -637,7 +636,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		
 		//reborn zombies
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
-			System.out.println("Zombie Reborn");
 			zombieSound[1].play(GAME_EFFECT_VOLUMN);
 			if (backgroundImageView.getTranslateY() < - 581 && backgroundImageView.getTranslateY() > -1721){
 				Target.rebornZombie(target, player.getPosition());
@@ -675,7 +673,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -5000 
 			&& backgroundImageView.getTranslateY() < - 300 
 			&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
-			// System.out.println("Boss");
 			zombieSound[3].play(GAME_EFFECT_VOLUMN);
 			boss.setVisible(true);
 			boss.setPosition(600, 150);
@@ -718,7 +715,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		weapon.setY(-999);
 		Bullet.setBulletDamage(BULLET_DAMAGE[index]);
 		Bullet.setMagazineSize(MAGAZINE_SIZE[index]);
-		playerImageView[weaponSetting].setVisible(false); // original
+		playerImageView[weaponSetting].setVisible(false);
 		weaponSetting = (short)index;
 		playerImageView[weaponSetting].setVisible(true);
 		playerImageView[weaponSetting].setX(player.getXcoord() - playerTranslateX[weaponSetting]);
@@ -741,6 +738,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 					if (i == j){
 						break;
 					}
+					//always compare every possible distance after each updating 
 					targetToTargetDistance = Math.pow(Math.pow(target[i].getXcoord() - target[j].getXcoord(), 2.0) 
 						+ Math.pow(target[i].getYcoord() - target[j].getYcoord(), 2.0), 0.5);
 					if (targetToTargetDistance <= minTargetToTargetDistance){
@@ -768,14 +766,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 	}
 	
-	//only accumulated contact with zombies lead to reduce in health
+	//only accumulated contacts with zombies lead to reduce in health
 	private void infected(int infection, int damage){
 		if(infectionThreshold >= infection){
 			zombieSound[2].play(GAME_EFFECT_VOLUMN);
 			player.minusHealth(damage);
 			HPIntegerProperty.setValue(player.getHealth());
 			infectionThreshold = 0;
-			System.out.println("Health: "+player.getHealth());
 		}
 		if(player.isDead()){
 			score = (int)(timeElapsed) + player.getHealth()*10;
@@ -893,7 +890,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	
 	
 	private boolean getRank(String name) {
-		System.out.println(score + " " + topThreeScores[2]);
 		if (score > topThreeScores[2] || ( score == topThreeScores[2] && timeElapsed < topThreeTime[2])) {
 			int[] newScores = {0, 0, 0};
 			String[] newName = {" "," "," "};
