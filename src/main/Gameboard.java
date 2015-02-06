@@ -34,17 +34,23 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	final static int MAX_MAGAZINE_SIZE = 100;
 	final static int DEFAULT_BULLET_DAMAGE = BULLET_DAMAGE[0];
 	final static int DEFAULT_MAGAZINE_SIZE = MAGAZINE_SIZE[0];
-	final static double BULLET_DEFAULT_RADIUS = 10;
-	final static int TARGET_DEFAULT_RADIUS = 30;
-	final static int NUMBER_OF_ZOMBIES = 10;
-	final static int ZOMBIES_DAMAGE = 5;
-	final static int BOSS_DAMAGE = 20;
-	final static int PLAYER_MAXHEALTH = 100;
-	final static int TARGET_HEALTH = 12;
-	final static int BOSS_HEALTH = 300;
 	final static int BULLET_MOVEMENT_SPEED = 20;
+	final static double BULLET_DEFAULT_RADIUS = 10;
+	
+	final static int PLAYER_MAXHEALTH = 100;
 	final static int PLAYER_MOVEMENT_SPEED = 5;
+	
+	final static int NUMBER_OF_ZOMBIES = 12;
+	final static int TARGET_HEALTH = 12;
+	final static int ZOMBIES_DAMAGE = 5;
 	final static int TARGET_MOVEMENT_SPEED = 5;
+	final static int TARGET_DEFAULT_RADIUS = 30;
+
+	final static int BOSS_HEALTH = 300;
+	final static int BOSS_DAMAGE = 20;
+	final static int BOSS_MOVEMENT_SPEED = 2;
+	final static int BOSS_DEFAULT_RADIUS = 110;
+	
 	final static double GAME_EFFECT_VOLUMN = 1.0;
 	final static double GAME_BGM_VOLUMN = 0.7;
 	final static double FOOTSTEPS_VOLUMN = 0.1;
@@ -66,7 +72,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	static String[] topThree = {"","",""};
 	static int[] topThreeScores = {0, 0, 0};
 	static long[] topThreeTime = {0, 0, 0};
-	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, 2, 110);
+	static Boss boss = new Boss (BOSS_HEALTH, BOSS_DAMAGE, BOSS_MOVEMENT_SPEED, BOSS_DEFAULT_RADIUS);
 	static int infectionThreshold = 0;
 	static long timeElapsed = 0;
 	static int minutesToDisplay, secondsToDisplay;
