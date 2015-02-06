@@ -86,7 +86,7 @@ public class Target extends Character{
 			yVector = new Point2D(this.getXcoord(), this.getYcoord()-1);
 		double angleOfChase = zombiePosition.angle(yVector, playerPosition);
 		if(playerPosition.getX() < zombiePosition.getX())
-			angleOfChase *= -1;
+			angleOfChase *= -1; //zombie rotates anticlockwisely toward player for the condition
 		return angleOfChase;
 	}
 	
@@ -107,7 +107,7 @@ public class Target extends Character{
 		this.move(xIncrement, yIncrement);
 	}
 	
-	
+	//set zombies randomly coming out from four edges
 	public void setVisible(Point2D playerPosition){
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
@@ -126,6 +126,7 @@ public class Target extends Character{
 		this.setVisible(true);
 	}
 	
+	//set with specified range around playerposition
 	public void setVisible(Point2D playerPosition, int range){
 		double randomEdge = Math.random();
 		double randomCoord = Math.random() - 0.5;
@@ -148,6 +149,7 @@ public class Target extends Character{
 	public void setVisibleAtTop(Point2D playerPosition){
 		double randomCoord = Math.random() - 0.5;
 		this.setPosition((int)(playerPosition.getX() + randomCoord * 900), (int)(playerPosition.getY() - (750 / 2))); 
+		//zombies set from only lower edge
 		this.setVisible(true);
 		System.out.println("Call zombies near lower boundary with zombies coming from top");
 	}
@@ -186,6 +188,7 @@ public class Target extends Character{
 		}
 		numberOfZombiesToReborn = (int)(random * numberOfDeadZombies);
 		if (boundaryLimit >= - 581){
+			// lower boundary of map
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; i++, j++){
 				if (zombies[j].isDead()){
 					zombies[j].setHealth(zombies[j].getMaxHealth());
@@ -194,6 +197,7 @@ public class Target extends Character{
 			}
 		}
 		else if (boundaryLimit <= - 1721){
+			// upper boundary of map
 			for (int i = 0, j = 0; i < numberOfZombiesToReborn && j < zombies.length; i++, j++){
 				if (zombies[j].isDead()){
 					zombies[j].setHealth(zombies[j].getMaxHealth());
