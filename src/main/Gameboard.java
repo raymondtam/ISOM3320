@@ -526,12 +526,12 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	            	i.changePosition(+5, 0);
 	        	for(ImageView i : weaponIconImageView){
 	        		if(i.isVisible())
-	        			i.setX(i.getX()+5);
+	        			i.setX(i.getX() + 5);
 	        	}
 	        	boss.changePosition(+5, 0);
         	}
         	else{
-        		if(player.getXcoord()>0){
+        		if(player.getXcoord() > 0){
         			player.move(-5, 0);
         			playerImageView[weaponSetting].setX(player.getXcoord());
         		}
@@ -556,7 +556,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 	    			playerImageView[weaponSetting].setX(player.getXcoord());
 	    		}
         	}
-        	//player.move(5,0);
         }
         
         //Bullet movement
@@ -617,7 +616,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 						targetImageView[j].setVisible(false);
 						target[j].setPosition(-999,-999);
 						score += 10;
-						 System.out.println("Zombie " + j + " Dead");
 					}
 					break;
 				}
@@ -625,7 +623,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			ScoreIntegerProperty.setValue(score);
 		}
 		
-//Check if Zombies hit Player and minus health correspondingly
+		//Check if Zombies hit Player and minus health correspondingly
 		for(int i = 0; i < target.length; i++){
 			if(targetImageView[i].isVisible() && player.isHit(target[i])){
 				infectionThreshold += 1;
@@ -633,13 +631,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			infected(30, ZOMBIES_DAMAGE);
 		}
 		
-//Check if Boss hit Player and minus health correspondingly
+		//Check if Boss hit Player and minus health correspondingly
 		if(bossImageView.isVisible() && player.isHit(boss)){
 			infectionThreshold += 3;
 			infected(30, BOSS_DAMAGE);
 		}
 		
-//Generate zombie, reborn
+		//reborn zombies
 		if(System.currentTimeMillis() - zombieReborn > 20000 && bossShowCount < 1 ){
 			System.out.println("Zombie Reborn");
 			zombieSound[1].play(GAME_EFFECT_VOLUMN);
@@ -669,13 +667,13 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 		}
 				
-//Show zombie
+		//Show zombie
 		for(int i=0 ; i<target.length ; i++){
 			if(target[i].isVisible())
 				targetImageView[i].setVisible(true);
 		}
 		
-//Show Boss
+		//Show Boss
 		if(!bossImageView.isVisible() && backgroundImageView.getTranslateX() < -5000 
 			&& backgroundImageView.getTranslateY() < - 300 
 			&& backgroundImageView.getTranslateY() > - 1920 && bossShowCount < 1){
@@ -688,10 +686,9 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			bossImageView.setY(150);
 			bossShowCount += 1;
 			boss.summonZombie(target, player.getPosition(), 200);
-			System.out.println("Summon Zombie!!!");
 		}
 		
-//Show new weapon
+		//Show new weapon
 		for(int i = 0 ; i<weaponIconImageView.length ; i++){
 			if(!weaponIconImageView[i].isVisible() && backgroundImageView.getTranslateX() < weaponIconDistance[i]){
 				newWeapon(weaponIconImageView[i]);
@@ -704,12 +701,11 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 			}
 		}
 		
-//Summon zombie
+		//Summon zombie
 		if(boss.isVisible() && summonZombie){
-			boss.summonZombie(target, player.getPosition(), 200);
+			boss.summonZombie(target, player.getPosition(), 200); 
 			zombieSound[3].play(GAME_EFFECT_VOLUMN);
 			summonZombie = false;
-			System.out.println("Summon Zombie!!!");
 		}
 		
 }		
@@ -775,6 +771,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		}
 	}
 	
+	//only accumulated contact with zombies lead to reduce in health
 	private void infected(int infection, int damage){
 		if(infectionThreshold >= infection){
 			zombieSound[2].play(GAME_EFFECT_VOLUMN);
@@ -820,7 +817,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         player.setPosition(screenWidth/2, screenHeight/2); 
         player.setHealth(PLAYER_MAXHEALTH);
         
-		System.out.println(player.getHealth());
         weaponSetting = 0;
         playerImageView[weaponSetting].setVisible(true);
 		playerImageView[weaponSetting].setX(player.getXcoord()-playerTranslateX[weaponSetting]);
@@ -848,7 +844,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		for(int i=0;i<target.length;i++){
 			target[i].setVisible(player.getPosition());
 			target[i].setHealth(TARGET_HEALTH);
-			System.out.println("X: "+target[i].getXcoord()+" Y: "+ target[i].getYcoord());
 			targetImageView[i].setRotate(target[i].getAngleOfChase(player.getPosition()));
 			targetImageView[i].setX(target[i].getXcoord()-targetTranslateX[i/4]);
 			targetImageView[i].setY(target[i].getYcoord()-targetTranslateY[i/4]);
@@ -933,7 +928,6 @@ final public class Gameboard extends Application implements EventHandler<ActionE
 		String rank = "";
 		for(int i=0 ; i < topThreeScores.length ; i++){
 			rank = rank.concat("Rank "+ (i+1) +" : "+topThreeScores[i]+"  "+topThree[i]+"  "+topThreeTime[i]+"\n");
-			System.out.println("Rank "+i+" : "+topThreeScores[i]+"  "+topThree[i]+"  "+topThreeTime[i]+"\n");
 		}
 		return rank;
 	}

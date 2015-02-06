@@ -79,7 +79,6 @@ abstract class GameObject {
 		this.movingSpeed = movingSpeed;
 	} 
 	
-	//Custom method
 	@Override
 	public String toString(){
 		return "The Gameobject is at" + position.toString() + "with radius: " + radius 
