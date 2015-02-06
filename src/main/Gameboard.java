@@ -371,7 +371,7 @@ final public class Gameboard extends Application implements EventHandler<ActionE
         });
         
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
-            public void handle(KeyEvent key) {  //KeyEvent.keyreleased
+            public void handle(KeyEvent key) {
             	KeyCode keycode = key.getCode();
             	if (footSteps.isPlaying() & (!moveUp || !moveDown || !moveRight || !moveLeft)){
             		footSteps.stop();

@@ -6,12 +6,11 @@ package main;
 import javafx.geometry.Point2D;
 
 public class Boss extends Target{
-	//Variable
 	private int maxHealth;
 	
-	//Constructor
 	public Boss(){
 	}
+	
 	public Boss(int health, int attackDamage, int movingSpeed, int radius) {
 		this.setHealth(health);
 		this.setMovingSpeed(movingSpeed);
@@ -26,9 +25,9 @@ public class Boss extends Target{
 		this.maxHealth = maxHealth;
 	}
 	
-	//Custom method
+	//recall zombies around playerposition with range specified
 	static public void summonZombie (Target[] zombies, Point2D playerPosition, int range){
-		for (int i = 0; i < zombies.length; i++){	//make all zombies visible
+		for (int i = 0; i < zombies.length; i++){
 			if (zombies[i].isDead()){ 
 				zombies[i].setHealth(30);
 				zombies[i].setVisible(playerPosition, range);
