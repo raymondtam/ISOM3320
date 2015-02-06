@@ -10,13 +10,11 @@ package main;
 import javafx.geometry.Point2D;
 
 abstract class GameObject {
-	//Variable
 	private Point2D position;
 	private double radius;
 	private boolean	visible;
 	private int movingSpeed;
 	
-	//Constructor
 	GameObject(){
 		this(0, 0, 0, false, 0);
 	}
@@ -28,7 +26,6 @@ abstract class GameObject {
 		this.movingSpeed = movingSpeed;
 	}
 	
-	//Mutator and accessor
 	public double getXcoord(){
 		return position.getX();
 	}
